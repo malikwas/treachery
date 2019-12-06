@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "146942732721",
+    "firebase_url": "https://treachery-e01b2.firebaseio.com",
+    "project_id": "treachery-e01b2",
+    "storage_bucket": "treachery-e01b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146942732721:android:33a7ede79dc6e6e11e3590",
+        "android_client_info": {
+          "package_name": "me.kindeep.treachery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146942732721-hss3gbo13cpdmoktqe7dfvej0pdh365l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzSqwYYSlP3N0exn9WJXaCoo3KDpDk1Hk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146942732721-hss3gbo13cpdmoktqe7dfvej0pdh365l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
