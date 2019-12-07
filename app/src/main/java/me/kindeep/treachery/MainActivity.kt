@@ -1,5 +1,6 @@
 package me.kindeep.treachery
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import me.kindeep.treachery.firebase.GameInstanceSnapshot
 import me.kindeep.treachery.firebase.activeGamesQuery
 import me.kindeep.treachery.firebase.createGame
@@ -59,11 +62,33 @@ class MainActivity : AppCompatActivity() {
             // Layout Manager
             layoutManager = LinearLayoutManager(applicationContext)
         }
+//
+//        var gameInstance: GameInstanceSnapshot = GameInstanceSnapshot()
+//
+//        firestore.collection("games")
+//            .document("AwOd8Qy61hhozRh5rUKD").get().addOnSuccessListener {
+//                gameInstance = it.toObject()!!
+//            }
+//
+//        findViewById<TextView>(R.id.test).text = gameInstance.toString()
     }
 
     fun fire(v: View) {
-        createGame{
+        createGame {
             // Open new activity
+        }
+    }
+
+    fun newGame(v: View) {
+        createGame {
+            // Open Forensic Activity
+            Log.e("ACTIVITY", "Open the goddamn activity")
+            val intent = Intent(this, StartGameActivity::class.java)
+             val b: Bundle = Bundle()
+            b.putString("gameId", it.id)
+            intent.putExtras(b)
+            startActivity(intent)
+            finish()
         }
     }
 }

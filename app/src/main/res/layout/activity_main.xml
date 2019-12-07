@@ -9,10 +9,20 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/fire"
         android:onClick="fire"
         android:text="Fire!!!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/gamesRecycler" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="newGame"
+        android:text="New"
+        android:id="@+id/new_game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fire"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gamesRecycler"
@@ -21,6 +31,5 @@
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="391dp"
         />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

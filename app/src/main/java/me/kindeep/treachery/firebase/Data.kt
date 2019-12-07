@@ -23,10 +23,16 @@ fun activeGamesQuery(): Query {
     return firestore.collection("games")
 }
 
+fun gameReference(gameId: String): DocumentReference {
+    val firestore = FirebaseFirestore.getInstance()
+    return firestore.collection("games").document(gameId)
+}
+
 fun createGame(callback: (documentReference: DocumentReference) -> Unit) {
     FirebaseFirestore.getInstance().collection("games").add(GameInstanceSnapshot())
         .addOnSuccessListener { documentReference ->
             documentReference.update("gameId", documentReference.id)
+            callback(documentReference)
             Log.e("FIREBASE", "DocumentSnapshot written with ID: ${documentReference.id}")
         }
         .addOnFailureListener { e ->
