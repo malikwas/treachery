@@ -36,6 +36,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:21.3.0'
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
     implementation 'com.google.firebase:firebase-common-ktx:19.3.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    // Firebase UI
+    implementation 'com.firebaseui:firebase-ui-firestore:6.1.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
