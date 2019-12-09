@@ -62,15 +62,7 @@ class MainActivity : AppCompatActivity() {
             // Layout Manager
             layoutManager = LinearLayoutManager(applicationContext)
         }
-//
-//        var gameInstance: GameInstanceSnapshot = GameInstanceSnapshot()
-//
-//        firestore.collection("games")
-//            .document("AwOd8Qy61hhozRh5rUKD").get().addOnSuccessListener {
-//                gameInstance = it.toObject()!!
-//            }
-//
-//        findViewById<TextView>(R.id.test).text = gameInstance.toString()
+
     }
 
     fun fire(v: View) {

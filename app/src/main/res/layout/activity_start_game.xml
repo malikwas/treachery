@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/start_game"
         android:text="Start"
+        android:onClick="startGame"
         />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#00ff00"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NextForensicCardFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/next_card_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.viewpager.widget.PagerTitleStrip
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top" />
+
+        </androidx.viewpager.widget.ViewPager>
+
+        <TextView
+            android:id="@+id/gameIdNextFrag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:layout_weight="0"
+            android:text="Hello" />
+    </LinearLayout>
+
+</FrameLayout>

@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 
 
@@ -26,6 +27,15 @@ fun activeGamesQuery(): Query {
 fun gameReference(gameId: String): DocumentReference {
     val firestore = FirebaseFirestore.getInstance()
     return firestore.collection("games").document(gameId)
+}
+
+fun getCardsResourcesSnapshot(onSuccess: (CardsResourcesSnapshot) -> Unit) {
+    val firestore = FirebaseFirestore.getInstance()
+    val documentReference = firestore.collection("resources").document("cards")
+
+    documentReference.get().addOnSuccessListener {
+        onSuccess(it.toObject<CardsResourcesSnapshot>()!!)
+    }
 }
 
 fun createGame(callback: (documentReference: DocumentReference) -> Unit) {

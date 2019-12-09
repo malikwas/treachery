@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Treachery</string>
+    <string name="main">Deception</string>
+    <string name="player">Play!!!.</string>
+    <string name="start">Start Game</string>
+    <string name="join">Join Game</string>
+    <string name="forensic">Forensicanage</string>
 </resources>

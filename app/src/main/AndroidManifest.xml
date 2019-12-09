@@ -9,11 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StartGameActivity"></activity>
-        <activity android:name=".JoinGameActivity" />
-        <activity android:name=".PlayerActivity" />
-        <activity android:name=".ForensicActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".StartGameActivity" android:label="@string/start"></activity>
+        <activity android:name=".JoinGameActivity"  android:label="@string/join"/>
+        <activity android:name=".PlayerActivity" android:label="@string/player"/>
+        <activity android:name=".ForensicActivity" android:label="@string/forensic"/>
+        <activity android:name=".MainActivity" android:label="@string/main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
