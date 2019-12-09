@@ -6,6 +6,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
+import me.kindeep.treachery.firebase.models.CardsResourcesSnapshot
+import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
 
 
 fun getActiveGames(callback: (List<GameInstanceSnapshot>) -> Unit) {
@@ -24,7 +26,7 @@ fun activeGamesQuery(): Query {
     return firestore.collection("games")
 }
 
-fun gameReference(gameId: String): DocumentReference {
+fun getGameReference(gameId: String): DocumentReference {
     val firestore = FirebaseFirestore.getInstance()
     return firestore.collection("games").document(gameId)
 }

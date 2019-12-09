@@ -1,4 +1,4 @@
-package me.kindeep.treachery.firebase
+package me.kindeep.treachery.firebase.models
 
 data class CardsResourcesSnapshot(
     val clueCards: List<ForensicCardSnapshot> = listOf(),

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ForensicActivity">
+    tools:context=".forensic.ForensicActivity">
 
     <TextView
         android:id="@+id/gameId"
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/next_card"
-        android:name="me.kindeep.treachery.NextForensicCardFragment"
+        android:name="me.kindeep.treachery.forensic.NextForensicCardFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />

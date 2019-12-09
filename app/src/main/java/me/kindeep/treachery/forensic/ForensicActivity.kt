@@ -1,10 +1,11 @@
-package me.kindeep.treachery
+package me.kindeep.treachery.forensic
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import me.kindeep.treachery.R
 
 class ForensicActivity : AppCompatActivity() {
 

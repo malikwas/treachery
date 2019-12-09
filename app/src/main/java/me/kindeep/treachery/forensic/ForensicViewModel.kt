@@ -1,17 +1,22 @@
-package me.kindeep.treachery
+package me.kindeep.treachery.forensic
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import me.kindeep.treachery.firebase.*
+import me.kindeep.treachery.firebase.models.CardsResourcesSnapshot
+import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
+import me.kindeep.treachery.firebase.models.LiveGameInstanceSnapshot
 
 class ForensicViewModel : ViewModel() {
     companion object {
         var gameId: String = "default"
     }
 
-    val gameInstance: LiveGameInstanceSnapshot = LiveGameInstanceSnapshot(gameId)
-    var cardsResourcesSnapshot: CardsResourcesSnapshot = CardsResourcesSnapshot()
+    val gameInstance: LiveGameInstanceSnapshot =
+        LiveGameInstanceSnapshot(gameId)
+    var cardsResourcesSnapshot: CardsResourcesSnapshot =
+        CardsResourcesSnapshot()
 
     init {
         getCardsResourcesSnapshot {
@@ -42,5 +47,7 @@ class ForensicViewModel : ViewModel() {
 
     val nextCardSnapshots: MutableLiveData<List<ForensicCardSnapshot>> = MutableLiveData()
 
+    fun pickCauseCard(cardName: String, propertyName: String) {
 
+    }
 }

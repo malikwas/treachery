@@ -1,4 +1,4 @@
-package me.kindeep.treachery.firebase
+package me.kindeep.treachery.firebase.models
 
 import com.google.firebase.Timestamp
 

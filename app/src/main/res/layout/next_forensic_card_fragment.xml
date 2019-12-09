@@ -4,7 +4,7 @@
     android:background="#00ff00"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NextForensicCardFragment">
+    tools:context=".forensic.NextForensicCardFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,6 +27,13 @@
 
         <TextView
             android:id="@+id/gameIdNextFrag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:layout_weight="0"
+            android:text="Hello" />
+        <Button
+            android:id="@+id/select_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"

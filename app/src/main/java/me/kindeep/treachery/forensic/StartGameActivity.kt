@@ -1,4 +1,4 @@
-package me.kindeep.treachery
+package me.kindeep.treachery.forensic
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,17 +10,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.google.firebase.firestore.ktx.toObject
-import me.kindeep.treachery.firebase.GameInstanceSnapshot
-import me.kindeep.treachery.firebase.PlayerSnapshot
-import me.kindeep.treachery.firebase.gameReference
+import me.kindeep.treachery.R
+import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
+import me.kindeep.treachery.firebase.models.PlayerSnapshot
+import me.kindeep.treachery.firebase.getGameReference
 
 class StartGameActivity : AppCompatActivity() {
 
     lateinit var gameId: String
     lateinit var joinedPlayersRecycler: RecyclerView
-    var gameInstance: GameInstanceSnapshot = GameInstanceSnapshot()
+    var gameInstance: GameInstanceSnapshot =
+        GameInstanceSnapshot()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start_game)
@@ -36,7 +37,10 @@ class StartGameActivity : AppCompatActivity() {
                     parent: ViewGroup,
                     viewType: Int
                 ): JoinedPlayerHolder {
-                    return JoinedPlayerHolder(layoutInflater, parent)
+                    return JoinedPlayerHolder(
+                        layoutInflater,
+                        parent
+                    )
                 }
 
                 override fun getItemCount(): Int {
@@ -51,7 +55,7 @@ class StartGameActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@StartGameActivity)
         }
 
-        gameReference(gameId).addSnapshotListener { documentSnapshot, _ ->
+        getGameReference(gameId).addSnapshotListener { documentSnapshot, _ ->
             Log.e("FIREBASE", "Kinda worked eh")
             gameInstance = documentSnapshot!!.toObject()!!
             joinedPlayersRecycler.adapter?.notifyDataSetChanged()

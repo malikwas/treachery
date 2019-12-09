@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
-import me.kindeep.treachery.firebase.GameInstanceSnapshot
+import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
 import me.kindeep.treachery.firebase.activeGamesQuery
 import me.kindeep.treachery.firebase.createGame
+import me.kindeep.treachery.forensic.StartGameActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -80,7 +79,6 @@ class MainActivity : AppCompatActivity() {
             b.putString("gameId", it.id)
             intent.putExtras(b)
             startActivity(intent)
-            finish()
         }
     }
 }
