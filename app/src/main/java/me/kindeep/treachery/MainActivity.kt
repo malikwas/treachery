@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun newGame(v: View) {
+        Log.e("fuck off", "SDFSDSFDSFSDF")
         createGame {
             // Open Forensic Activity
             Log.e("ACTIVITY", "Open the goddamn activity")
@@ -78,7 +79,9 @@ class MainActivity : AppCompatActivity() {
              val b: Bundle = Bundle()
             b.putString("gameId", it.id)
             intent.putExtras(b)
+            Log.e("fuck off", "FUCCCCK")
             startActivity(intent)
+            finish()
         }
     }
 }

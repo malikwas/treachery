@@ -17,14 +17,14 @@ data class GameInstanceSnapshot(
     val players: List<PlayerSnapshot> = listOf(
         PlayerSnapshot()
     ),
-    val isStarted: Boolean = false,
+    val started: Boolean = false,
     val createdTimestamp: Timestamp = Timestamp.now(),
     val startedTimestamp: Timestamp = Timestamp.now(),
-    val isMurdererSelected: Boolean = false,
+    val murdererSelected: Boolean = false,
     val causeCard: ForensicCardSnapshot = ForensicCardSnapshot(),
-    val isCauseCardDefined: Boolean = false,
+    val causeCardDefined: Boolean = false,
     val locationCard: ForensicCardSnapshot = ForensicCardSnapshot(),
-    val isLocationCardDefined: Boolean = false,
+    val locationCardDefined: Boolean = false,
     val otherCards: List<ForensicCardSnapshot> = listOf()
 )
 
@@ -45,10 +45,11 @@ class LiveGameInstanceSnapshot(gameId: String) : LiveData<GameInstanceSnapshot>(
         // Listen for changes
         getGameReference(gameId)
             .addSnapshotListener { documentSnapshot, _ ->
-            Log.e("FIREBASE", "Kinda worked eh")
-            val newSnapshot: GameInstanceSnapshot = documentSnapshot!!.toObject()!!
-            value = newSnapshot
-        }
+                val newSnapshot: GameInstanceSnapshot = documentSnapshot!!.toObject()!!
+                Log.e("FIREBASE", "Snapshot changed to $documentSnapshot " +
+                        "\nparsed as \n $newSnapshot")
+                value = newSnapshot
+            }
     }
 
     init {

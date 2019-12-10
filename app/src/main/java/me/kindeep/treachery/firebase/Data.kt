@@ -34,7 +34,6 @@ fun getGameReference(gameId: String): DocumentReference {
 fun getCardsResourcesSnapshot(onSuccess: (CardsResourcesSnapshot) -> Unit) {
     val firestore = FirebaseFirestore.getInstance()
     val documentReference = firestore.collection("resources").document("cards")
-
     documentReference.get().addOnSuccessListener {
         onSuccess(it.toObject<CardsResourcesSnapshot>()!!)
     }
@@ -53,5 +52,14 @@ fun createGame(callback: (documentReference: DocumentReference) -> Unit) {
             Log.e("FIREBASE", "Cancelled?")
         }.addOnCompleteListener {
             Log.e("FIREBASE", "Completed")
+        }
+}
+
+fun addOnGameUpdateListener(gameId: String, onChange: (GameInstanceSnapshot) -> Unit) {
+    getGameReference(gameId)
+        .addSnapshotListener { documentSnapshot, _ ->
+            Log.e("FIREBASE", "Snapshot changed")
+            val newSnapshot: GameInstanceSnapshot = documentSnapshot!!.toObject()!!
+            onChange(newSnapshot)
         }
 }

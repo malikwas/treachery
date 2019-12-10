@@ -2,6 +2,7 @@ package me.kindeep.treachery.forensic
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +14,11 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
+import me.kindeep.treachery.ForensicGameState
 import me.kindeep.treachery.R
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
+import me.kindeep.treachery.forensicGameState
+import me.kindeep.treachery.selectCauseForensicCard
 
 /**
  * To aid selecting clue on the next forensic card
@@ -23,15 +27,16 @@ import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
  */
 class NextForensicCardFragment : Fragment() {
     lateinit var parent: View
-
     lateinit var nextCardViewPager: ViewPager
     lateinit var selectCardButton: Button
+    lateinit var viewModel: ForensicViewModel
+    var pageNumber = 0
+
+
     companion object {
         fun newInstance() =
             NextForensicCardFragment()
     }
-
-    lateinit var viewModel: ForensicViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,58 +67,58 @@ class NextForensicCardFragment : Fragment() {
                     R.id.gameIdNextFrag
                 ).text = viewModel.gameInstance.value!!.gameId
             })
-            nextCardViewPager.adapter =
-                CardsPagerAdapter(
-                    childFragmentManager,
-                    viewModel,
-                    activity as LifecycleOwner
-                )
-            selectCardButton.setOnClickListener{
-                nextCardViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                    /**
-                     * Called when the scroll state changes. Useful for discovering when the user
-                     * begins dragging, when the pager is automatically settling to the current page,
-                     * or when it is fully stopped/idle.
-                     *
-                     * @param state The new scroll state.
-                     * @see ViewPager.SCROLL_STATE_IDLE
-                     *
-                     * @see ViewPager.SCROLL_STATE_DRAGGING
-                     *
-                     * @see ViewPager.SCROLL_STATE_SETTLING
-                     */
-                    override fun onPageScrollStateChanged(state: Int) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
 
-                    /**
-                     * This method will be invoked when the current page is scrolled, either as part
-                     * of a programmatically initiated smooth scroll or a user initiated touch scroll.
-                     *
-                     * @param position Position index of the first page currently being displayed.
-                     * Page position+1 will be visible if positionOffset is nonzero.
-                     * @param positionOffset Value from [0, 1) indicating the offset from the page at position.
-                     * @param positionOffsetPixels Value in pixels indicating the offset from position.
-                     */
-                    override fun onPageScrolled(
-                        position: Int,
-                        positionOffset: Float,
-                        positionOffsetPixels: Int
-                    ) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
+            doAdapterStuff()
 
-                    /**
-                     * This method will be invoked when a new page becomes selected. Animation is not
-                     * necessarily complete.
-                     *
-                     * @param position Position index of the new selected page.
-                     */
-                    override fun onPageSelected(position: Int) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-                })
+            viewModel.nextCardSnapshots.observe(context as LifecycleOwner, Observer {
+                doAdapterStuff()
+            })
+        }
+    }
+
+    fun doAdapterStuff(){
+        val cardAdapter = CardsPagerAdapter(
+            childFragmentManager,
+            viewModel,
+            activity as LifecycleOwner
+        )
+        nextCardViewPager.adapter = cardAdapter
+
+
+        nextCardViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
+            override fun onPageScrollStateChanged(state: Int) {
             }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                pageNumber = position
+            }
+        })
+
+        selectCardButton.setOnClickListener {
+            val selectedCard = cardAdapter.nextCards[pageNumber]
+            val state = forensicGameState(viewModel.gameInstance.value!!)
+
+            when (state) {
+                ForensicGameState.CAUSE_CARD -> {
+                    selectCauseForensicCard(viewModel.gameInstance.value!!.gameId, selectedCard)
+                }
+                ForensicGameState.LOCATION_CARD -> {
+
+                }
+                ForensicGameState.OTHER_CARD -> {
+
+                }
+            }
+
+
         }
     }
 }
@@ -131,14 +136,14 @@ class CardsPagerAdapter(
         viewModel.nextCardSnapshots.observe(lifecycleOwner, Observer {
             nextCards = it
             notifyDataSetChanged()
+            Log.e("FORENSIC", "DataSet change notified")
+            Log.e("SNAPSHOTS", viewModel.nextCardSnapshots.value.toString())
         })
     }
 
     override fun getCount(): Int {
         return nextCards.size
     }
-
-
 
 
     override fun getItem(i: Int): Fragment {
@@ -156,7 +161,7 @@ class CardsPagerAdapter(
     }
 }
 
-class SingleForensicCardFragment(val forensicCardSnapshot: ForensicCardSnapshot) : Fragment() {
+class SingleForensicCardFragment(var forensicCardSnapshot: ForensicCardSnapshot) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -167,10 +172,37 @@ class SingleForensicCardFragment(val forensicCardSnapshot: ForensicCardSnapshot)
     }
 
     lateinit var cardNameView: TextView
+    lateinit var choice0TextView: TextView
+    lateinit var choice1TextView: TextView
+    lateinit var choice2TextView: TextView
+    lateinit var choice3TextView: TextView
+    lateinit var choice4TextView: TextView
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         arguments?.takeIf { it.containsKey("cardIndex") }?.apply {
             cardNameView = view.findViewById(R.id.cardName)
             val cardIndexView: TextView = view.findViewById(R.id.cardIndex)
+            choice0TextView = view.findViewById(R.id.choice0)
+            choice0TextView.setOnClickListener {
+                forensicCardSnapshot.selectedChoice = 0
+            }
+            choice1TextView = view.findViewById(R.id.choice1)
+            choice1TextView.setOnClickListener {
+                forensicCardSnapshot.selectedChoice = 1
+            }
+            choice2TextView = view.findViewById(R.id.choice2)
+            choice2TextView.setOnClickListener {
+                forensicCardSnapshot.selectedChoice = 2
+            }
+            choice3TextView = view.findViewById(R.id.choice3)
+            choice3TextView.setOnClickListener {
+                forensicCardSnapshot.selectedChoice = 3
+            }
+            choice4TextView = view.findViewById(R.id.choice4)
+            choice4TextView.setOnClickListener {
+                forensicCardSnapshot.selectedChoice = 4
+            }
+
             val cardIndex = getInt("cardIndex")
             cardIndexView.text = cardIndex.toString()
             bind()
@@ -179,6 +211,11 @@ class SingleForensicCardFragment(val forensicCardSnapshot: ForensicCardSnapshot)
 
     fun bind() {
         cardNameView.text = forensicCardSnapshot.cardName
+        choice0TextView.text = forensicCardSnapshot.choices.getOrElse(0) { it.toString() }
+        choice1TextView.text = forensicCardSnapshot.choices.getOrElse(1) { it.toString() }
+        choice2TextView.text = forensicCardSnapshot.choices.getOrElse(2) { it.toString() }
+        choice3TextView.text = forensicCardSnapshot.choices.getOrElse(3) { it.toString() }
+        choice4TextView.text = forensicCardSnapshot.choices.getOrElse(4) { it.toString() }
     }
 }
 
