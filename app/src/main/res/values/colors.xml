@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#37966f</color>
+    <color name="colorPrimaryDark">#356859</color>
+    <color name="colorPrimaryLight">#b9e4c9</color>
+    <color name="colorAccent">#29302E</color>
+    <color name="headingProminent">#fd5523</color>
     <color name="forensicListHighlight">#4DB6AC</color>
-    <color name="forensicDefaultListBg">#00FFFFFF</color>
+    <color name="forensicDefaultListBg">#FFFBE6</color>
+    <color name="colorSurface">#FFFBE6</color>
+    <color name="colorOnSurface">#29302E</color>
+    <color name="colorError">#C51162</color>
+    <color name="colorOnError">#FFFFFF</color>
 </resources>

@@ -6,6 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorSurface</item>
+    </style>
+
+    <style name="forensicChoice" parent="AppTheme">
+        <item name="android:padding">4dp</item>
+        <item name="android:textSize">14sp</item>
+
     </style>
 
 </resources>

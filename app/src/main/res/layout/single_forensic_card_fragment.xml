@@ -14,13 +14,14 @@
 
         <ScrollView
             android:layout_width="match_parent"
+            android:background="@color/colorSurface"
             android:layout_height="match_parent">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="16dip">
+                android:padding="8dip">
 
                 <TextView
                     android:id="@+id/cardName"
@@ -31,6 +32,7 @@
                     android:textSize="@dimen/h5" />
 
                 <TextView
+                    style="@style/forensicChoice"
                     android:id="@+id/cardIndex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -39,30 +41,35 @@
 
                 <TextView
                     android:id="@+id/choice0"
+                    style="@style/forensicChoice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="1" />
 
                 <TextView
                     android:id="@+id/choice1"
+                    style="@style/forensicChoice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="2" />
 
                 <TextView
                     android:id="@+id/choice2"
+                    style="@style/forensicChoice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="3" />
 
                 <TextView
                     android:id="@+id/choice3"
+                    style="@style/forensicChoice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="4" />
 
                 <TextView
                     android:id="@+id/choice4"
+                    style="@style/forensicChoice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="5" />
