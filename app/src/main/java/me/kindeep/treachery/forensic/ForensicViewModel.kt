@@ -1,6 +1,5 @@
 package me.kindeep.treachery.forensic
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import me.kindeep.treachery.ForensicGameState
@@ -25,12 +24,9 @@ class ForensicViewModel : ViewModel() {
         getCardsResourcesSnapshot {
             cardsResourcesSnapshot = it
             setNextCardValue()
-            Log.e("Carddds", cardsResourcesSnapshot.toString())
         }
-        Log.e("Carddds", cardsResourcesSnapshot.toString())
 
         addOnGameUpdateListener(gameId) {
-            Log.e("FORENSIC", "Updated next Card value thiingy after this shit")
             setNextCardValue()
         }
 
@@ -38,7 +34,6 @@ class ForensicViewModel : ViewModel() {
 
     fun setNextCardValue() {
         val state = forensicGameState(gameInstance.value!!)
-        Log.e("FORENSIC", "Next card state updated with: ${gameInstance.value}")
         when (state) {
             ForensicGameState.CAUSE_CARD -> {
                 nextCardSnapshots.value = cardsResourcesSnapshot.forensicCards.causeCards
@@ -47,14 +42,14 @@ class ForensicViewModel : ViewModel() {
                 nextCardSnapshots.value = cardsResourcesSnapshot.forensicCards.locationCards
             }
             ForensicGameState.OTHER_CARD -> {
-                val result = mutableListOf<ForensicCardSnapshot>()
 
                 for (card in gameInstance.value!!.otherCards) {
-                    if (card.isSelected()) {
-                        result.add(card)
+                    if (!card.isSelected()) {
+                        nextCardSnapshots.value = listOf(card)
+                        return
                     }
                 }
-                nextCardSnapshots.value = result
+                nextCardSnapshots.value = listOf()
             }
         }
     }

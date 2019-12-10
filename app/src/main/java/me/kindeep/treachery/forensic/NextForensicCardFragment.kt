@@ -2,7 +2,6 @@ package me.kindeep.treachery.forensic
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +13,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
-import me.kindeep.treachery.ForensicGameState
-import me.kindeep.treachery.R
+import me.kindeep.treachery.*
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
-import me.kindeep.treachery.forensicGameState
-import me.kindeep.treachery.selectCauseForensicCard
 
 /**
  * To aid selecting clue on the next forensic card
@@ -76,7 +72,7 @@ class NextForensicCardFragment : Fragment() {
         }
     }
 
-    fun doAdapterStuff(){
+    fun doAdapterStuff() {
         val cardAdapter = CardsPagerAdapter(
             childFragmentManager,
             viewModel,
@@ -111,10 +107,10 @@ class NextForensicCardFragment : Fragment() {
                     selectCauseForensicCard(viewModel.gameInstance.value!!.gameId, selectedCard)
                 }
                 ForensicGameState.LOCATION_CARD -> {
-
+                    selectLocationForensicCard(viewModel.gameInstance.value!!.gameId, selectedCard)
                 }
                 ForensicGameState.OTHER_CARD -> {
-
+                    selectOtherCard(viewModel.gameInstance.value!!.gameId, selectedCard)
                 }
             }
 
@@ -136,8 +132,6 @@ class CardsPagerAdapter(
         viewModel.nextCardSnapshots.observe(lifecycleOwner, Observer {
             nextCards = it
             notifyDataSetChanged()
-            Log.e("FORENSIC", "DataSet change notified")
-            Log.e("SNAPSHOTS", viewModel.nextCardSnapshots.value.toString())
         })
     }
 
@@ -150,14 +144,13 @@ class CardsPagerAdapter(
         val fragment =
             SingleForensicCardFragment(nextCards[i])
         fragment.arguments = Bundle().apply {
-            // Our object is just an integer :-
             putInt("cardIndex", i + 1)
         }
         return fragment
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        return "OBJECT ${(position + 1)}"
+        return "Card ${(position + 1)}"
     }
 }
 

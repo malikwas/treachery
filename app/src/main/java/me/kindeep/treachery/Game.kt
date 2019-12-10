@@ -1,6 +1,7 @@
 package me.kindeep.treachery
 
 import android.util.Log
+import me.kindeep.treachery.firebase.getGame
 import me.kindeep.treachery.firebase.getGameReference
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
@@ -25,7 +26,6 @@ fun selectCauseForensicCard(
                 onSuccess()
             }
     }
-
 }
 
 enum class ForensicGameState {
@@ -42,5 +42,45 @@ fun forensicGameState(gameInstance: GameInstanceSnapshot): ForensicGameState {
         return ForensicGameState.LOCATION_CARD
     } else {
         return ForensicGameState.OTHER_CARD
+    }
+}
+
+fun selectLocationForensicCard(
+    gameId: String,
+    forensicCardSnapshot: ForensicCardSnapshot,
+    onSuccess: (() -> Unit) = {}
+) {
+    getGameReference(gameId).update("locationCard", forensicCardSnapshot).addOnSuccessListener {
+        getGameReference(gameId).update("locationCardDefined", true)
+            .addOnSuccessListener {
+                onSuccess()
+            }
+    }
+}
+
+fun updateOtherForensicCards(
+    gameId: String,
+    otherCards: List<ForensicCardSnapshot>,
+    onSuccess: (() -> Unit) = {}
+) {
+    getGameReference(gameId).update("otherCards", otherCards).addOnSuccessListener {
+        onSuccess()
+    }
+}
+
+fun selectOtherCard(
+    gameId: String,
+    forensicCardSnapshot: ForensicCardSnapshot,
+    onSuccess: () -> Unit = {}
+) {
+    getGame(gameId) {
+        for ((index: Int, card) in it.otherCards.withIndex()) {
+            if (!card.isSelected()) {
+                it.otherCards[index] = forensicCardSnapshot
+                break
+            }
+        }
+
+        getGameReference(gameId).update("otherCards", it.otherCards)
     }
 }

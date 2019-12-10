@@ -25,7 +25,7 @@ data class GameInstanceSnapshot(
     val causeCardDefined: Boolean = false,
     val locationCard: ForensicCardSnapshot = ForensicCardSnapshot(),
     val locationCardDefined: Boolean = false,
-    val otherCards: List<ForensicCardSnapshot> = listOf()
+    val otherCards: MutableList<ForensicCardSnapshot> = mutableListOf()
 )
 
 class LiveGameInstanceSnapshot(gameId: String) : LiveData<GameInstanceSnapshot>() {
@@ -46,8 +46,10 @@ class LiveGameInstanceSnapshot(gameId: String) : LiveData<GameInstanceSnapshot>(
         getGameReference(gameId)
             .addSnapshotListener { documentSnapshot, _ ->
                 val newSnapshot: GameInstanceSnapshot = documentSnapshot!!.toObject()!!
-                Log.e("FIREBASE", "Snapshot changed to $documentSnapshot " +
-                        "\nparsed as \n $newSnapshot")
+                Log.i(
+                    "FIREBASE", "Snapshot changed to $documentSnapshot " +
+                            "\n \n parsed as \n \n $newSnapshot"
+                )
                 value = newSnapshot
             }
     }
