@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="cardRadius">4dip</dimen>
+    <dimen name="cardElevation">4dip</dimen>
+    <dimen name="h1">36sp</dimen>
+    <dimen name="h2">30sp</dimen>
+    <dimen name="h3">24sp</dimen>
+    <dimen name="h4">20sp</dimen>
+    <dimen name="h5">12sp</dimen>
+    <dimen name="h6">4sp</dimen>
+    <dimen name="h7">2sp</dimen>
+    <dimen name="upper3Ht">150dp</dimen>
+    <dimen name="side3Ht">150dp</dimen>
 </resources>

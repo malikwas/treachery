@@ -99,22 +99,25 @@ class NextForensicCardFragment : Fragment() {
         })
 
         selectCardButton.setOnClickListener {
-            val selectedCard = cardAdapter.nextCards[pageNumber]
-            val state = forensicGameState(viewModel.gameInstance.value!!)
+            if (cardAdapter.nextCards.isNotEmpty()) {
+                val selectedCard = cardAdapter.nextCards[pageNumber]
+                val state = forensicGameState(viewModel.gameInstance.value!!)
 
-            when (state) {
-                ForensicGameState.CAUSE_CARD -> {
-                    selectCauseForensicCard(viewModel.gameInstance.value!!.gameId, selectedCard)
-                }
-                ForensicGameState.LOCATION_CARD -> {
-                    selectLocationForensicCard(viewModel.gameInstance.value!!.gameId, selectedCard)
-                }
-                ForensicGameState.OTHER_CARD -> {
-                    selectOtherCard(viewModel.gameInstance.value!!.gameId, selectedCard)
+                when (state) {
+                    ForensicGameState.CAUSE_CARD -> {
+                        selectCauseForensicCard(viewModel.gameInstance.value!!.gameId, selectedCard)
+                    }
+                    ForensicGameState.LOCATION_CARD -> {
+                        selectLocationForensicCard(
+                            viewModel.gameInstance.value!!.gameId,
+                            selectedCard
+                        )
+                    }
+                    ForensicGameState.OTHER_CARD -> {
+                        selectOtherCard(viewModel.gameInstance.value!!.gameId, selectedCard)
+                    }
                 }
             }
-
-
         }
     }
 }
@@ -154,62 +157,5 @@ class CardsPagerAdapter(
     }
 }
 
-class SingleForensicCardFragment(var forensicCardSnapshot: ForensicCardSnapshot) : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.single_forensic_card_fragment, container, false)
-    }
-
-    lateinit var cardNameView: TextView
-    lateinit var choice0TextView: TextView
-    lateinit var choice1TextView: TextView
-    lateinit var choice2TextView: TextView
-    lateinit var choice3TextView: TextView
-    lateinit var choice4TextView: TextView
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        arguments?.takeIf { it.containsKey("cardIndex") }?.apply {
-            cardNameView = view.findViewById(R.id.cardName)
-            val cardIndexView: TextView = view.findViewById(R.id.cardIndex)
-            choice0TextView = view.findViewById(R.id.choice0)
-            choice0TextView.setOnClickListener {
-                forensicCardSnapshot.selectedChoice = 0
-            }
-            choice1TextView = view.findViewById(R.id.choice1)
-            choice1TextView.setOnClickListener {
-                forensicCardSnapshot.selectedChoice = 1
-            }
-            choice2TextView = view.findViewById(R.id.choice2)
-            choice2TextView.setOnClickListener {
-                forensicCardSnapshot.selectedChoice = 2
-            }
-            choice3TextView = view.findViewById(R.id.choice3)
-            choice3TextView.setOnClickListener {
-                forensicCardSnapshot.selectedChoice = 3
-            }
-            choice4TextView = view.findViewById(R.id.choice4)
-            choice4TextView.setOnClickListener {
-                forensicCardSnapshot.selectedChoice = 4
-            }
-
-            val cardIndex = getInt("cardIndex")
-            cardIndexView.text = cardIndex.toString()
-            bind()
-        }
-    }
-
-    fun bind() {
-        cardNameView.text = forensicCardSnapshot.cardName
-        choice0TextView.text = forensicCardSnapshot.choices.getOrElse(0) { it.toString() }
-        choice1TextView.text = forensicCardSnapshot.choices.getOrElse(1) { it.toString() }
-        choice2TextView.text = forensicCardSnapshot.choices.getOrElse(2) { it.toString() }
-        choice3TextView.text = forensicCardSnapshot.choices.getOrElse(3) { it.toString() }
-        choice4TextView.text = forensicCardSnapshot.choices.getOrElse(4) { it.toString() }
-    }
-}
 
 

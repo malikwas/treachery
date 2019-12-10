@@ -25,7 +25,12 @@ data class GameInstanceSnapshot(
     val causeCardDefined: Boolean = false,
     val locationCard: ForensicCardSnapshot = ForensicCardSnapshot(),
     val locationCardDefined: Boolean = false,
-    val otherCards: MutableList<ForensicCardSnapshot> = mutableListOf()
+    val otherCards: MutableList<ForensicCardSnapshot> = mutableListOf(
+        ForensicCardSnapshot(),
+        ForensicCardSnapshot(),
+        ForensicCardSnapshot(),
+        ForensicCardSnapshot()
+    )
 )
 
 class LiveGameInstanceSnapshot(gameId: String) : LiveData<GameInstanceSnapshot>() {

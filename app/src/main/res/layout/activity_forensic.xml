@@ -19,12 +19,102 @@
         android:layout_height="wrap_content"
         android:text="Status" />
 
-    <fragment
-        android:id="@+id/next_card"
-        android:name="me.kindeep.treachery.forensic.NextForensicCardFragment"
+
+    <!-- 1 cause, 1 location, 4 other + 1 next, total 7
+
+      3 4 5 6
+
+      1 7 7 7
+
+      2 7 7 7
+
+
+
+     -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/card1"
+            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/upper3Ht"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toStartOf="@id/card2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <fragment
+            android:id="@+id/card2"
+            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/upper3Ht"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toStartOf="@id/card3"
+            app:layout_constraintStart_toEndOf="@id/card1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <fragment
+            android:id="@+id/card3"
+            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/upper3Ht"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/card2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <fragment
+            android:id="@+id/card4"
+            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:layout_width="0dip"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toTopOf="@id/card5"
+            app:layout_constraintEnd_toEndOf="@+id/card1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card1" />
+
+        <fragment
+            android:id="@+id/card5"
+            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:layout_width="0dip"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toTopOf="@id/card6"
+            app:layout_constraintEnd_toEndOf="@+id/card1"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@id/card4" />
+
+        <fragment
+            android:id="@+id/card6"
+            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:layout_width="0dip"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/card1"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card5" />
+
+        <fragment
+            android:id="@+id/next_card"
+            android:name="me.kindeep.treachery.forensic.NextForensicCardFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/card6"
+            app:layout_constraintTop_toBottomOf="@+id/card1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>
 
