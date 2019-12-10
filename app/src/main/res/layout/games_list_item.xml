@@ -2,26 +2,78 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_margin="4dp"
-    android:padding="4dp"
-    android:layout_height="50dp"
-    card_view:layout_constraintCircleRadius="@dimen/cardRadius"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:layout_margin="4dp"
     android:clickable="true"
     android:focusable="false"
     android:foreground="?attr/selectableItemBackground"
+    android:padding="4dp"
     card_view:cardCornerRadius="4dp"
-    >
+    card_view:layout_constraintCircleRadius="@dimen/cardRadius">
 
     <LinearLayout
+        android:padding="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/idTextView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Game ID: " />
+
+            <TextView
+                android:id="@+id/idTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="ID)00ID" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Created Time: " />
+
+            <TextView
+                android:id="@+id/created_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="30:300" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Joined Players: " />
+
+            <TextView
+                android:id="@+id/num_joined_players"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="3" />
+
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

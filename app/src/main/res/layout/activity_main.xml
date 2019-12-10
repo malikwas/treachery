@@ -6,30 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fire"
-        android:onClick="fire"
-        android:text="Fire!!!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/gamesRecycler" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="newGame"
-        android:text="New"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/new_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:onClick="newGame"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fire"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_add_white_24dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gamesRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="391dp"
-        />
+        tools:layout_editor_absoluteY="391dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

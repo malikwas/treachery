@@ -76,12 +76,11 @@ class MainActivity : AppCompatActivity() {
             // Open Forensic Activity
             Log.e("ACTIVITY", "Open the goddamn activity")
             val intent = Intent(this, StartGameActivity::class.java)
-             val b: Bundle = Bundle()
+            val b: Bundle = Bundle()
             b.putString("gameId", it.id)
             intent.putExtras(b)
             Log.e("fuck off", "FUCCCCK")
             startActivity(intent)
-            finish()
         }
     }
 }
@@ -91,9 +90,14 @@ class GameTileHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.games_list_item, parent, false)) {
 
     var idTextView: TextView = itemView.findViewById(R.id.idTextView)
+    var startTimeTextView: TextView = itemView.findViewById(R.id.created_time)
+    var numJoinedPlayersTextView: TextView = itemView.findViewById(R.id.num_joined_players)
 
     fun bind(gameInstanceSnapshot: GameInstanceSnapshot) {
         Log.e("FIRE", gameInstanceSnapshot.createdTimestamp.toString())
         idTextView.text = gameInstanceSnapshot.gameId
+        startTimeTextView.text = gameInstanceSnapshot.createdTimestamp.toDate().toString()
+        numJoinedPlayersTextView.text = gameInstanceSnapshot.players.size.toString()
+
     }
 }

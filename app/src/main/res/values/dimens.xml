@@ -11,4 +11,5 @@
     <dimen name="h7">2sp</dimen>
     <dimen name="upper3Ht">150dp</dimen>
     <dimen name="side3Ht">150dp</dimen>
+    <dimen name="fab_margin">4dp</dimen>
 </resources>

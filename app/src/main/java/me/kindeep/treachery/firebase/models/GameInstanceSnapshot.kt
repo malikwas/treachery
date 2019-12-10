@@ -14,9 +14,7 @@ data class GameInstanceSnapshot(
     val messages: List<MessageSnapshot> = listOf(
         MessageSnapshot()
     ),
-    val players: List<PlayerSnapshot> = listOf(
-        PlayerSnapshot()
-    ),
+    val players: List<PlayerSnapshot> = listOf(),
     val started: Boolean = false,
     val createdTimestamp: Timestamp = Timestamp.now(),
     val startedTimestamp: Timestamp = Timestamp.now(),
