@@ -91,7 +91,7 @@ const means = [
 	"Wrench"
 ];
 
-const evidences = [
+const clues = [
 	"Air Conditioning",
 	"Ants",
 	"Antique",
@@ -294,4 +294,4 @@ const evidences = [
 	"Wig"
 ];
 
-export {means, evidences};
+export {means, clues};

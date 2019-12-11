@@ -1,5 +1,5 @@
 {
-  "means": [
+  "meansCards": [
     {
       "name": "Alcohol",
       "image": "https://s.newsweek.com/sites/www.newsweek.com/files/styles/full/public/2018/08/23/alcohol-drink-beer-stock.jpg",
@@ -451,7 +451,7 @@
       "alternate_image": "http://www.pachd.com/free-images/household-images/wrench-01.jpg"
     }
   ],
-  "evidences": [
+  "clueCards": [
     {
       "name": "Air Conditioning",
       "image": "https://www.eedesignit.com/wp-content/uploads/2016/07/air-conditioners.jpg",

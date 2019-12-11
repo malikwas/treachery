@@ -1,4 +1,4 @@
-import {means, evidences} from './blueAndRedCards.js';
+import {means, clues} from './blueAndRedCards.js';
 import {writeFileSync, write} from 'fs';
 import ImageSearchClient from 'azure-cognitiveservices-imagesearch';
 import rest from 'ms-rest-azure';
@@ -12,16 +12,16 @@ const sleep = m => new Promise(r => setTimeout(r, m))
 const map = {}
 const log = [];
 
-map.means = [];
-map.evidences = [];
+map.meansCards = [];
+map.clueCards = [];
 
 const procedure = async () => {
-  await pushMeans();
-  await pushEvidences();
+  await pushMeansCards();
+  await pushClueCards();
   await output();
 };
 
-const pushMeans = async () => {
+const pushMeansCards = async () => {
   const {length} = means;
 
   for (let i = 0; i < length; i++) {
@@ -30,14 +30,14 @@ const pushMeans = async () => {
 
     if (imageResults === null) {
       log.push(`No results found for mean ${mean}`);
-      map.means.push({
+      map.meansCards.push({
         name: mean,
         image: '',
         alternate_image: '',
       });
     } else {
       console.log(i);
-      map.means.push({
+      map.meansCards.push({
         name: mean,
         image: imageResults.value[0].contentUrl,
         alternate_image: imageResults.value[1].contentUrl,
@@ -48,24 +48,24 @@ const pushMeans = async () => {
   }
 };
 
-const pushEvidences = async () => {
-  const {length} = evidences;
+const pushClueCards = async () => {
+  const {length} = clues;
 
   for (let i = 0; i < length; i++) {
-    const evidence = evidences[i];
-    const imageResults = await searchClient.imagesOperations.search(evidence);
+    const clue = clues[i];
+    const imageResults = await searchClient.imagesOperations.search(clue);
 
     if (imageResults === null) {
-      log.push(`No results found for evidence ${evidence}`);
-      map.evidences.push({
-        name: evidence,
+      log.push(`No results found for clue ${clue}`);
+      map.clueCards.push({
+        name: clue,
         image: '',
         alternate_image: '',
       });
     } else {
       console.log(i);
-      map.evidences.push({
-        name: evidence,
+      map.clueCards.push({
+        name: clue,
         image: imageResults.value[0].contentUrl,
         alternate_image: imageResults.value[1].contentUrl,
       });
