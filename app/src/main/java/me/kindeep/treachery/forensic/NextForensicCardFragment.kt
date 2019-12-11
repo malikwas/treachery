@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import me.kindeep.treachery.*
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
+import me.kindeep.treachery.shared.SingleForensicCardFragment
 
 /**
  * To aid selecting clue on the next forensic card

@@ -45,7 +45,7 @@
 
         <fragment
             android:id="@+id/card1"
-            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
             android:layout_width="0dp"
             android:layout_height="@dimen/upper3Ht"
             android:layout_weight="1"
@@ -55,7 +55,7 @@
 
         <fragment
             android:id="@+id/card2"
-            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
             android:layout_width="0dp"
             android:layout_height="@dimen/upper3Ht"
             android:layout_weight="1"
@@ -65,7 +65,7 @@
 
         <fragment
             android:id="@+id/card3"
-            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
             android:layout_width="0dp"
             android:layout_height="@dimen/upper3Ht"
             android:layout_weight="1"
@@ -75,7 +75,7 @@
 
         <fragment
             android:id="@+id/card4"
-            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
             android:layout_width="0dip"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -86,7 +86,7 @@
 
         <fragment
             android:id="@+id/card5"
-            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
             android:layout_width="0dip"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -98,7 +98,7 @@
 
         <fragment
             android:id="@+id/card6"
-            android:name="me.kindeep.treachery.forensic.SingleForensicCardFragment"
+            android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
             android:layout_width="0dip"
             android:layout_height="0dp"
             android:layout_weight="1"

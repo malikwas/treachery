@@ -2,13 +2,13 @@ package me.kindeep.treachery.forensic
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import me.kindeep.treachery.R
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
+import me.kindeep.treachery.shared.SingleForensicCardFragment
 
 class ForensicActivity : AppCompatActivity() {
 

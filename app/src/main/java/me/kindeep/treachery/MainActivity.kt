@@ -17,6 +17,8 @@ import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
 import me.kindeep.treachery.firebase.activeGamesQuery
 import me.kindeep.treachery.firebase.createGame
 import me.kindeep.treachery.forensic.StartGameActivity
+import me.kindeep.treachery.player.JoinGameActivity
+import me.kindeep.treachery.player.PlayerActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,6 +51,9 @@ class MainActivity : AppCompatActivity() {
                         model: GameInstanceSnapshot
                     ) {
                         holder.bind(model)
+                        holder.clickView.setOnClickListener {
+                            startPlayerActivity(model.gameId)
+                        }
                     }
 
                     override fun onCreateViewHolder(
@@ -64,24 +69,22 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun fire(v: View) {
+    fun newGame(v: View) {
         createGame {
-            // Open new activity
+            val intent = Intent(this, StartGameActivity::class.java)
+            val b = Bundle()
+            b.putString("gameId", it.id)
+            intent.putExtras(b)
+            startActivity(intent)
         }
     }
 
-    fun newGame(v: View) {
-        Log.e("fuck off", "SDFSDSFDSFSDF")
-        createGame {
-            // Open Forensic Activity
-            Log.e("ACTIVITY", "Open the goddamn activity")
-            val intent = Intent(this, StartGameActivity::class.java)
-            val b: Bundle = Bundle()
-            b.putString("gameId", it.id)
-            intent.putExtras(b)
-            Log.e("fuck off", "FUCCCCK")
-            startActivity(intent)
-        }
+    fun startPlayerActivity(gameId: String) {
+        val intent = Intent(this, JoinGameActivity::class.java)
+        val b = Bundle()
+        b.putString("gameId", gameId)
+        intent.putExtras(b)
+        startActivity(intent)
     }
 }
 
@@ -92,9 +95,9 @@ class GameTileHolder(inflater: LayoutInflater, parent: ViewGroup) :
     var idTextView: TextView = itemView.findViewById(R.id.idTextView)
     var startTimeTextView: TextView = itemView.findViewById(R.id.created_time)
     var numJoinedPlayersTextView: TextView = itemView.findViewById(R.id.num_joined_players)
+    var clickView: View = itemView.findViewById(R.id.click_view)
 
     fun bind(gameInstanceSnapshot: GameInstanceSnapshot) {
-        Log.e("FIRE", gameInstanceSnapshot.createdTimestamp.toString())
         idTextView.text = gameInstanceSnapshot.gameId
         startTimeTextView.text = gameInstanceSnapshot.createdTimestamp.toDate().toString()
         numJoinedPlayersTextView.text = gameInstanceSnapshot.players.size.toString()

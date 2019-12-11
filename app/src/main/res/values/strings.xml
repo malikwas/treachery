@@ -5,4 +5,7 @@
     <string name="start">Start Game</string>
     <string name="join">Join Game</string>
     <string name="forensic">Forensicanage</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -8,49 +8,50 @@
     tools:context=".forensic.ForensicActivity">
 
     <LinearLayout
-        android:padding="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="4dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Game ID: "
-            />
+            android:text="Game ID: " />
 
         <TextView
             android:id="@+id/gameId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="Game ID" />
+            android:text="Game ID"
+            android:textStyle="bold" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="Joined Players: -"></TextView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <fragment
+            android:id="@+id/joined_players_fragment"
+            android:name="me.kindeep.treachery.shared.JoinedPlayersFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/joined_players"
-            />
+            android:layout_height="match_parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/start_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
             android:onClick="startGame"
             android:text="Start Game!"
-            android:layout_marginRight="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/joined_players"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

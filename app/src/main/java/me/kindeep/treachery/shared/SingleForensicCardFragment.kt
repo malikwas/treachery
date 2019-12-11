@@ -1,4 +1,4 @@
-package me.kindeep.treachery.forensic
+package me.kindeep.treachery.shared
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.single_forensic_card_fragment.*
 import me.kindeep.treachery.R
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
-import org.w3c.dom.Text
 
 class SingleForensicCardFragment() : Fragment() {
     var forensicCardSnapshot: ForensicCardSnapshot = ForensicCardSnapshot()
