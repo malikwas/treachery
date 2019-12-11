@@ -1,19 +1,12 @@
 package me.kindeep.treachery
 
 import android.util.Log
+import me.kindeep.treachery.firebase.getCardsResourcesSnapshot
 import me.kindeep.treachery.firebase.getGame
 import me.kindeep.treachery.firebase.getGameReference
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
-
-
-fun pickRandomMurderer(gameId: String, callback: (murdererPlayerId: String) -> Unit) {
-
-}
-
-fun selectRandomForensicCards(gameId: String, callback: () -> Unit) {
-
-}
+import me.kindeep.treachery.firebase.models.PlayerSnapshot
 
 fun selectCauseForensicCard(
     gameId: String,
@@ -82,5 +75,84 @@ fun selectOtherCard(
         }
 
         getGameReference(gameId).update("otherCards", it.otherCards)
+    }
+}
+
+enum class StartFailureType {
+    NOT_ENOUGH_PLAYERS,
+    WTF // What the terrible Failure
+}
+
+
+fun fireStartGame(
+    gameId: String,
+    onSuccess: () -> Unit = {},
+    onFailure: (StartFailureType) -> Unit = {}
+) {
+    // TODO: This should be a transaction.
+    getGame(gameId) {
+        if (it.players.size > 3) {
+            // Player size ok, start
+            getGameReference(gameId).update("started", true).addOnSuccessListener {
+                // new players should not be added after this update, initialize player cards
+                getGame(gameId) { gameInstance ->
+                    getCardsResourcesSnapshot { cardResources ->
+                        val shuffledClues = cardResources.clueCards.shuffled().toMutableList()
+                        val shuffledMeans = cardResources.meansCards.shuffled().toMutableList()
+                        val murdererIndex = gameInstance.players.indices.random()
+
+                        for ((index, player) in gameInstance.players.withIndex()) {
+                            if (index == murdererIndex) {
+                                player.isMurderer = true
+                            }
+                            // Deal 4 red and blue cards to each player
+                            for (i in 1..4) {
+                                if (shuffledClues.isNotEmpty()) {
+                                    player.clueCards.add(shuffledClues.removeAt(0))
+                                }
+                                if (shuffledMeans.isNotEmpty()) {
+                                    player.meansCards.add(shuffledMeans.removeAt(0))
+                                }
+                            }
+                        }
+                        getGameReference(gameId).update("players", gameInstance.players)
+                            .addOnSuccessListener {
+                                onSuccess()
+                            }
+                    }
+                }
+            }
+        } else {
+            onFailure(StartFailureType.NOT_ENOUGH_PLAYERS)
+        }
+    }.addOnFailureListener {
+        onFailure(StartFailureType.WTF)
+    }
+}
+
+enum class PlayerAddFailureType {
+    DUPLICATE_NAME,
+    WTF // What a Terrible Failure
+}
+
+
+fun addPlayer(
+    gameId: String,
+    playerSnapshot: PlayerSnapshot,
+    onSuccess: () -> Unit = {},
+    onFailure: (PlayerAddFailureType) -> Unit = {}
+) {
+    getGame(gameId) {
+        if (it.players.map { it.playerName }.contains(playerSnapshot.playerName)) {
+            onFailure(PlayerAddFailureType.DUPLICATE_NAME)
+
+        } else {
+            it.players.add(playerSnapshot)
+            getGameReference(gameId).update("players", it.players).addOnSuccessListener {
+                onSuccess()
+            }.addOnFailureListener {
+                onFailure(PlayerAddFailureType.WTF)
+            }
+        }
     }
 }

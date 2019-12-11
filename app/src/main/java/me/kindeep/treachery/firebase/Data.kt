@@ -1,7 +1,10 @@
 package me.kindeep.treachery.firebase
 
 import android.util.Log
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
@@ -76,8 +79,12 @@ fun addOnGameUpdateListener(gameId: String, onChange: (GameInstanceSnapshot) -> 
         }
 }
 
-fun getGame(gameId: String, onSuccess: (GameInstanceSnapshot) -> Unit) {
-    getGameReference(gameId).get().addOnSuccessListener {
-        onSuccess(it.toObject<GameInstanceSnapshot>()!!)
-    }
+fun getGame(
+    gameId: String,
+    onSuccess: (GameInstanceSnapshot) -> Unit
+): Task<DocumentSnapshot> {
+    return getGameReference(gameId)
+        .get().addOnSuccessListener {
+            onSuccess(it.toObject<GameInstanceSnapshot>()!!)
+        }
 }

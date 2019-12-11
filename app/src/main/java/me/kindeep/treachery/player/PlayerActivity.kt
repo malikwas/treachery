@@ -17,6 +17,5 @@ class PlayerActivity : AppCompatActivity() {
         gameId = intent?.extras?.getString("gameId")!!
         findViewById<TextView>(R.id.gameId).text = gameId
 
-
     }
 }

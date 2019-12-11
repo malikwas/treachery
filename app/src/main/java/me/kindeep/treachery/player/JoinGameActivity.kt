@@ -1,12 +1,17 @@
 package me.kindeep.treachery.player
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import kotlinx.android.synthetic.main.joined_players_list_item.*
+import me.kindeep.treachery.PlayerAddFailureType
 import me.kindeep.treachery.R
+import me.kindeep.treachery.addPlayer
+import me.kindeep.treachery.firebase.models.PlayerSnapshot
 import me.kindeep.treachery.shared.JoinedPlayersFragment
 
 /**
@@ -29,11 +34,31 @@ class JoinGameActivity : AppCompatActivity() {
 
 
         playerNameEditText = findViewById(R.id.player_name_edit_text)
-
-
     }
 
     fun joinGame(v: View) {
-        Toast.makeText(this, "Not Implemented!", Toast.LENGTH_SHORT).show()
+        val playerSnapshot: PlayerSnapshot =
+            PlayerSnapshot(playerName = playerNameEditText.text.toString())
+        addPlayer(gameId, playerSnapshot, {
+            val intent = Intent(this, PlayerActivity::class.java)
+            val b = Bundle()
+            b.putString("gameId", gameId)
+            intent.putExtras(b)
+            startActivity(intent)
+            finish()
+        }, {
+            when (it) {
+                PlayerAddFailureType.DUPLICATE_NAME -> Toast.makeText(
+                    this@JoinGameActivity,
+                    "Player with name ${playerSnapshot.playerName} already exists! Please choose a different name.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                PlayerAddFailureType.WTF -> Toast.makeText(
+                    this@JoinGameActivity,
+                    "Something went terribly wrong, please retry!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 }
