@@ -1,8 +1,8 @@
 package me.kindeep.treachery.firebase.models
 
 data class PlayerSnapshot (
-    val playerName: String = "NoName",
-    val isMurderer: Boolean = false,
-    val clueCards: List<CardSnapshot> = listOf(),
-    val meansCards: List<CardSnapshot> = listOf()
+    var playerName: String = "Loading...",
+    var isMurderer: Boolean = false,
+    var clueCards: MutableList<CardSnapshot> = mutableListOf(),
+    var meansCards: MutableList<CardSnapshot> = mutableListOf()
 )
