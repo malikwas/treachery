@@ -3,16 +3,20 @@ package me.kindeep.treachery.firebase
 import android.util.Log
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import me.kindeep.treachery.firebase.models.CardsResourcesSnapshot
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
+import me.kindeep.treachery.firebase.models.MessageSnapshot
 import kotlin.math.min
 
+fun sendMessage (message: MessageSnapshot, gameId: String) {
+    val game = getGame(gameId) {
+        val gameRef = getGameReference(gameId)
+        gameRef.update("messages", FieldValue.arrayUnion(message))
+    }
+}
 
 fun getActiveGames(callback: (List<GameInstanceSnapshot>) -> Unit) {
     activeGamesQuery().get()
