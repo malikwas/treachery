@@ -11,4 +11,5 @@
     <color name="colorOnSurface">#29302E</color>
     <color name="colorError">#C51162</color>
     <color name="colorOnError">#FFFFFF</color>
+    <color name="cardText">#BF360C</color>
 </resources>

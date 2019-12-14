@@ -103,7 +103,7 @@ fun fireStartGame(
 
                         for ((index, player) in gameInstance.players.withIndex()) {
                             if (index == murdererIndex) {
-                                player.isMurderer = true
+                                player.murderer = true
                             }
                             // Deal 4 red and blue cards to each player
                             for (i in 1..4) {
