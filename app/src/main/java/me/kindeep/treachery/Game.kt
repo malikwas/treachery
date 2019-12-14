@@ -6,6 +6,7 @@ import me.kindeep.treachery.firebase.getGame
 import me.kindeep.treachery.firebase.getGameReference
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
+import me.kindeep.treachery.firebase.models.GuessSnapshot
 import me.kindeep.treachery.firebase.models.PlayerSnapshot
 
 fun selectCauseForensicCard(
@@ -58,6 +59,26 @@ fun updateOtherForensicCards(
 ) {
     getGameReference(gameId).update("otherCards", otherCards).addOnSuccessListener {
         onSuccess()
+    }
+}
+
+fun processGuess(guessSnapshot: GuessSnapshot, murdererName: String, murdererClueCard: String,
+                 murdererMeansCard: String, players: List<PlayerSnapshot>, gameId: String) {
+    if (guessSnapshot.guessedPlayer == murdererName && guessSnapshot.clueCard == murdererClueCard
+        && guessSnapshot.meansCard == murdererMeansCard) {
+        // You win?
+    } else {
+        val player = players.find {
+            it.playerName == guessSnapshot.guessedPlayer
+        }
+
+        player!!.meansCards.find { it.name == guessSnapshot.meansCard }!!.guessedBy =
+            guessSnapshot.guesserPlayer
+
+        player!!.clueCards.find { it.name == guessSnapshot.clueCard }!!.guessedBy =
+            guessSnapshot.guesserPlayer
+
+        getGameReference(gameId).update("players", players)
     }
 }
 
