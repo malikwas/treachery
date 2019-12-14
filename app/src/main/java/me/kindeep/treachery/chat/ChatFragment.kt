@@ -1,40 +1,113 @@
 package me.kindeep.treachery.chat
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.ktx.toObject
 import me.kindeep.treachery.*
-import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
+import me.kindeep.treachery.firebase.getGameReference
+import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
 import me.kindeep.treachery.firebase.models.MessageSnapshot
+import me.kindeep.treachery.firebase.sendMessage
 
 /**
- * To aid selecting clue on the next forensic card
- *
- * Displays a ViewPager with multiple cards as next card options, only permits selection of one.
+ * Fully featured chat, with different views for sent messages on the right, and received messages
+ * on the left (refer to layouts). Text box can be hidden programmatically.
  */
 
 class ChatFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ChatFragment()
+    var gameId: String? = null
+        set(value) {
+            field = value
+            if (value != null) {
+                getGameReference(value).addSnapshotListener { documentSnapshot, _ ->
+                    Log.e("CHAT FRAGMENT", "Game id set and document found, notifying adapter")
+                    val gameInstance = documentSnapshot!!.toObject<GameInstanceSnapshot>()!!
+                    messages = gameInstance.messages
+                    messageRecycler.adapter?.notifyDataSetChanged()
+                }
+            }
+        }
+
+    lateinit var messageRecycler: RecyclerView
+    private var isTextBoxVisible = true
+    private var messages: List<MessageSnapshot> = listOf()
+    private var textBoxContainer: LinearLayout? = null
+
+    fun removeTextBox() {
+        textBoxContainer!!.visibility = View.GONE
+        isTextBoxVisible = false
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        textBoxContainer = view.findViewById(R.id.layout_textbox)
 
+        val sendButton: TextView = view.findViewById(R.id.send_button)
+        sendButton.setOnClickListener {
+
+            val textBox = textBoxContainer!!.findViewById<EditText>(R.id.editable_textbox)
+            val input = textBox.text.toString().trim()
+
+            if (input != "" && gameId != null) {
+                var m = MessageSnapshot(message=input, playerName="SomeDude")
+                sendMessage(m, gameId!!)
+                textBox.setText("")
+            }
+
+        }
+
+        messageRecycler = view.findViewById(R.id.message_recycler)
+
+        messageRecycler.apply {
+            adapter = object : RecyclerView.Adapter<BaseMessageHolder>() {
+                private val SENT_MESSAGE_TYPE = 1
+                private val RECEIVED_MESSAGE_TYPE = 2
+
+                override fun getItemViewType(position: Int): Int {
+                    val message = messages[position]
+
+                    return when (message.playerName.equals("SomeDude")) {
+                        true -> SENT_MESSAGE_TYPE
+                        else -> RECEIVED_MESSAGE_TYPE
+                    }
+                }
+
+                override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseMessageHolder {
+                    if (viewType == SENT_MESSAGE_TYPE) {
+                        return SentMessageHolder(
+                            layoutInflater,
+                            parent
+                        )
+                    } else {
+                        return ReceivedMessageHolder(
+                            layoutInflater,
+                            parent
+                        )
+                    }
+                }
+
+                override fun getItemCount(): Int {
+                    return messages.size
+                }
+
+                override fun onBindViewHolder(holder: BaseMessageHolder, position: Int) {
+                    holder.bind(messages[position])
+                }
+            }
+
+            layoutManager = LinearLayoutManager(activity)
+        }
+
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onCreateView(
@@ -46,50 +119,13 @@ class ChatFragment : Fragment() {
     }
 }
 
-/*
-class MessageListAdapter(options: FirestoreRecyclerOptions<MessageSnapshot>) :
-    FirestoreRecyclerAdapter<MessageSnapshot, BaseMessageHolder>(options) {
-    private val SENT_MESSAGE_TYPE = 1
-    private val RECEIVED_MESSAGE_TYPE = 2
-
-    override fun getItemViewType(position: Int): Int {
-        val message = getItem(position)
-
-        return when (message.playerName.equals("somePlayerName")) {
-            true -> SENT_MESSAGE_TYPE
-            false -> RECEIVED_MESSAGE_TYPE
-        }
-    }
-
-    override fun onBindViewHolder(
-        holder: BaseMessageHolder,
-        position: Int,
-        model: MessageSnapshot
-    ) {
-        holder.bind(model)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseMessageHolder {
-        if (viewType == SENT_MESSAGE_TYPE) {
-            View v = LayoutInflater.from(parent.context).inflate(R.layout.item_sent_message,
-                parent, false)
-
-            return SentMessageHolder(v)
-        } else {
-            View v = LayoutInflater.from(parent.context).inflate(R.layout.item_received_message,
-                parent, false)
-
-            return ReceivedMessageHolder(v)
-        }
-    }
-}
-*/
-
 abstract class BaseMessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     abstract fun bind(messageSnapshot: MessageSnapshot)
 }
 
-class SentMessageHolder(itemView: View) : BaseMessageHolder(itemView) {
+class SentMessageHolder(layoutInflater: LayoutInflater, parent: ViewGroup) :
+    BaseMessageHolder(layoutInflater.inflate(R.layout.item_sent_message, parent, false))
+{
     val body: TextView = itemView.findViewById(R.id.text_message_body)
 
     override fun bind(messageSnapshot: MessageSnapshot) {
@@ -97,7 +133,9 @@ class SentMessageHolder(itemView: View) : BaseMessageHolder(itemView) {
     }
 }
 
-class ReceivedMessageHolder(itemView: View) : BaseMessageHolder(itemView) {
+class ReceivedMessageHolder(layoutInflater: LayoutInflater, parent: ViewGroup) :
+    BaseMessageHolder(layoutInflater.inflate(R.layout.item_received_message, parent, false))
+{
     val body: TextView = itemView.findViewById(R.id.text_message_body)
     val name: TextView = itemView.findViewById(R.id.text_message_name)
 

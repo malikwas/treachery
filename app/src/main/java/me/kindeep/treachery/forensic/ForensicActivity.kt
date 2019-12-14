@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import me.kindeep.treachery.R
+import me.kindeep.treachery.chat.ChatFragment
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.shared.SingleForensicCardFragment
@@ -32,6 +33,10 @@ class ForensicActivity : AppCompatActivity() {
         frag4 = supportFragmentManager.findFragmentById(R.id.card4) as SingleForensicCardFragment
         frag5 = supportFragmentManager.findFragmentById(R.id.card5) as SingleForensicCardFragment
         frag6 = supportFragmentManager.findFragmentById(R.id.card6) as SingleForensicCardFragment
+
+//        var chat = supportFragmentManager.findFragmentById(R.id.chat) as ChatFragment
+//        chat.removeTextBox()
+//        chat.gameId = gameId
 
         ForensicViewModel.gameId = gameId
         viewModel = ViewModelProviders.of(this)
