@@ -45,6 +45,7 @@ class LiveGameInstanceSnapshot(gameId: String) : LiveData<GameInstanceSnapshot>(
 
     private fun initialize() {
         // Initialize a default value
+        Log.e("FIREBASE", " LiveGameInstanceSnapshot initialized with $gameId")
         value =
             GameInstanceSnapshot(gameId = gameId)
         gameReference = getGameReference(gameId)

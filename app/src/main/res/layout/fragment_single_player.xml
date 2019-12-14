@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/clues_layout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <!--        <fragment-->
+        <!--            android:id="@+id/clue1"-->
+        <!--            android:name="me.kindeep.treachery.shared.CardFragment"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1" />-->
+
+        <!--        <fragment-->
+        <!--            android:id="@+id/clue2"-->
+        <!--            android:name="me.kindeep.treachery.shared.CardFragment"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1" />-->
+
+        <!--        <fragment-->
+        <!--            android:id="@+id/clue3"-->
+        <!--            android:name="me.kindeep.treachery.shared.CardFragment"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1" />-->
+
+        <!--        <fragment-->
+        <!--            android:id="@+id/clue4"-->
+        <!--            android:name="me.kindeep.treachery.shared.CardFragment"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1" />-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/means_layout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <!--        <fragment-->
+        <!--            android:id="@+id/means1"-->
+        <!--            android:name="me.kindeep.treachery.shared.CardFragment"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1" />-->
+
+        <!--        <fragment-->
+        <!--            android:id="@+id/means2"-->
+        <!--            android:name="me.kindeep.treachery.shared.CardFragment"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+
+        <!--            android:layout_weight="1" />-->
+
+        <!--        <fragment-->
+        <!--            android:id="@+id/means3"-->
+        <!--            android:name="me.kindeep.treachery.shared.CardFragment"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+
+        <!--            android:layout_weight="1" />-->
+
+        <!--        <fragment-->
+        <!--            android:id="@+id/means4"-->
+        <!--            android:name="me.kindeep.treachery.shared.CardFragment"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+
+        <!--            android:layout_weight="1" />-->
+    </LinearLayout>
+</LinearLayout>
