@@ -32,7 +32,7 @@ class ChatFragment : Fragment() {
                 getGameReference(value).addSnapshotListener { documentSnapshot, _ ->
                     Log.e("CHAT FRAGMENT", "Game id set and document found, notifying adapter")
                     val gameInstance = documentSnapshot!!.toObject<GameInstanceSnapshot>()!!
-                    messages = gameInstance.messages
+                    messages = gameInstance.messages.sortedBy { it.timestamp }
                     messageRecycler.adapter?.notifyDataSetChanged()
                 }
             }
@@ -40,7 +40,7 @@ class ChatFragment : Fragment() {
 
     lateinit var messageRecycler: RecyclerView
     private var isTextBoxVisible = true
-    private var messages: List<MessageSnapshot> = listOf()
+    private var messages: List<MessageSnapshot> = mutableListOf()
     private var textBoxContainer: LinearLayout? = null
 
     fun removeTextBox() {
