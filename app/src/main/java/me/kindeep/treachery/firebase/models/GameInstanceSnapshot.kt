@@ -12,6 +12,7 @@ data class GameInstanceSnapshot(
     val gameId: String = "Loading...",
     val snapshotVersion: String = "0.1",
     val messages: List<MessageSnapshot> = mutableListOf(),
+    val guesses: List<GuessSnapshot> = listOf(),
     val players: MutableList<PlayerSnapshot> = mutableListOf(
         PlayerSnapshot("Mr. Player"),
         PlayerSnapshot("Ms. Bot"),
