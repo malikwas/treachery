@@ -29,8 +29,21 @@ class SinglePlayerFragment : Fragment() {
     private lateinit var playerNameText: TextView
     private lateinit var playerName: String
 
-    var selectedClue = -1
-    var selectedMeans = -1
+    var selectedClue: Int
+        get() {
+            return viewModel.getSelectedClue(playerName)
+        }
+        set(value) {
+            viewModel.setSelectedClue(playerName, value)
+        }
+
+    var selectedMeans: Int
+        get() {
+            return viewModel.getSelectedMeans(playerName)
+        }
+        set(value) {
+            viewModel.setSelectedMeans(playerName, value)
+        }
 
     private fun update() {
         for ((index, fragment) in meansFragments.withIndex()) {
@@ -40,6 +53,8 @@ class SinglePlayerFragment : Fragment() {
         for ((index, fragment) in cluesFragments.withIndex()) {
             fragment.bind(player.clueCards.getOrElse(index) { CardSnapshot() })
         }
+
+        cardHighlightUpdate()
 
         playerNameText.text = player.playerName
     }
@@ -53,8 +68,6 @@ class SinglePlayerFragment : Fragment() {
 
         arguments?.takeIf { it.containsKey("playerName") }?.apply {
             playerName = getString("playerName")!!
-//            player = viewModel.gameInstance.value!!.players.find { it.playerName == playerName }
-//                ?: PlayerSnapshot()
             update()
             viewModel.gameInstance.observe(activity as LifecycleOwner, Observer {
                 //                player = it.players.find { it.playerName == playerName } ?: PlayerSnapshot()
