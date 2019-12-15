@@ -17,18 +17,17 @@ class PlayersPagerAdapter(
     FragmentStateAdapter(f) {
 
 
-    var players: List<PlayerSnapshot> = listOf()
+    val players: List<PlayerSnapshot>
+        get() {
+            return viewModel.gameInstance.value?.players ?: listOf()
+        }
 
     init {
-        players = viewModel.gameInstance.value?.players ?: listOf()
+//        viewModel.gameInstance.value?.players ?: listOf()
         viewModel.gameInstance.observe(lifecycleOwner, Observer {
-            players = viewModel.gameInstance.value?.players ?: listOf()
             notifyDataSetChanged()
-            log("\n\n Notify change \n\n")
         })
     }
-
-
 
     override fun getItemCount(): Int {
         return players.size
@@ -38,7 +37,7 @@ class PlayersPagerAdapter(
         // Return a NEW fragment instance in createFragment(int)
         val fragment = SinglePlayerFragment()
         fragment.arguments = Bundle().apply {
-//            putInt("playerIndex", position)
+            //            putInt("playerIndex", position)
             putSerializable("playerName", players[position].playerName)
         }
 

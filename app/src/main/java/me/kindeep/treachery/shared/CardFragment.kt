@@ -38,11 +38,8 @@ class CardFragment : Fragment {
     }
 
     constructor() : super() {
+        log("FRAGMENT CREATED $tag $this")
         card = CardSnapshot()
-    }
-
-    constructor(cardSnapshot: CardSnapshot) : super() {
-        card = cardSnapshot
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -26,6 +26,10 @@ class PlayerViewModel : ViewModel() {
         return PlayerSnapshot()
     }
 
+    fun getPlayerByName(pName: String): PlayerSnapshot {
+       return gameInstance.value?.players?.find { it.playerName == pName } ?: PlayerSnapshot()
+    }
+
     init {
         addOnGameUpdateListener(gameId) {
         }

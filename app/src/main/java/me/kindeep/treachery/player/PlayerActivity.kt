@@ -4,20 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import kotlinx.android.synthetic.main.joined_players_list_item.*
 import me.kindeep.treachery.R
 import me.kindeep.treachery.chat.ChatFragment
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
-import me.kindeep.treachery.firebase.models.CardSnapshot
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
-import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
-import me.kindeep.treachery.forensic.ForensicViewModel
-import me.kindeep.treachery.shared.CardFragment
 import me.kindeep.treachery.shared.SingleForensicCardFragment
 
 /**
@@ -50,12 +43,12 @@ class PlayerActivity : AppCompatActivity() {
         var chat = supportFragmentManager.findFragmentById(R.id.chat_fragment) as ChatFragment
         chat.gameId = gameId
 
-        frag1 = supportFragmentManager.findFragmentById(R.id.card1) as SingleForensicCardFragment
-        frag2 = supportFragmentManager.findFragmentById(R.id.card2) as SingleForensicCardFragment
-        frag3 = supportFragmentManager.findFragmentById(R.id.card3) as SingleForensicCardFragment
-        frag4 = supportFragmentManager.findFragmentById(R.id.card4) as SingleForensicCardFragment
-        frag5 = supportFragmentManager.findFragmentById(R.id.card5) as SingleForensicCardFragment
-        frag6 = supportFragmentManager.findFragmentById(R.id.card6) as SingleForensicCardFragment
+        frag1 = supportFragmentManager.findFragmentByTag("card1") as SingleForensicCardFragment
+        frag2 = supportFragmentManager.findFragmentByTag("card2") as SingleForensicCardFragment
+        frag3 = supportFragmentManager.findFragmentByTag("card3") as SingleForensicCardFragment
+        frag4 = supportFragmentManager.findFragmentByTag("card4") as SingleForensicCardFragment
+        frag5 = supportFragmentManager.findFragmentByTag("card5") as SingleForensicCardFragment
+        frag6 = supportFragmentManager.findFragmentByTag("card6") as SingleForensicCardFragment
 
         addOnGameUpdateListener(gameId) {
             frag1.forensicCardSnapshot = it.otherCards.getOrElse(0) { ForensicCardSnapshot() }
