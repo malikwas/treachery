@@ -2,10 +2,17 @@ package me.kindeep.treachery
 
 import android.util.Log
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ktx.toObject
 import me.kindeep.treachery.firebase.getCardsResourcesSnapshot
 import me.kindeep.treachery.firebase.getGame
 import me.kindeep.treachery.firebase.getGameReference
 import me.kindeep.treachery.firebase.models.*
+import java.util.*
+import kotlin.concurrent.schedule
+
+// Type 2: Game information
+// Type 1: Chat message
+// Just 1 and 2
 
 fun sendProcessedGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
     sendMessage(
@@ -13,6 +20,16 @@ fun sendProcessedGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
             playerName = "Forensic",
             type = 2,
             message = "No ${guessSnapshot.guesserPlayer}, that guess was incorrect."
+        ), gameId
+    )
+}
+
+fun sendForensicMessage(gameId: String, message: String) {
+    sendMessage(
+        MessageSnapshot(
+            playerName = "Forensic",
+            type = 2,
+            message = message
         ), gameId
     )
 }
@@ -55,11 +72,13 @@ fun selectCauseForensicCard(
 enum class ForensicGameState {
     CAUSE_CARD,
     LOCATION_CARD,
-    OTHER_CARD
+    OTHER_CARD,
+    ROUND_2,
+    ROUND_3
 }
 
 fun forensicGameState(gameInstance: GameInstanceSnapshot): ForensicGameState {
-    Log.e("FORENSIC", "Getting game state for: $gameInstance")
+    log("Getting game state for: $gameInstance")
     if (!gameInstance.causeCardDefined) {
         return ForensicGameState.CAUSE_CARD
     } else if (!gameInstance.locationCardDefined) {
@@ -92,10 +111,97 @@ fun updateOtherForensicCards(
     }
 }
 
-fun processGuess(guessSnapshots: List<GuessSnapshot>, guess: GuessSnapshot, murdererName: String, murdererClueCard: String,
-                 murdererMeansCard: String, players: List<PlayerSnapshot>, gameId: String) {
+
+fun startRound(
+    gameId: String,
+    roundNum: Int,
+    replaceCardName: String,
+    newCard: ForensicCardSnapshot,
+    onSuccess: () -> Unit = {}
+) {
+    sendForensicMessage(gameId, "ROUND 2")
+
+    getGame(gameId) { gameInstanceSnapshot ->
+        for ((i, card) in gameInstanceSnapshot.otherCards.withIndex()) {
+            if (card.cardName == newCard.cardName) {
+                gameInstanceSnapshot.otherCards[i] = newCard
+                break
+            }
+        }
+        updateOtherForensicCards(gameId, gameInstanceSnapshot.otherCards) {
+            sendForensicMessage(gameId, "I've replaced the $replaceCardName with $newCard")
+            onSuccess()
+        }
+    }
+}
+
+fun startRound2(
+    gameId: String,
+    replaceCardName: String,
+    newCard: ForensicCardSnapshot,
+    onSuccess: () -> Unit = {}
+) {
+    startRound(gameId, 2, replaceCardName, newCard, onSuccess)
+}
+
+fun startRound3(
+    gameId: String,
+    replaceCardName: String,
+    newCard: ForensicCardSnapshot,
+    onSuccess: () -> Unit = {}
+) {
+    startRound(gameId, 3, replaceCardName, newCard, onSuccess)
+}
+
+fun onPlayerMurdererDetermined(gameId: String, playerName: String, callback: () -> Unit) {
+    gameChangeListener(gameId) { prev, new ->
+        if (new.murdererSelected && !prev.murdererSelected) {
+            if (new.murdererName == playerName) {
+                callback()
+            }
+        }
+    }
+}
+
+fun onMurdererCardsDetermined(
+    gameId: String,
+    callback: () -> Unit
+) {
+    gameChangeListener(gameId) { prev, new ->
+        if (new.murdererCardsDetermined && !prev.murdererCardsDetermined) {
+            callback()
+            return@gameChangeListener
+        }
+    }
+}
+
+var prevGameInstanceSnapshot = GameInstanceSnapshot()
+fun gameChangeListener(
+    gameId: String,
+    onChange: (prev: GameInstanceSnapshot, new: GameInstanceSnapshot) -> Unit
+) {
+    getGameReference(gameId).addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+        val new = documentSnapshot?.toObject<GameInstanceSnapshot>()
+        if (new != null) {
+            onChange(prevGameInstanceSnapshot, new)
+            prevGameInstanceSnapshot = new
+        }
+    }
+}
+
+
+fun processGuess(
+    guessSnapshots: List<GuessSnapshot>,
+    guess: GuessSnapshot,
+    murdererName: String,
+    murdererClueCard: String,
+    murdererMeansCard: String,
+    players: List<PlayerSnapshot>,
+    gameId: String
+) {
     if (guess.guessedPlayer == murdererName && guess.clueCard == murdererClueCard
-        && guess.meansCard == murdererMeansCard) {
+        && guess.meansCard == murdererMeansCard
+    ) {
         // You win?
     } else {
         val player = players.find {
@@ -152,10 +258,10 @@ fun fireStartGame(
                         val shuffledClues = cardResources.clueCards.shuffled().toMutableList()
                         val shuffledMeans = cardResources.meansCards.shuffled().toMutableList()
                         val murdererIndex = gameInstance.players.indices.random()
-
+                        val murdererPlayer = gameInstance.players[murdererIndex]
                         for ((index, player) in gameInstance.players.withIndex()) {
                             if (index == murdererIndex) {
-                                player.murderer = true
+                                gameInstance.murdererName = player.playerName
                             }
                             // Deal 4 red and blue cards to each player
                             for (i in 1..4) {
@@ -167,9 +273,24 @@ fun fireStartGame(
                                 }
                             }
                         }
+
                         getGameReference(gameId).update("players", gameInstance.players)
                             .addOnSuccessListener {
-                                onSuccess()
+                                sendForensicMessage(gameId, "Murderer select your cards")
+                                Timer("Murderer Card Select Delay", false).schedule(3) {
+                                    log("TIMER FINISHED AAAAARGH")
+                                    selectMurderCards(
+                                        gameId = gameId,
+                                        clueCardName = murdererPlayer.clueCards.random().name,
+                                        meansCardName = murdererPlayer.meansCards.random().name
+                                    ) {
+                                        onSuccess()
+                                    }
+                                }
+                                onMurdererCardsDetermined(gameId) {
+                                    onSuccess()
+                                    return@onMurdererCardsDetermined
+                                }
                             }
                     }
                 }
@@ -181,6 +302,30 @@ fun fireStartGame(
         onFailure(StartFailureType.WTF)
     }
 }
+
+fun getMurderer(gameInstance: GameInstanceSnapshot, murdererName: String): PlayerSnapshot? {
+    return gameInstance.players.find { it.playerName == murdererName }
+}
+
+fun selectMurderCards(
+    gameId: String,
+    clueCardName: String,
+    meansCardName: String,
+    onSuccess: () -> Unit
+) {
+    getGame(gameId) {
+        it.murdererClueCard = clueCardName
+        it.murdererMeansCard = meansCardName
+        updateField(gameId, "murdererClueCard", it.murdererClueCard!!) {
+            updateField(gameId, "murdererMeansCard", it.murdererMeansCard!!) {
+                updateField(gameId, "murdererCardsDetermined", true) {
+                    onSuccess()
+                }
+            }
+        }
+    }
+}
+
 
 enum class PlayerAddFailureType {
     DUPLICATE_NAME,
@@ -207,4 +352,19 @@ fun addPlayer(
             }
         }
     }
+}
+
+fun updateField(
+    gameId: String,
+    fieldName: String,
+    fieldValue: Any,
+    onUpdateSuccess: () -> Unit = {}
+) {
+    getGameReference(gameId).update(fieldName, fieldValue).addOnSuccessListener {
+        onUpdateSuccess()
+    }
+}
+
+fun log(toLog: Any) {
+    Log.i("GAME_KT", toLog.toString())
 }

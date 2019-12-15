@@ -39,7 +39,7 @@ class StartGameActivity : AppCompatActivity() {
     fun startGame(v: View) {
         // Open Forensic Activity
         fireStartGame(gameId, {
-            Log.e("ACTIVITY", "Styaart the game")
+            Log.i("START_GAME_ACTIVITY", "Styaart the game")
             val intent = Intent(this, ForensicActivity::class.java)
             val b = Bundle()
             b.putString("gameId", gameId)
