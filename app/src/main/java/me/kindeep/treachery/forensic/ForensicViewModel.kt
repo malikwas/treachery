@@ -16,7 +16,7 @@ class ForensicViewModel : ViewModel() {
         var gameId: String = "default"
     }
 
-    val processedOrProcessingGuessIds = ArrayList<String>()
+    val processedOrProcessingGuessIds = HashSet<String>()
 
     val gameInstance: LiveGameInstanceSnapshot =
         LiveGameInstanceSnapshot(gameId)
