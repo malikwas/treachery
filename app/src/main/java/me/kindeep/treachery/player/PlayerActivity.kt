@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.joined_players_list_item.*
 import me.kindeep.treachery.R
+import me.kindeep.treachery.chat.ChatFragment
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.models.CardSnapshot
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
@@ -44,6 +46,9 @@ class PlayerActivity : AppCompatActivity() {
         gameId = intent?.extras?.getString("gameId")!!
         findViewById<TextView>(R.id.gameId).text = gameId
         findViewById<TextView>(R.id.player_name).text = playerName
+
+        var chat = supportFragmentManager.findFragmentById(R.id.chat_fragment) as ChatFragment
+        chat.gameId = gameId
 
         frag1 = supportFragmentManager.findFragmentById(R.id.card1) as SingleForensicCardFragment
         frag2 = supportFragmentManager.findFragmentById(R.id.card2) as SingleForensicCardFragment
