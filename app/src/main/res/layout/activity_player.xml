@@ -5,25 +5,91 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="2"
+    android:weightSum="3"
     tools:context=".player.PlayerActivity">
 
     <TextView
         android:id="@+id/gameId"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Game id" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/test_player_fragment"-->
-<!--        android:name="me.kindeep.treachery.player.SinglePlayerFragment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_weight="1" />-->
+    <TextView
+        android:id="@+id/player_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game id" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/player_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="6">
+
+            <fragment
+                android:id="@+id/card1"
+                android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
+                android:layout_width="@dimen/cardWidth"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <fragment
+                android:id="@+id/card2"
+                android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
+                android:layout_width="@dimen/cardWidth"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <fragment
+                android:id="@+id/card3"
+                android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
+                android:layout_width="@dimen/cardWidth"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <fragment
+                android:id="@+id/card4"
+                android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
+                android:layout_width="@dimen/cardWidth"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <fragment
+                android:id="@+id/card5"
+                android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
+                android:layout_width="@dimen/cardWidth"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <fragment
+                android:id="@+id/card6"
+                android:name="me.kindeep.treachery.shared.SingleForensicCardFragment"
+                android:layout_width="@dimen/cardWidth"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <fragment
+        android:id="@+id/chat_fragment"
+        android:name="me.kindeep.treachery.chat.ChatFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
 
 </LinearLayout>
