@@ -1,5 +1,6 @@
 package me.kindeep.treachery.chat
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -130,6 +131,9 @@ class SentMessageHolder(layoutInflater: LayoutInflater, parent: ViewGroup) :
 
     override fun bind(messageSnapshot: MessageSnapshot) {
         body.text = messageSnapshot.message
+        body.setBackgroundColor(
+            if (messageSnapshot.type == 1) Color.parseColor("#009688")
+            else Color.parseColor("#FFFF9800") )
     }
 }
 
@@ -141,6 +145,9 @@ class ReceivedMessageHolder(layoutInflater: LayoutInflater, parent: ViewGroup) :
 
     override fun bind(messageSnapshot: MessageSnapshot) {
         body.text = messageSnapshot.message
+        body.setBackgroundColor(
+            if (messageSnapshot.type == 1) Color.parseColor("#3F51B5")
+            else Color.parseColor("#FFFF9800") )
         name.text = messageSnapshot.playerName
     }
 }

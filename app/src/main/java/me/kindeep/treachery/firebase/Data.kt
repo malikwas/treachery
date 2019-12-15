@@ -8,8 +8,20 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import me.kindeep.treachery.firebase.models.CardsResourcesSnapshot
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
+import me.kindeep.treachery.firebase.models.GuessSnapshot
 import me.kindeep.treachery.firebase.models.MessageSnapshot
 import kotlin.math.min
+
+fun sendGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
+    sendMessage(
+        MessageSnapshot(
+            playerName = guessSnapshot.guesserPlayer,
+            type = 2,
+            message = "I guessed ${guessSnapshot.guessedPlayer} as the murderer, with the means card" +
+                    " as ${guessSnapshot.meansCard} and clue card as ${guessSnapshot.clueCard}."
+        ), gameId
+    )
+}
 
 fun sendMessage (message: MessageSnapshot, gameId: String) {
     val game = getGame(gameId) {

@@ -6,8 +6,10 @@ import me.kindeep.treachery.ForensicGameState
 import me.kindeep.treachery.firebase.*
 import me.kindeep.treachery.firebase.models.CardsResourcesSnapshot
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
+import me.kindeep.treachery.firebase.models.GuessSnapshot
 import me.kindeep.treachery.firebase.models.LiveGameInstanceSnapshot
 import me.kindeep.treachery.forensicGameState
+import me.kindeep.treachery.processGuess
 
 class ForensicViewModel : ViewModel() {
     companion object {
@@ -30,6 +32,21 @@ class ForensicViewModel : ViewModel() {
             setNextCardValue()
         }
 
+        gameInstance.observeForever {
+            // A guess cannot be made until the game has started, so the murderer has already been
+            // selected and the two cards have been chosen
+            for (guess in it.guesses) {
+                if (!guess.processed) processGuess(guess, it.murdererName!!,
+                    it.murdererClueCard!!, it.murdererMeansCard!!, it.players, it.gameId)
+            }
+
+            var numGuesses = 0;
+            for (player in it.players) {
+                if (player.guessed) numGuesses++
+            }
+
+            if (numGuesses == it.players.size) {} // Game Over?
+        }
     }
 
     fun setNextCardValue() {
