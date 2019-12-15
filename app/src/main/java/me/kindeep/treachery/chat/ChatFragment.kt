@@ -34,7 +34,12 @@ class ChatFragment : Fragment() {
                     Log.e("CHAT FRAGMENT", "Game id set and document found, notifying adapter")
                     val gameInstance = documentSnapshot!!.toObject<GameInstanceSnapshot>()!!
                     messages = gameInstance.messages.sortedBy { it.timestamp }
-                    messageRecycler.adapter?.notifyDataSetChanged()
+
+                    if (numMessages != messages.size) {
+                        numMessages = messages.size
+                        messageRecycler.adapter?.notifyDataSetChanged()
+                        messageRecycler.scrollToPosition(numMessages - 1)
+                    }
                 }
             }
         }
@@ -42,6 +47,7 @@ class ChatFragment : Fragment() {
     lateinit var messageRecycler: RecyclerView
     private var isTextBoxVisible = true
     private var messages: List<MessageSnapshot> = mutableListOf()
+    private var numMessages = 0
     var playerName: String? = null
     private var textBoxContainer: LinearLayout? = null
 

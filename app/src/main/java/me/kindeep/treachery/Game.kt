@@ -29,7 +29,7 @@ fun sendGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
 }
 
 fun sendMessage (message: MessageSnapshot, gameId: String) {
-    val game = getGame(gameId) {
+    getGame(gameId) {
         val gameRef = getGameReference(gameId)
         gameRef.update("messages", FieldValue.arrayUnion(message))
     }

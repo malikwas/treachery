@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -63,8 +64,8 @@ class SinglePlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         playerNameText = view.findViewById(R.id.player_name)
-        viewModel = ViewModelProviders.of(this)
-            .get(PlayerViewModel::class.java)
+        viewModel = activity?.run { ViewModelProviders.of(this)
+            .get(PlayerViewModel::class.java) } ?: throw  Exception("you suck")
 
         arguments?.takeIf { it.containsKey("playerName") }?.apply {
             playerName = getString("playerName")!!

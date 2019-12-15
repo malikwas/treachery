@@ -3,14 +3,18 @@ package me.kindeep.treachery.player
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.joined_players_list_item.*
 import me.kindeep.treachery.R
 import me.kindeep.treachery.chat.ChatFragment
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
+import me.kindeep.treachery.firebase.getGameReference
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.shared.SingleForensicCardFragment
 
@@ -32,6 +36,10 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var frag4: SingleForensicCardFragment
     lateinit var frag5: SingleForensicCardFragment
     lateinit var frag6: SingleForensicCardFragment
+
+    fun handleOnGuessClick(v: View) {
+        viewModel.makeGuess()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +83,22 @@ class PlayerActivity : AppCompatActivity() {
             .get(PlayerViewModel::class.java)
 //        setContentView(R.layout.activity_player)
 
+        val guessButton = findViewById<MaterialButton>(R.id.guess_button)
+        guessButton.isEnabled = viewModel.getIsAbleToGuess()
+        viewModel.getEnableChange().changeListeners.add {
+            val b = findViewById<MaterialButton>(R.id.guess_button)
+            b.isEnabled = !b.isEnabled
+        }
+
         playerPager = findViewById(R.id.player_pager)
+        playerPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                viewModel.setCurrentViewedPlayer(
+                    viewModel.gameInstance.value!!.players.get(position).playerName
+                )
+            }
+        })
         doAdapterStuff()
 
         viewModel.gameInstance.observe(this, Observer {
