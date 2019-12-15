@@ -1,5 +1,6 @@
 package me.kindeep.treachery.player
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,8 @@ import me.kindeep.treachery.firebase.getGameReference
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.onPlayerMurdererDetermined
 import me.kindeep.treachery.shared.SingleForensicCardFragment
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Displays every other player, their cards and a messages box for discussion.
@@ -106,11 +109,12 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.gameInstance.observe(this, Observer {
             log(it)
             findViewById<TextView>(R.id.gameId).text = it.gameId
-            playerPager.offscreenPageLimit = viewModel.gameInstance.value!!.players.size
+            playerPager.offscreenPageLimit = max(viewModel.gameInstance.value!!.players.size, 1)
         })
 
         onPlayerMurdererDetermined(gameId, playerName) {
             Toast.makeText(this, "I am the murderer", Toast.LENGTH_LONG).show()
+            startMurdererActivity()
         }
 
     }
@@ -126,4 +130,12 @@ class PlayerActivity : AppCompatActivity() {
     }
 
 
+    fun startMurdererActivity() {
+        val intent = Intent(this, MurdererSelectActivity::class.java)
+        val b = Bundle()
+        b.putString("gameId", gameId)
+        b.putString("playerName", playerName)
+        intent.putExtras(b)
+        startActivity(intent)
+    }
 }

@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -15,7 +14,6 @@ import me.kindeep.treachery.R
 import me.kindeep.treachery.firebase.models.CardSnapshot
 import me.kindeep.treachery.firebase.models.PlayerSnapshot
 import me.kindeep.treachery.shared.CardFragment
-import kotlin.math.log
 
 class SinglePlayerFragment : Fragment() {
     private var cluesFragments: List<CardFragment> =
@@ -30,7 +28,7 @@ class SinglePlayerFragment : Fragment() {
     private lateinit var playerNameText: TextView
     private lateinit var playerName: String
 
-    var selectedClue: Int
+    private var selectedClue: Int
         get() {
             return viewModel.getSelectedClue(playerName)
         }
@@ -38,7 +36,7 @@ class SinglePlayerFragment : Fragment() {
             viewModel.setSelectedClue(playerName, value)
         }
 
-    var selectedMeans: Int
+    private var selectedMeans: Int
         get() {
             return viewModel.getSelectedMeans(playerName)
         }
@@ -84,7 +82,7 @@ class SinglePlayerFragment : Fragment() {
         }
     }
 
-    fun createFragments() {
+    private fun createFragments() {
         for ((i, fragment) in meansFragments.withIndex()) {
             childFragmentManager.beginTransaction().apply {
                 add(R.id.means_layout, fragment, "means$i${playerName}")
@@ -108,7 +106,7 @@ class SinglePlayerFragment : Fragment() {
         }
     }
 
-    fun replaceFragments() {
+    private fun replaceFragments() {
         // A Big brain hack to make fragments work when device is rotated, replace all with first,
         // add the rest.
         childFragmentManager.beginTransaction().apply {
@@ -148,21 +146,21 @@ class SinglePlayerFragment : Fragment() {
         }
     }
 
-    fun clueClick(index: Int) {
+    private fun clueClick(index: Int) {
         selectedClue = if (index in 0..3) {
             index
         } else -1
         cardHighlightUpdate()
     }
 
-    fun meansClick(index: Int) {
+    private fun meansClick(index: Int) {
         selectedMeans = if (index in 0..3) {
             index
         } else -1
         cardHighlightUpdate()
     }
 
-    fun cardHighlightUpdate() {
+    private fun cardHighlightUpdate() {
         for ((i, fragment) in meansFragments.withIndex()) {
             fragment.highlighted = (i == selectedMeans)
         }

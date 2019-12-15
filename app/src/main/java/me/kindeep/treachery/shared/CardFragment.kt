@@ -2,15 +2,19 @@ package me.kindeep.treachery.shared
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import me.kindeep.treachery.R
 import me.kindeep.treachery.firebase.models.CardSnapshot
+import java.lang.Exception
+import java.util.*
+
 
 class CardFragment : Fragment {
 
@@ -22,7 +26,7 @@ class CardFragment : Fragment {
     var highlighted: Boolean = false
         set(value) {
             field = value
-            if(isInitialized()) {
+            if (isInitialized()) {
                 if (field) {
                     cardName.background =
                         resources.getDrawable(R.drawable.card_header_gradient_selected)
@@ -60,7 +64,29 @@ class CardFragment : Fragment {
 
     fun bind(cardSnapshot: CardSnapshot) {
         if (isInitialized()) {
-            Picasso.get().load(cardSnapshot.imgUrl).resize(170, 200).into(cardImage)
+            Picasso.get()
+                .load(cardSnapshot.imgUrl)
+                .resize(170, 200)
+                .into(cardImage, object : Callback {
+                    override fun onSuccess() {
+
+                    }
+
+                    override fun onError(e: Exception?) {
+                        Picasso.get().load(cardSnapshot.altImgUrl)
+                            .resize(170, 200)
+                            .into(cardImage, object : Callback {
+                                override fun onSuccess() {
+                                }
+
+                                override fun onError(e: Exception?) {
+                                    Picasso.get().load("https://picsum.photos/200")
+                                        .resize(170, 200)
+                                        .into(cardImage)
+                                }
+                            })
+                    }
+                })
             cardName.text = cardSnapshot.name
         }
     }

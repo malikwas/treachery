@@ -21,7 +21,7 @@ class JoinedPlayersFragment : Fragment() {
             field = value
             if (value != null) {
                 getGameReference(value).addSnapshotListener { documentSnapshot, _ ->
-                    Log.e("JOINEDPLAYERS", "Game id set and document found, notifying adapter")
+                    Log.i("JOINEDPLAYERS", "Game id set and document found, notifying adapter")
                     gameInstance = documentSnapshot!!.toObject()!!
                     joinedPlayersRecycler.adapter?.notifyDataSetChanged()
                 }

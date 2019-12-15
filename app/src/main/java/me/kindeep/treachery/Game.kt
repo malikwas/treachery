@@ -155,9 +155,11 @@ fun startRound3(
 
 fun onPlayerMurdererDetermined(gameId: String, playerName: String, callback: () -> Unit) {
     gameChangeListener(gameId) { prev, new ->
+        log("GAME CHANGE LISTENER TRIGGEERD FROM MURDERER DETERMINED $playerName $gameId ${new.murdererName} ${new.murdererSelected} ${prev.murdererSelected}")
         if (new.murdererSelected && !prev.murdererSelected) {
             if (new.murdererName == playerName) {
                 callback()
+                return@gameChangeListener
             }
         }
     }
@@ -241,6 +243,8 @@ enum class StartFailureType {
     WTF // What the terrible Failure
 }
 
+const val MIN_PLAYERS_SIZE = 1
+const val MURDER_SELECT_CARDS_TIMEOUT: Long = 10
 
 fun fireStartGame(
     gameId: String,
@@ -249,7 +253,7 @@ fun fireStartGame(
 ) {
     // TODO: This should be a transaction.
     getGame(gameId) {
-        if (it.players.size > 3) {
+        if (it.players.size >= MIN_PLAYERS_SIZE) {
             // Player size ok, start
             getGameReference(gameId).update("started", true).addOnSuccessListener {
                 // new players should not be added after this update, initialize player cards
@@ -276,20 +280,33 @@ fun fireStartGame(
 
                         getGameReference(gameId).update("players", gameInstance.players)
                             .addOnSuccessListener {
-                                sendForensicMessage(gameId, "Murderer select your cards")
-                                Timer("Murderer Card Select Delay", false).schedule(3) {
-                                    log("TIMER FINISHED AAAAARGH")
-                                    selectMurderCards(
-                                        gameId = gameId,
-                                        clueCardName = murdererPlayer.clueCards.random().name,
-                                        meansCardName = murdererPlayer.meansCards.random().name
-                                    ) {
-                                        onSuccess()
+                                updateField(gameId, "murdererName", murdererPlayer.playerName) {
+                                    updateField(gameId, "murdererSelected", true) {
+                                        sendForensicMessage(gameId, "Murderer select your cards")
+                                        Timer("Murderer Card Select Delay", false).schedule(
+                                            MURDER_SELECT_CARDS_TIMEOUT
+                                        ) {
+                                            log("TIMER FINISHED AAAAARGH")
+                                            selectMurderCards(
+                                                gameId = gameId,
+                                                clueCardName = murdererPlayer.clueCards.random().name,
+                                                meansCardName = murdererPlayer.meansCards.random().name
+                                            ) {
+                                                sendForensicMessage(
+                                                    gameId,
+                                                    "Timeout, selecting random cards."
+                                                )
+                                            }
+                                        }
+                                        onMurdererCardsDetermined(gameId) {
+                                            sendForensicMessage(
+                                                gameId,
+                                                "Murderer Selected their cards"
+                                            )
+                                            onSuccess()
+                                            return@onMurdererCardsDetermined
+                                        }
                                     }
-                                }
-                                onMurdererCardsDetermined(gameId) {
-                                    onSuccess()
-                                    return@onMurdererCardsDetermined
                                 }
                             }
                     }
@@ -316,10 +333,12 @@ fun selectMurderCards(
     getGame(gameId) {
         it.murdererClueCard = clueCardName
         it.murdererMeansCard = meansCardName
-        updateField(gameId, "murdererClueCard", it.murdererClueCard!!) {
-            updateField(gameId, "murdererMeansCard", it.murdererMeansCard!!) {
-                updateField(gameId, "murdererCardsDetermined", true) {
-                    onSuccess()
+        if (!it.murdererCardsDetermined) {
+            updateField(gameId, "murdererClueCard", it.murdererClueCard!!) {
+                updateField(gameId, "murdererMeansCard", it.murdererMeansCard!!) {
+                    updateField(gameId, "murdererCardsDetermined", true) {
+                        onSuccess()
+                    }
                 }
             }
         }
@@ -346,6 +365,7 @@ fun addPlayer(
         } else {
             it.players.add(playerSnapshot)
             getGameReference(gameId).update("players", it.players).addOnSuccessListener {
+                sendForensicMessage(gameId, "${playerSnapshot.playerName} joined the game.")
                 onSuccess()
             }.addOnFailureListener {
                 onFailure(PlayerAddFailureType.WTF)
