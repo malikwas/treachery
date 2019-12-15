@@ -12,13 +12,23 @@ import me.kindeep.treachery.firebase.models.GuessSnapshot
 import me.kindeep.treachery.firebase.models.MessageSnapshot
 import kotlin.math.min
 
+fun sendProcessedGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
+    sendMessage(
+        MessageSnapshot(
+            playerName = "Forensic",
+            type = 2,
+            message = "No ${guessSnapshot.guesserPlayer}, that guess was incorrect."
+        ), gameId
+    )
+}
+
 fun sendGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
     sendMessage(
         MessageSnapshot(
             playerName = guessSnapshot.guesserPlayer,
             type = 2,
-            message = "I guessed ${guessSnapshot.guessedPlayer} as the murderer, with the means card" +
-                    " as ${guessSnapshot.meansCard} and clue card as ${guessSnapshot.clueCard}."
+            message = "I believe that ${guessSnapshot.guessedPlayer} is the murderer, and that the" +
+                    " means was ${guessSnapshot.meansCard} and the clue is ${guessSnapshot.clueCard}."
         ), gameId
     )
 }
