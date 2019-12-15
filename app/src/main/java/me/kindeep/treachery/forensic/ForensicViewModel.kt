@@ -38,8 +38,6 @@ class ForensicViewModel : ViewModel() {
             // A guess cannot be made until the game has started, so the murderer has already been
             // selected and the two cards have been chosen
             for (guess in it.guesses) {
-                processedOrProcessingGuessIds.add(guess.id)
-
                 if (!guess.processed && !processedOrProcessingGuessIds.contains(guess.id)) {
                     processedOrProcessingGuessIds.add(guess.id)
                     processGuess(
