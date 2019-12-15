@@ -60,7 +60,7 @@ class ChatFragment : Fragment() {
             val input = textBox.text.toString().trim()
 
             if (input != "" && gameId != null) {
-                var m = MessageSnapshot(message=input, playerName="SomeDude")
+                var m = MessageSnapshot(message=input, playerName=playerName!!)
                 sendMessage(m, gameId!!)
                 textBox.setText("")
             }
