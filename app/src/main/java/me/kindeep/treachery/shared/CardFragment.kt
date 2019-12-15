@@ -18,8 +18,24 @@ class CardFragment : Fragment {
 
     lateinit var cardImage: ImageView
     lateinit var cardName: TextView
+    lateinit var clickableParent: View
 
     var card: CardSnapshot
+    var highlighted: Boolean = false
+        set(value) {
+            field = value
+            if (field) {
+                cardName.background = resources.getDrawable(R.drawable.card_header_gradient_selected)
+            } else {
+                cardName.background = resources.getDrawable(R.drawable.card_header_gradient)
+            }
+        }
+
+    private var pClickListener: View.OnClickListener = View.OnClickListener { }
+
+    fun setParentClickListener(listener: (View) -> Unit) {
+        pClickListener = View.OnClickListener(listener)
+    }
 
     constructor() : super() {
         card = CardSnapshot()
@@ -32,6 +48,8 @@ class CardFragment : Fragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         cardName = view.findViewById(R.id.card_name)
         cardImage = view.findViewById(R.id.card_image)
+        clickableParent = view.findViewById(R.id.click_parent)
+        clickableParent.setOnClickListener(pClickListener)
         bind(card)
     }
 
@@ -42,9 +60,9 @@ class CardFragment : Fragment {
         return inflater.inflate(R.layout.fragment_card, container, false)
     }
 
-     fun bind(cardSnapshot: CardSnapshot) {
+    fun bind(cardSnapshot: CardSnapshot) {
         if (::cardName.isInitialized) {
-            Picasso.get().load(cardSnapshot.imgUrl).resize(170,200).into(cardImage)
+            Picasso.get().load(cardSnapshot.imgUrl).resize(170, 200).into(cardImage)
             cardName.text = cardSnapshot.name
         }
     }

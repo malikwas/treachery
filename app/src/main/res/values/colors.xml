@@ -16,4 +16,6 @@
     <color name="testBlue">#1A237E</color>
     <color name="testGreen">#33691E</color>
     <color name="testOrange">#F87147</color>
+    <color name="cardPressedColor">#4847F8C6</color>
+    <color name="cardNormalColor">#00000000</color>
 </resources>

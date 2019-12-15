@@ -31,6 +31,7 @@ class SingleForensicCardFragment() : Fragment() {
     lateinit var choice2TextView: TextView
     lateinit var choice3TextView: TextView
     lateinit var choice4TextView: TextView
+    lateinit var choice5TextView: TextView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         cardNameView = view.findViewById(R.id.cardName)
@@ -40,9 +41,10 @@ class SingleForensicCardFragment() : Fragment() {
         choice2TextView = view.findViewById(R.id.choice2)
         choice3TextView = view.findViewById(R.id.choice3)
         choice4TextView = view.findViewById(R.id.choice4)
+        choice5TextView = view.findViewById(R.id.choice5)
         arguments?.takeIf { it.containsKey("cardIndex") }?.apply {
             
-            for (i in 0..4) {
+            for (i in 0..5) {
                 getChoiceViewAt(i).setOnClickListener {
                     forensicCardSnapshot.selectedChoice = i
                     bind()
@@ -62,6 +64,7 @@ class SingleForensicCardFragment() : Fragment() {
             2 -> choice2TextView
             3 -> choice3TextView
             4 -> choice4TextView
+            5 -> choice5TextView
             else -> choice0TextView
         }
     }
@@ -69,7 +72,7 @@ class SingleForensicCardFragment() : Fragment() {
     fun bind() {
         cardNameView.text = forensicCardSnapshot.cardName
 
-        for (i in 0..4) {
+        for (i in 0..5) {
             getChoiceViewAt(i).text = forensicCardSnapshot.choices.getOrElse(i) { it.toString() }
             getChoiceViewAt(i).setBackgroundColor(resources.getColor(
                 R.color.forensicDefaultListBg))

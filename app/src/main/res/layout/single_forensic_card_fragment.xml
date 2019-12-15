@@ -73,6 +73,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="5" />
+
+                <TextView
+                    android:id="@+id/choice5"
+                    style="@style/forensicChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="5" />
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
