@@ -52,7 +52,7 @@ class ForensicViewModel : ViewModel() {
                 if (player.guessed) numGuesses++
             }
 
-            if (numGuesses == it.players.size) {} // Change round/game over
+            if (numGuesses == it.players.size) {} // TODO: Game over (same as timer running out)
         }
     }
 
