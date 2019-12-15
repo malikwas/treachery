@@ -12,33 +12,6 @@ import me.kindeep.treachery.firebase.models.GuessSnapshot
 import me.kindeep.treachery.firebase.models.MessageSnapshot
 import kotlin.math.min
 
-fun sendProcessedGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
-    sendMessage(
-        MessageSnapshot(
-            playerName = "Forensic",
-            type = 2,
-            message = "No ${guessSnapshot.guesserPlayer}, that guess was incorrect."
-        ), gameId
-    )
-}
-
-fun sendGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
-    sendMessage(
-        MessageSnapshot(
-            playerName = guessSnapshot.guesserPlayer,
-            type = 2,
-            message = "I believe that ${guessSnapshot.guessedPlayer} is the murderer, and that the" +
-                    " means was ${guessSnapshot.meansCard} and the clue is ${guessSnapshot.clueCard}."
-        ), gameId
-    )
-}
-
-fun sendMessage (message: MessageSnapshot, gameId: String) {
-    val game = getGame(gameId) {
-        val gameRef = getGameReference(gameId)
-        gameRef.update("messages", FieldValue.arrayUnion(message))
-    }
-}
 
 fun getActiveGames(callback: (List<GameInstanceSnapshot>) -> Unit) {
     activeGamesQuery().get()

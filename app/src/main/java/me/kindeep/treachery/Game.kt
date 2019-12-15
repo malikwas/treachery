@@ -1,15 +1,43 @@
 package me.kindeep.treachery
 
 import android.util.Log
+import com.google.firebase.firestore.FieldValue
 import me.kindeep.treachery.firebase.getCardsResourcesSnapshot
 import me.kindeep.treachery.firebase.getGame
 import me.kindeep.treachery.firebase.getGameReference
-import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
-import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
-import me.kindeep.treachery.firebase.models.GuessSnapshot
-import me.kindeep.treachery.firebase.models.PlayerSnapshot
-import me.kindeep.treachery.firebase.sendProcessedGuessMessage
+import me.kindeep.treachery.firebase.models.*
 
+fun sendProcessedGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
+    sendMessage(
+        MessageSnapshot(
+            playerName = "Forensic",
+            type = 2,
+            message = "No ${guessSnapshot.guesserPlayer}, that guess was incorrect."
+        ), gameId
+    )
+}
+
+fun sendGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
+    sendMessage(
+        MessageSnapshot(
+            playerName = guessSnapshot.guesserPlayer,
+            type = 2,
+            message = "I believe that ${guessSnapshot.guessedPlayer} is the murderer, and that the" +
+                    " means was ${guessSnapshot.meansCard} and the clue is ${guessSnapshot.clueCard}."
+        ), gameId
+    )
+}
+
+fun sendMessage (message: MessageSnapshot, gameId: String) {
+    val game = getGame(gameId) {
+        val gameRef = getGameReference(gameId)
+        gameRef.update("messages", FieldValue.arrayUnion(message))
+    }
+}
+
+fun sendGuess(guessSnapshot: GuessSnapshot, gameId: String) {
+    getGameReference(gameId).update("guesses", FieldValue.arrayUnion(guessSnapshot))
+}
 
 fun selectCauseForensicCard(
     gameId: String,

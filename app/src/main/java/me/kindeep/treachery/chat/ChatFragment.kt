@@ -17,7 +17,7 @@ import me.kindeep.treachery.*
 import me.kindeep.treachery.firebase.getGameReference
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
 import me.kindeep.treachery.firebase.models.MessageSnapshot
-import me.kindeep.treachery.firebase.sendMessage
+import me.kindeep.treachery.sendMessage
 
 /**
  * Fully featured chat, with different views for sent messages on the right, and received messages
@@ -42,6 +42,7 @@ class ChatFragment : Fragment() {
     lateinit var messageRecycler: RecyclerView
     private var isTextBoxVisible = true
     private var messages: List<MessageSnapshot> = mutableListOf()
+    var playerName: String? = null
     private var textBoxContainer: LinearLayout? = null
 
     fun removeTextBox() {
@@ -76,7 +77,7 @@ class ChatFragment : Fragment() {
                 override fun getItemViewType(position: Int): Int {
                     val message = messages[position]
 
-                    return when (message.playerName.equals("SomeDude")) {
+                    return when (message.playerName.equals(playerName)) {
                         true -> SENT_MESSAGE_TYPE
                         else -> RECEIVED_MESSAGE_TYPE
                     }

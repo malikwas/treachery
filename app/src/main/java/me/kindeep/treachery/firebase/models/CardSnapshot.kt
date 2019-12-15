@@ -4,5 +4,5 @@ data class CardSnapshot (
     val name: String = "Loading...",
     val imgUrl: String = "https://picsum.photos/800",
     val altImgUrl: String = "https://picsum.photos/800",
-    var guessedBy: MutableList<String> = mutableListOf()
+    val guessedBy: MutableList<String> = mutableListOf()
 )

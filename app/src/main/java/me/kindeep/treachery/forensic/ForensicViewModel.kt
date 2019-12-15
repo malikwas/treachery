@@ -40,12 +40,12 @@ class ForensicViewModel : ViewModel() {
                     it.murdererClueCard!!, it.murdererMeansCard!!, it.players, it.gameId)
             }
 
-            var numGuesses = 0;
+            var numGuesses = 0
             for (player in it.players) {
                 if (player.guessed) numGuesses++
             }
 
-            if (numGuesses == it.players.size) {} // Game Over?
+            if (numGuesses == it.players.size) {} // Change round/game over
         }
     }
 
