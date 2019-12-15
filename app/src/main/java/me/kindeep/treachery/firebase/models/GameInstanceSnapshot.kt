@@ -53,10 +53,6 @@ class LiveGameInstanceSnapshot(gameId: String) : LiveData<GameInstanceSnapshot>(
         getGameReference(gameId)
             .addSnapshotListener { documentSnapshot, _ ->
                 val newSnapshot: GameInstanceSnapshot = documentSnapshot!!.toObject()!!
-                Log.i(
-                    "FIREBASE", "Snapshot changed to $documentSnapshot " +
-                            "\n \n parsed as \n \n $newSnapshot"
-                )
                 value = newSnapshot
             }
     }

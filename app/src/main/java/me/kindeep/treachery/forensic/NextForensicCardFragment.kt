@@ -123,40 +123,5 @@ class NextForensicCardFragment : Fragment() {
     }
 }
 
-class CardsPagerAdapter(
-    fm: FragmentManager,
-    val viewModel: ForensicViewModel,
-    lifecycleOwner: LifecycleOwner
-) :
-    FragmentStatePagerAdapter(fm) {
-
-    var nextCards: List<ForensicCardSnapshot> = listOf()
-
-    init {
-        viewModel.nextCardSnapshots.observe(lifecycleOwner, Observer {
-            nextCards = it
-            notifyDataSetChanged()
-        })
-    }
-
-    override fun getCount(): Int {
-        return nextCards.size
-    }
-
-
-    override fun getItem(i: Int): Fragment {
-        val fragment =
-            SingleForensicCardFragment(nextCards[i])
-        fragment.arguments = Bundle().apply {
-            putInt("cardIndex", i + 1)
-        }
-        return fragment
-    }
-
-    override fun getPageTitle(position: Int): CharSequence {
-        return "Card ${(position + 1)}"
-    }
-}
-
 
 

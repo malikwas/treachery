@@ -5,9 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="0dp"
     android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="@color/testGreen"
     android:clickable="true"
     android:focusable="false"
-    android:layout_weight="1"
     android:foreground="?attr/selectableItemBackground"
     card_view:cardCornerRadius="4dp"
     card_view:layout_constraintCircleRadius="@dimen/cardRadius">
@@ -18,21 +19,25 @@
         android:background="@color/colorAccent"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/card_image"
-            android:scaleType="centerCrop"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
         <TextView
-            android:textSize="@dimen/h3"
             android:id="@+id/card_name"
+            android:background="@drawable/card_header_gradient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Card Name"
-            android:textStyle="bold"
             android:textColor="@color/cardText"
+            android:textSize="@dimen/h3"
+            android:textStyle="bold"
+            android:elevation="3dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/card_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

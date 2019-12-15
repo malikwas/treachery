@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:weightSum="2"
     tools:context=".player.PlayerActivity">
 
     <TextView
@@ -12,11 +13,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <fragment
-        android:id="@+id/test_player_fragment"
-        android:name="me.kindeep.treachery.player.SinglePlayerFragment"
+<!--    <fragment-->
+<!--        android:id="@+id/test_player_fragment"-->
+<!--        android:name="me.kindeep.treachery.player.SinglePlayerFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="1" />-->
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/player_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
 </LinearLayout>

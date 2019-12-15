@@ -6,6 +6,8 @@ import android.util.Log
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import me.kindeep.treachery.R
 import me.kindeep.treachery.firebase.models.CardSnapshot
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
@@ -20,7 +22,9 @@ class PlayerActivity : AppCompatActivity() {
 
     lateinit var viewModel: PlayerViewModel
 
-    lateinit var testFrag: SinglePlayerFragment
+    //    lateinit var testFrag: SinglePlayerFragment
+    lateinit var playerPager: ViewPager2
+
     override fun onCreate(savedInstanceState: Bundle?) {
         gameId = intent?.extras?.getString("gameId")!!
 //        findViewById<TextView>(R.id.gameId).text = gameId
@@ -35,25 +39,27 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
-
-        testFrag =
-            supportFragmentManager.findFragmentById(R.id.test_player_fragment) as SinglePlayerFragment
-        testFrag.player = viewModel.getPlayer()
-        updateViews()
+        playerPager = findViewById(R.id.player_pager)
+        doAdapterStuff()
 
         viewModel.gameInstance.observe(this, Observer {
             log(it)
             findViewById<TextView>(R.id.gameId).text = it.gameId
-            updateViews()
-            testFrag.player = viewModel.getPlayer()
+//            updateViews()
+//            testFrag.player = viewModel.getPlayer()
+//            doAdapterStuff()
+            playerPager.offscreenPageLimit = viewModel.gameInstance.value!!.players.size
+//            doAdapterStuff()
+//            playerPager.adapter!!.notifyDataSetChanged()
         })
 
 
     }
 
-    fun updateViews() {
-        log("update")
-        testFrag.bind()
+    fun doAdapterStuff() {
+        playerPager.adapter =
+            PlayersPagerAdapter(this, viewModel, this@PlayerActivity)
+
     }
 
     fun log(umm: Any) {

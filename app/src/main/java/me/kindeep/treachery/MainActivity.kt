@@ -23,7 +23,6 @@ import me.kindeep.treachery.player.PlayerActivity
 
 class MainActivity : AppCompatActivity() {
 
-    val firestore = FirebaseFirestore.getInstance()
     lateinit var gamesRecycler: RecyclerView
 
 
