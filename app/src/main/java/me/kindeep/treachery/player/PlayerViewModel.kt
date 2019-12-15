@@ -28,6 +28,7 @@ class PlayerViewModel : ViewModel() {
     private val selectedMeans = HashMap<String, Int>()
     private val selectedClues = HashMap<String, Int>()
     private var currentViewedPlayer: String? = null
+    private var hasGuessed = false
     private var isAbleToGuess = false
         set(value) {
             field = value
@@ -48,11 +49,15 @@ class PlayerViewModel : ViewModel() {
     }
 
     fun setSelectedClue(playerName: String, clue: Int) {
-        if (selectedClues[playerName] == clue) selectedClues.remove(playerName)
-        else selectedClues[playerName] = clue
+        if (!hasGuessed && currentViewedPlayer != playerName) {
+            if (selectedClues[playerName] == clue) selectedClues.remove(playerName)
+            else selectedClues[playerName] = clue
 
-        isAbleToGuess = selectedClues.containsKey(playerName)
-                && selectedMeans.containsKey(playerName) && currentViewedPlayer.equals(playerName)
+            isAbleToGuess = !hasGuessed && currentViewedPlayer != playerName && selectedClues.containsKey(playerName)
+                    && selectedMeans.containsKey(playerName) && currentViewedPlayer.equals(
+                playerName
+            )
+        }
     }
 
     fun getSelectedMeans(playerName: String): Int {
@@ -60,20 +65,24 @@ class PlayerViewModel : ViewModel() {
     }
 
     fun setSelectedMeans(playerName: String, means: Int) {
-        if (selectedMeans[playerName] == means) selectedMeans.remove(playerName)
-        else selectedMeans[playerName] = means
+        if (!hasGuessed && currentViewedPlayer != playerName) {
+            if (selectedMeans[playerName] == means) selectedMeans.remove(playerName)
+            else selectedMeans[playerName] = means
 
-        isAbleToGuess = selectedClues.containsKey(playerName)
-                && selectedMeans.containsKey(playerName) && currentViewedPlayer.equals(playerName)
+            isAbleToGuess = !hasGuessed && currentViewedPlayer != playerName && selectedClues.containsKey(playerName)
+                    && selectedMeans.containsKey(playerName) && currentViewedPlayer.equals(
+                playerName
+            )
+        }
     }
 
     fun getCurrentViewedPlayer(): String? {
         return currentViewedPlayer
     }
 
-    fun setCurrentViewedPlayer(playerName: String) {
-        currentViewedPlayer = playerName
-        isAbleToGuess = selectedClues.containsKey(playerName)
+    fun setCurrentViewedPlayer(currentPlayer: String) {
+        currentViewedPlayer = currentPlayer
+        isAbleToGuess = !hasGuessed && currentViewedPlayer != playerName && selectedClues.containsKey(playerName)
                 && selectedMeans.containsKey(playerName) && currentViewedPlayer.equals(playerName)
     }
 
@@ -88,12 +97,12 @@ class PlayerViewModel : ViewModel() {
         val clueCard = gameInstance.value!!.players.find { it.playerName == currentViewedPlayer }!!
             .clueCards.get(selectedClues[currentViewedPlayer!!]!!).name
 
-        setSelectedClue(currentViewedPlayer!!, selectedClues[currentViewedPlayer!!]!!)
+        selectedClues.clear()
 
         val meansCard = gameInstance.value!!.players.find { it.playerName == currentViewedPlayer }!!
             .meansCards.get(selectedMeans[currentViewedPlayer!!]!!).name
 
-        setSelectedMeans(currentViewedPlayer!!, selectedMeans[currentViewedPlayer!!]!!)
+        selectedMeans.clear()
 
         val g = GuessSnapshot(
             guesserPlayer = playerName!!,
@@ -102,8 +111,10 @@ class PlayerViewModel : ViewModel() {
             meansCard = meansCard
         )
 
-        sendGuess(g, gameId)
         sendGuessMessage(gameId, g)
+        sendGuess(g, gameId)
+        isAbleToGuess = false
+        hasGuessed = true
     }
 
     fun getPlayer(): PlayerSnapshot {
