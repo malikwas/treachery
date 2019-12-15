@@ -1,6 +1,5 @@
 package me.kindeep.treachery.shared
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
-
 import me.kindeep.treachery.R
 import me.kindeep.treachery.firebase.models.CardSnapshot
 
@@ -24,10 +22,13 @@ class CardFragment : Fragment {
     var highlighted: Boolean = false
         set(value) {
             field = value
-            if (field) {
-                cardName.background = resources.getDrawable(R.drawable.card_header_gradient_selected)
-            } else {
-                cardName.background = resources.getDrawable(R.drawable.card_header_gradient)
+            if(isInitialized()) {
+                if (field) {
+                    cardName.background =
+                        resources.getDrawable(R.drawable.card_header_gradient_selected)
+                } else {
+                    cardName.background = resources.getDrawable(R.drawable.card_header_gradient)
+                }
             }
         }
 
@@ -58,10 +59,14 @@ class CardFragment : Fragment {
     }
 
     fun bind(cardSnapshot: CardSnapshot) {
-        if (::cardName.isInitialized) {
+        if (isInitialized()) {
             Picasso.get().load(cardSnapshot.imgUrl).resize(170, 200).into(cardImage)
             cardName.text = cardSnapshot.name
         }
+    }
+
+    fun isInitialized(): Boolean {
+        return ::cardName.isInitialized
     }
 
     fun log(value: Any) {

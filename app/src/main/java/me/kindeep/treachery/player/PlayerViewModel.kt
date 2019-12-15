@@ -14,6 +14,25 @@ class PlayerViewModel : ViewModel() {
         var playerName: String? = null
     }
 
+    private val selectedMeans = HashMap<String, Int>()
+    private val selectedClues = HashMap<String, Int>()
+
+    fun getSelectedClue(playerName: String): Int {
+        return selectedClues.getOrElse(playerName) { -1 }
+    }
+
+    fun setSelectedClue(playerName: String, clue: Int) {
+        selectedClues[playerName] = if (clue in 0..3) clue else -1
+    }
+
+    fun getSelectedMeans(playerName: String): Int {
+        return selectedMeans.getOrElse(playerName) { -1 }
+    }
+
+    fun setSelectedMeans(playerName: String, clue: Int) {
+        selectedMeans[playerName] = if (clue in 0..3) clue else -1
+    }
+
     val gameInstance: LiveGameInstanceSnapshot =
         LiveGameInstanceSnapshot(gameId)
 
@@ -38,7 +57,7 @@ class PlayerViewModel : ViewModel() {
     }
 
     fun getPlayerByName(pName: String): PlayerSnapshot {
-       return gameInstance.value?.players?.find { it.playerName == pName } ?: PlayerSnapshot()
+        return gameInstance.value?.players?.find { it.playerName == pName } ?: PlayerSnapshot()
     }
 
     init {
