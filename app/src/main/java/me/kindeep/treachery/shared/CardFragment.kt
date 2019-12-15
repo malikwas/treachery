@@ -44,7 +44,7 @@ class CardFragment : Fragment {
 
      fun bind(cardSnapshot: CardSnapshot) {
         if (::cardName.isInitialized) {
-            Picasso.get().load(cardSnapshot.imgUrl).into(cardImage)
+            Picasso.get().load(cardSnapshot.imgUrl).resize(170,200).into(cardImage)
             cardName.text = cardSnapshot.name
         }
     }
