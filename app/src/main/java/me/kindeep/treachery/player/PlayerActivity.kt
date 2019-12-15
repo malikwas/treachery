@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.widget.ViewPager2
@@ -12,6 +13,7 @@ import me.kindeep.treachery.R
 import me.kindeep.treachery.chat.ChatFragment
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
+import me.kindeep.treachery.onPlayerMurdererDetermined
 import me.kindeep.treachery.shared.SingleForensicCardFragment
 
 /**
@@ -84,6 +86,9 @@ class PlayerActivity : AppCompatActivity() {
             playerPager.offscreenPageLimit = viewModel.gameInstance.value!!.players.size
         })
 
+        onPlayerMurdererDetermined(gameId, playerName) {
+            Toast.makeText(this, "I am the murderer", Toast.LENGTH_LONG).show()
+        }
 
     }
 
