@@ -8,6 +8,8 @@ import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
 import me.kindeep.treachery.firebase.models.GuessSnapshot
 import me.kindeep.treachery.firebase.models.PlayerSnapshot
+import me.kindeep.treachery.firebase.sendProcessedGuessMessage
+
 
 fun selectCauseForensicCard(
     gameId: String,
@@ -62,23 +64,24 @@ fun updateOtherForensicCards(
     }
 }
 
-fun processGuess(guessSnapshot: GuessSnapshot, murdererName: String, murdererClueCard: String,
+fun processGuess(guessSnapshots: List<GuessSnapshot>, guess: GuessSnapshot, murdererName: String, murdererClueCard: String,
                  murdererMeansCard: String, players: List<PlayerSnapshot>, gameId: String) {
-    if (guessSnapshot.guessedPlayer == murdererName && guessSnapshot.clueCard == murdererClueCard
-        && guessSnapshot.meansCard == murdererMeansCard) {
+    if (guess.guessedPlayer == murdererName && guess.clueCard == murdererClueCard
+        && guess.meansCard == murdererMeansCard) {
         // You win?
     } else {
         val player = players.find {
-            it.playerName == guessSnapshot.guessedPlayer
+            it.playerName == guess.guessedPlayer
         }
 
-        player!!.meansCards.find { it.name == guessSnapshot.meansCard }!!.guessedBy =
-            guessSnapshot.guesserPlayer
+        player!!.meansCards.find { it.name == guess.meansCard }!!.guessedBy.add(guess.guesserPlayer)
+        player!!.clueCards.find { it.name == guess.clueCard }!!.guessedBy.add(guess.guesserPlayer)
+        guess.processed = true
 
-        player!!.clueCards.find { it.name == guessSnapshot.clueCard }!!.guessedBy =
-            guessSnapshot.guesserPlayer
+        sendProcessedGuessMessage(gameId, guess)
 
         getGameReference(gameId).update("players", players)
+        getGameReference(gameId).update("guesses", guessSnapshots)
     }
 }
 

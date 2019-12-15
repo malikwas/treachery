@@ -5,5 +5,5 @@ data class GuessSnapshot(
     val guessedPlayer: String = "GuessedPlayer",
     val meansCard: String = "MeansCard",
     val clueCard: String = "ClueCard",
-    val processed: Boolean = false
+    var processed: Boolean = false
 )
