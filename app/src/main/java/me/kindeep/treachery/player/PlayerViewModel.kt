@@ -123,7 +123,6 @@ class PlayerViewModel : ViewModel(), GameViewModel {
             players = gameInstance.value!!.players,
             gameId = gameId
         )
-        setPlayerGuessed(gameId, gameInstance.value!!, playerName!!)
 
 
         isAbleToGuess = false
