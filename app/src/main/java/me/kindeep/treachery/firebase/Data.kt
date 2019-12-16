@@ -13,6 +13,7 @@ import me.kindeep.treachery.firebase.models.GuessSnapshot
 import me.kindeep.treachery.firebase.models.MessageSnapshot
 import kotlin.math.min
 
+const val GAME_COMPLETE_EXPIRE_TIME = 10 * 60// secs
 
 fun getActiveGames(callback: (List<GameInstanceSnapshot>) -> Unit) {
     activeGamesQuery().get()
@@ -27,10 +28,15 @@ fun getActiveGames(callback: (List<GameInstanceSnapshot>) -> Unit) {
 
 fun activeGamesQuery(): Query {
     val firestore = FirebaseFirestore.getInstance()
+    val expiredCreation = Timestamp(
+        Timestamp.now().seconds - (GAME_COMPLETE_EXPIRE_TIME),
+        Timestamp.now().nanoseconds
+    )
+
     return firestore.collection("games")
         .whereEqualTo("started", false)
         .orderBy("createdTimestamp", Query.Direction.DESCENDING)
-        .whereGreaterThan("expiredTimestamp", Timestamp.now())
+        .whereGreaterThan("createdTimestamp", expiredCreation)
 }
 
 fun getGameReference(gameId: String): DocumentReference {
@@ -54,17 +60,11 @@ fun getCardsResourcesSnapshot(onSuccess: (CardsResourcesSnapshot) -> Unit) {
 
 fun createGame(callback: (documentReference: DocumentReference) -> Unit) {
     val id = customRandomString()
-    val gameInstance = GameInstanceSnapshot(
-        expiredTimestamp = Timestamp(
-            Timestamp.now().seconds + (10 * 60),
-            Timestamp.now().nanoseconds
-        )
-    )
+    val gameInstance = GameInstanceSnapshot(gameId = id)
 
     FirebaseFirestore.getInstance().collection("games").document(id).set(gameInstance)
         .addOnSuccessListener {
             val documentReference = getGameReference(id)
-            documentReference.update("gameId", documentReference.id)
             callback(documentReference)
             Log.i("FIREBASE", "DocumentSnapshot written with ID: ${documentReference.id}")
 
