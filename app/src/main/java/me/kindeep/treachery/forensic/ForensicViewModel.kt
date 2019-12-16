@@ -43,13 +43,16 @@ class ForensicViewModel : ViewModel(), GameViewModel{
         gameInstance.observeForever {
             // A guess cannot be made until the game has started, so the murderer has already been
             // selected and the two cards have been chosen
-            var numGuesses = 0
-            for (player in it.players) {
-                if (player.guessed) numGuesses++
-            }
 
-            if (numGuesses == it.players.size) {
-                setGuessesExpired(gameId,true)
+            if (it.players.size >= MIN_PLAYERS_SIZE) {
+                var numGuesses = 0
+                for (player in it.players) {
+                    if (player.guessed) numGuesses++
+                }
+
+                if (numGuesses == it.players.size) {
+                    setGuessesExpired(gameId, true)
+                }
             }
         }
     }
