@@ -48,14 +48,14 @@ class PlayerViewModel : ViewModel() {
         return selectedClues.getOrElse(playerName) { -1 }
     }
 
-    fun setSelectedClue(playerName: String, clue: Int) {
+    fun setSelectedClue(cluePlayer: String, clue: Int) {
         if (!hasGuessed && currentViewedPlayer != playerName) {
-            if (selectedClues[playerName] == clue) selectedClues.remove(playerName)
-            else selectedClues[playerName] = clue
+            if (selectedClues[cluePlayer] == clue) selectedClues.remove(cluePlayer)
+            else selectedClues[cluePlayer] = clue
 
-            isAbleToGuess = !hasGuessed && currentViewedPlayer != playerName && selectedClues.containsKey(playerName)
-                    && selectedMeans.containsKey(playerName) && currentViewedPlayer.equals(
-                playerName
+            isAbleToGuess = !hasGuessed && currentViewedPlayer != playerName && selectedClues.containsKey(cluePlayer)
+                    && selectedMeans.containsKey(cluePlayer) && currentViewedPlayer.equals(
+                cluePlayer
             )
         }
     }
@@ -64,16 +64,14 @@ class PlayerViewModel : ViewModel() {
         return selectedMeans.getOrElse(playerName) { -1 }
     }
 
-
-
-    fun setSelectedMeans(playerName: String, means: Int) {
+    fun setSelectedMeans(meansPlayer: String, means: Int) {
         if (!hasGuessed && currentViewedPlayer != playerName) {
-            if (selectedMeans[playerName] == means) selectedMeans.remove(playerName)
-            else selectedMeans[playerName] = means
+            if (selectedMeans[meansPlayer] == means) selectedMeans.remove(meansPlayer)
+            else selectedMeans[meansPlayer] = means
 
-            isAbleToGuess = !hasGuessed && currentViewedPlayer != playerName && selectedClues.containsKey(playerName)
-                    && selectedMeans.containsKey(playerName) && currentViewedPlayer.equals(
-                playerName
+            isAbleToGuess = !hasGuessed && currentViewedPlayer != playerName && selectedClues.containsKey(meansPlayer)
+                    && selectedMeans.containsKey(meansPlayer) && currentViewedPlayer.equals(
+                meansPlayer
             )
         }
     }
