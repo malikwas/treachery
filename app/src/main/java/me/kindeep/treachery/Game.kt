@@ -417,36 +417,50 @@ var hackBoolBigBrain = true
 fun onGameFinish(gameId: String, callback: () -> Unit) {
     bigBrainSingleCallback = callback
     getGame(gameId) {
-        val currentTime = Timestamp.now()
-        val remainingTime =
-            max(
-                0,
-                (it.startedTimestamp.toDate().time + TOTAL_GAME_TIME) - currentTime.toDate().time
-            )
-
-        val job = GlobalScope.launch(Dispatchers.Main) {
-            delay(remainingTime)
-            if (hackBoolBigBrain) {
-                hackBoolBigBrain = false
-                bigBrainSingleCallback()
-            }
-            return@launch
-        }
-    }
-
-    gameChangeListener(gameId) { prev, new ->
         if (hackBoolBigBrain) {
-            if (new.correctlyGuessed) {
+            if (it.correctlyGuessed) {
                 hackBoolBigBrain = false
                 bigBrainSingleCallback()
-                return@gameChangeListener
-            } else if (new.guessesExpired) {
+                return@getGame
+            } else if (it.guessesExpired) {
                 hackBoolBigBrain = false
                 bigBrainSingleCallback()
-                return@gameChangeListener
+                return@getGame
+            }
+            val currentTime = Timestamp.now()
+            val remainingTime =
+                max(
+                    0,
+                    (it.startedTimestamp.toDate().time + TOTAL_GAME_TIME) - currentTime.toDate().time
+                )
+
+            val job = GlobalScope.launch(Dispatchers.Main) {
+                delay(remainingTime)
+                if (hackBoolBigBrain) {
+                    hackBoolBigBrain = false
+                    bigBrainSingleCallback()
+                }
+                return@launch
+            }
+        }
+
+        if (hackBoolBigBrain) {
+            gameChangeListener(gameId) { prev, new ->
+                if (hackBoolBigBrain) {
+                    if (new.correctlyGuessed) {
+                        hackBoolBigBrain = false
+                        bigBrainSingleCallback()
+                        return@gameChangeListener
+                    } else if (new.guessesExpired) {
+                        hackBoolBigBrain = false
+                        bigBrainSingleCallback()
+                        return@gameChangeListener
+                    }
+                }
             }
         }
     }
+
 }
 
 fun getGameFinishIntent(from: Context, gameId: String): Intent {
