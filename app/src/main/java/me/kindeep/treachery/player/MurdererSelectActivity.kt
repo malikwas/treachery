@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.chat_view.*
 import me.kindeep.treachery.R
 import me.kindeep.treachery.firebase.models.CardSnapshot
@@ -101,6 +102,7 @@ class MurdererSelectActivity : AppCompatActivity() {
                     clueCard = cluesCard,
                     meansCard = meansCard
                 ) {
+                    view.findViewById<MaterialButton>(R.id.murderer_button).isEnabled = false
                     log("Success selecting murder cards, switch")
                 }
             }

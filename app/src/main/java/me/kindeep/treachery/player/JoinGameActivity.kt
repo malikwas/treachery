@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.joined_players_list_item.*
 import me.kindeep.treachery.PlayerAddFailureType
 import me.kindeep.treachery.R
@@ -37,6 +38,9 @@ class JoinGameActivity : AppCompatActivity() {
     }
 
     fun joinGame(v: View) {
+        val joinButton = v.findViewById<MaterialButton>(R.id.join_game)
+        joinButton.isEnabled = false
+
         val playerSnapshot: PlayerSnapshot =
             PlayerSnapshot(playerName = playerNameEditText.text.toString())
         addPlayer(gameId, playerSnapshot, {
@@ -49,16 +53,23 @@ class JoinGameActivity : AppCompatActivity() {
             finish()
         }, {
             when (it) {
-                PlayerAddFailureType.DUPLICATE_NAME -> Toast.makeText(
-                    this@JoinGameActivity,
-                    "Player with name ${playerSnapshot.playerName} already exists! Please choose a different name.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                PlayerAddFailureType.WTF -> Toast.makeText(
-                    this@JoinGameActivity,
-                    "Something went terribly wrong, please retry!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                PlayerAddFailureType.DUPLICATE_NAME -> {
+                    joinButton.isEnabled = true
+                    Toast.makeText(
+                        this@JoinGameActivity,
+                        "Player with name ${playerSnapshot.playerName} already exists! Please choose a different name.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                PlayerAddFailureType.WTF -> {
+                    joinButton.isEnabled = true
+                    Toast.makeText(
+                        this@JoinGameActivity,
+                        "Something went terribly wrong, please retry!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         })
     }

@@ -5,6 +5,7 @@ import android.widget.Button
 import androidx.lifecycle.ViewModel
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.models.*
+import me.kindeep.treachery.processGuess
 import me.kindeep.treachery.sendGuess
 import me.kindeep.treachery.sendGuessMessage
 import kotlin.properties.Delegates
@@ -112,10 +113,20 @@ class PlayerViewModel : ViewModel() {
         )
 
         sendGuessMessage(gameId, g)
-        sendGuess(g, gameId)
+        processGuess(
+            guess = g,
+            murdererName = gameInstance.value!!.murdererName!!,
+            murdererClueCard = gameInstance.value!!.murdererClueCard.name,
+            murdererMeansCard = gameInstance.value!!.murdererMeansCard.name,
+            players = gameInstance.value!!.players,
+            gameId = gameId
+        )
+
+
         isAbleToGuess = false
         hasGuessed = true
     }
+
 
     fun getPlayer(): PlayerSnapshot {
         if (!playerName.isNullOrBlank()) {

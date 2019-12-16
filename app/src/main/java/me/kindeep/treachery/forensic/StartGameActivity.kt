@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import me.kindeep.treachery.FORENSIC_NAME
 import me.kindeep.treachery.R
 import me.kindeep.treachery.StartFailureType
@@ -45,6 +46,9 @@ class StartGameActivity : AppCompatActivity() {
     }
 
     fun startGame(v: View) {
+        val startButton = v.findViewById<MaterialButton>(R.id.start_game)
+        startButton.isEnabled = false
+
         // Open Forensic Activity
         fireStartGame(gameId, {
             Log.i("START_GAME_ACTIVITY", "Styaart the game")
@@ -56,16 +60,22 @@ class StartGameActivity : AppCompatActivity() {
             finish()
         }, {
             when (it) {
-                StartFailureType.NOT_ENOUGH_PLAYERS -> Toast.makeText(
-                    this@StartGameActivity,
-                    "Not Enough Players! Need at least 3 to start.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                StartFailureType.WTF -> Toast.makeText(
-                    this@StartGameActivity,
-                    "Something went terribly wrong, please retry!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                StartFailureType.NOT_ENOUGH_PLAYERS -> {
+                    startButton.isEnabled = true
+                    Toast.makeText(
+                        this@StartGameActivity,
+                        "Not Enough Players! Need at least 3 to start.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                StartFailureType.WTF -> {
+                    startButton.isEnabled = true
+                    Toast.makeText(
+                        this@StartGameActivity,
+                        "Something went terribly wrong, please retry!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         })
     }
