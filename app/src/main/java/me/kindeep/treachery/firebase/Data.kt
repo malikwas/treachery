@@ -29,8 +29,8 @@ fun activeGamesQuery(): Query {
     val firestore = FirebaseFirestore.getInstance()
     return firestore.collection("games")
         .whereEqualTo("started", false)
-        .orderBy("expiredTimestamp", Query.Direction.DESCENDING)
-        .whereLessThan("expiredTimestamp", Timestamp.now())
+        .orderBy("expiredTimestamp", Query.Direction.ASCENDING)
+        .whereGreaterThan("expiredTimestamp", Timestamp.now())
         .orderBy("createdTimestamp", Query.Direction.DESCENDING)
 }
 
