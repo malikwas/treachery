@@ -106,7 +106,21 @@ class PlayerActivity : AppCompatActivity() {
                 )
             }
         })
+
         doAdapterStuff()
+
+        playerPager.postDelayed(object : Runnable {
+            override fun run() {
+                var playerIndex: Int = -1
+                for (i in 0 until viewModel.gameInstance.value!!.players.size) {
+                    if (viewModel.gameInstance.value!!.players[i].playerName == playerName)
+                        playerIndex = i
+                }
+
+                if (playerIndex != -1)
+                    playerPager.setCurrentItem(playerIndex, false)
+            }
+        }, 100)
 
         viewModel.gameInstance.observe(this, Observer {
             log(it)
