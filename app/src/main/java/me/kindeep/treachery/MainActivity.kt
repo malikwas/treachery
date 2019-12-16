@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         gamesRecycler = findViewById(R.id.gamesRecycler)
         val options: FirestoreRecyclerOptions<GameInstanceSnapshot> = FirestoreRecyclerOptions
             .Builder<GameInstanceSnapshot>()
@@ -69,10 +70,17 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(applicationContext)
         }
 
+//        button.isEnabled = true
+
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        button.isEnabled = true
+        super.onRestoreInstanceState(savedInstanceState)
     }
 
     fun newGame(v: View) {
-        button.isEnabled = false
+//        button.isEnabled = false
         createGame {
             val intent = Intent(this, StartGameActivity::class.java)
             val b = Bundle()
