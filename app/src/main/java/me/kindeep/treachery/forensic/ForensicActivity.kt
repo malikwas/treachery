@@ -62,7 +62,6 @@ class ForensicActivity : AppCompatActivity() {
         val playerViewModel = ViewModelProviders.of(this)
             .get(PlayerViewModel::class.java)
 
-        log(viewModel.gameInstance.value ?: "null")
         playerPager = findViewById(R.id.player_pager)
         val adapter = PlayersPagerAdapter(this, playerViewModel, this)
         playerPager.adapter = adapter
