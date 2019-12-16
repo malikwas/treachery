@@ -10,22 +10,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".shared.finish.FinishActivity"></activity>
-        <activity android:name=".player.MurdererSelectActivity" />
         <activity
+            android:screenOrientation="portrait"
+            android:name=".shared.finish.FinishActivity"></activity>
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".player.MurdererSelectActivity" />
+        <activity
+            android:screenOrientation="portrait"
             android:name=".forensic.StartGameActivity"
             android:label="@string/start" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".player.JoinGameActivity"
             android:label="@string/join" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".player.PlayerActivity"
             android:label="@string/player"
             android:theme="@style/AppTheme.NoTitle" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".forensic.ForensicActivity"
             android:label="@string/forensic" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:label="@string/main">
             <intent-filter>
