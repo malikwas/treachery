@@ -277,60 +277,62 @@ fun fireStartGame(
     getGame(gameId) {
         if (it.players.size >= MIN_PLAYERS_SIZE) {
             // Player size ok, start
-            getGameReference(gameId).update("started", true).addOnSuccessListener {
-                // new players should not be added after this update, initialize player cards
-                getGame(gameId) { gameInstance ->
-                    getCardsResourcesSnapshot { cardResources ->
-                        val shuffledClues = cardResources.clueCards.shuffled().toMutableList()
-                        val shuffledMeans = cardResources.meansCards.shuffled().toMutableList()
-                        val murdererIndex = gameInstance.players.indices.random()
-                        val murdererPlayer = gameInstance.players[murdererIndex]
-                        for ((index, player) in gameInstance.players.withIndex()) {
-                            if (index == murdererIndex) {
-                                gameInstance.murdererName = player.playerName
-                            }
-                            // Deal 4 red and blue cards to each player
-                            for (i in 1..4) {
-                                if (shuffledClues.isNotEmpty()) {
-                                    player.clueCards.add(shuffledClues.removeAt(0))
+            getGameReference(gameId).update("startTimestamp", Timestamp.now()).addOnSuccessListener {
+                getGameReference(gameId).update("started", true).addOnSuccessListener {
+                    // new players should not be added after this update, initialize player cards
+                    getGame(gameId) { gameInstance ->
+                        getCardsResourcesSnapshot { cardResources ->
+                            val shuffledClues = cardResources.clueCards.shuffled().toMutableList()
+                            val shuffledMeans = cardResources.meansCards.shuffled().toMutableList()
+                            val murdererIndex = gameInstance.players.indices.random()
+                            val murdererPlayer = gameInstance.players[murdererIndex]
+                            for ((index, player) in gameInstance.players.withIndex()) {
+                                if (index == murdererIndex) {
+                                    gameInstance.murdererName = player.playerName
                                 }
-                                if (shuffledMeans.isNotEmpty()) {
-                                    player.meansCards.add(shuffledMeans.removeAt(0))
-                                }
-                            }
-                        }
-
-                        getGameReference(gameId).update("players", gameInstance.players)
-                            .addOnSuccessListener {
-                                updateField(gameId, "murdererName", murdererPlayer.playerName) {
-                                    updateField(gameId, "murdererSelected", true) {
-                                        sendForensicMessage(gameId, "Murderer, select your clue card and means card.")
-                                        Timer("Murderer Card Select Delay", false).schedule(
-                                            MURDER_SELECT_CARDS_TIMEOUT
-                                        ) {
-                                            log("TIMER FINISHED AAAAARGH")
-                                            selectMurderCards(
-                                                gameId = gameId,
-                                                clueCard = murdererPlayer.clueCards.random(),
-                                                meansCard = murdererPlayer.meansCards.random()
-                                            ) {
-                                                sendForensicMessage(
-                                                    gameId,
-                                                    "Timeout, selecting random cards."
-                                                )
-                                            }
-                                        }
-                                        onMurdererCardsDetermined(gameId) {
-                                            sendForensicMessage(
-                                                gameId,
-                                                "The murderer has selected their cards."
-                                            )
-                                            onSuccess()
-                                            return@onMurdererCardsDetermined
-                                        }
+                                // Deal 4 red and blue cards to each player
+                                for (i in 1..4) {
+                                    if (shuffledClues.isNotEmpty()) {
+                                        player.clueCards.add(shuffledClues.removeAt(0))
+                                    }
+                                    if (shuffledMeans.isNotEmpty()) {
+                                        player.meansCards.add(shuffledMeans.removeAt(0))
                                     }
                                 }
                             }
+
+                            getGameReference(gameId).update("players", gameInstance.players)
+                                .addOnSuccessListener {
+                                    updateField(gameId, "murdererName", murdererPlayer.playerName) {
+                                        updateField(gameId, "murdererSelected", true) {
+                                            sendForensicMessage(gameId, "Murderer, select your clue card and means card.")
+                                            Timer("Murderer Card Select Delay", false).schedule(
+                                                MURDER_SELECT_CARDS_TIMEOUT
+                                            ) {
+                                                log("TIMER FINISHED AAAAARGH")
+                                                selectMurderCards(
+                                                    gameId = gameId,
+                                                    clueCard = murdererPlayer.clueCards.random(),
+                                                    meansCard = murdererPlayer.meansCards.random()
+                                                ) {
+                                                    sendForensicMessage(
+                                                        gameId,
+                                                        "Timeout, selecting random cards."
+                                                    )
+                                                }
+                                            }
+                                            onMurdererCardsDetermined(gameId) {
+                                                sendForensicMessage(
+                                                    gameId,
+                                                    "The murderer has selected their cards."
+                                                )
+                                                onSuccess()
+                                                return@onMurdererCardsDetermined
+                                            }
+                                        }
+                                    }
+                                }
+                        }
                     }
                 }
             }

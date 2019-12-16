@@ -22,6 +22,7 @@ data class GameInstanceSnapshot(
     val started: Boolean = false,
     val createdTimestamp: Timestamp = Timestamp.now(),
     val startedTimestamp: Timestamp = Timestamp.now(),
+    val expiredTimestamp: Timestamp = Timestamp.now(),
     val murdererSelected: Boolean = false,
     var murdererName: String? = null,
     var murdererMeansCard: CardSnapshot = CardSnapshot(),

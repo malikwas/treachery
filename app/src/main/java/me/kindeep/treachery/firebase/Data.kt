@@ -3,6 +3,7 @@ package me.kindeep.treachery.firebase
 import android.util.Log
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
@@ -26,7 +27,9 @@ fun getActiveGames(callback: (List<GameInstanceSnapshot>) -> Unit) {
 
 fun activeGamesQuery(): Query {
     val firestore = FirebaseFirestore.getInstance()
-    return firestore.collection("games").whereEqualTo("started", false)
+    return firestore.collection("games")
+        .whereEqualTo("started", false)
+        .whereLessThan("expiredTimestamp", Timestamp.now())
         .orderBy("createdTimestamp", Query.Direction.DESCENDING)
 }
 
@@ -51,7 +54,11 @@ fun getCardsResourcesSnapshot(onSuccess: (CardsResourcesSnapshot) -> Unit) {
 
 fun createGame(callback: (documentReference: DocumentReference) -> Unit) {
     val id = customRandomString()
-    FirebaseFirestore.getInstance().collection("games").document(id).set(GameInstanceSnapshot())
+    val gameInstance = GameInstanceSnapshot(
+        expiredTimestamp = Timestamp(Timestamp.now().seconds + (10 * 60), Timestamp.now().nanoseconds)
+    )
+
+    FirebaseFirestore.getInstance().collection("games").document(id).set(gameInstance)
         .addOnSuccessListener {
             val documentReference = getGameReference(id)
             documentReference.update("gameId", documentReference.id)
