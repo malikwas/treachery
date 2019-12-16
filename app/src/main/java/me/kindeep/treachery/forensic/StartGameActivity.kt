@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import me.kindeep.treachery.*
 import me.kindeep.treachery.chat.ChatFragment
+import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
+import me.kindeep.treachery.firebase.models.PlayerSnapshot
+import me.kindeep.treachery.player.PlayerViewModel
 
 import me.kindeep.treachery.shared.JoinedPlayersFragment
 
@@ -33,6 +36,10 @@ class StartGameActivity : AppCompatActivity() {
         gameId = intent?.extras?.getString("gameId")!!
         findViewById<TextView>(R.id.gameId).text = gameId
 
+        addOnGameUpdateListener(gameId) {
+            PlayerViewModel.playerName = it.players.getOrElse(0) { PlayerSnapshot() }.playerName
+        }
+
         ForensicViewModel.gameId = gameId
 
         joinedPlayersFragment.gameId = gameId
@@ -47,7 +54,6 @@ class StartGameActivity : AppCompatActivity() {
         super.onDestroy()
         fireStartGame(gameId)
     }
-
 
 
     fun startGame(v: View) {

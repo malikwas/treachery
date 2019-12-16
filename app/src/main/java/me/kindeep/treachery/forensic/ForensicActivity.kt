@@ -58,7 +58,6 @@ class ForensicActivity : AppCompatActivity() {
 
 
         PlayerViewModel.gameId = gameId
-        PlayerViewModel.playerName = viewModel.gameInstance.value!!.players[0].playerName
 
         val playerViewModel = ViewModelProviders.of(this)
             .get(PlayerViewModel::class.java)
