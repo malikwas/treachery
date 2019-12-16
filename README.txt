@@ -3,6 +3,7 @@ Min SDK: API Level 23
 Advanced usage of API:
   Firebase API to play a complex real-time card game with as many people as possible (minimum of 3 players, 1 forensic).
   Firebase API to chat with all players in real-time and to communicate essential game information.
+  Microsoft Azure to get 300 images for card names.
   Picasso API to load up to 300 images, used for gameplay.
   Written 100% in Kotlin.
 
