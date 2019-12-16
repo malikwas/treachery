@@ -20,6 +20,7 @@ import me.kindeep.treachery.firebase.models.*
 import me.kindeep.treachery.forensic.ForensicActivity
 import me.kindeep.treachery.player.PlayerActivity
 import me.kindeep.treachery.shared.finish.FinishActivity
+import java.sql.Time
 import java.util.*
 import kotlin.concurrent.schedule
 import kotlin.math.max
@@ -29,8 +30,8 @@ import kotlin.math.min
 const val MIN_PLAYERS_SIZE = 1
 const val MURDER_SELECT_CARDS_TIMEOUT: Long = 10000
 const val FORENSIC_NAME: String = "Forensic Scientist"
-const val SINGLE_CARD_TIME: Long = 10000
-const val TOTAL_GAME_TIME: Long = 100000
+const val SINGLE_CARD_TIME: Long = 30000
+const val TOTAL_GAME_TIME: Long = 400000
 
 
 // Type 2: Game information
@@ -131,6 +132,7 @@ fun updateOtherForensicCards(
     onSuccess: (() -> Unit) = {}
 ) {
     getGameReference(gameId).update("otherCards", otherCards).addOnSuccessListener {
+        sendForensicMessage(gameId, "Added another card")
         onSuccess()
     }
 }
@@ -157,24 +159,6 @@ fun startRound(
             onSuccess()
         }
     }
-}
-
-fun startRound2(
-    gameId: String,
-    replaceCardName: String,
-    newCard: ForensicCardSnapshot,
-    onSuccess: () -> Unit = {}
-) {
-    startRound(gameId, 2, replaceCardName, newCard, onSuccess)
-}
-
-fun startRound3(
-    gameId: String,
-    replaceCardName: String,
-    newCard: ForensicCardSnapshot,
-    onSuccess: () -> Unit = {}
-) {
-    startRound(gameId, 3, replaceCardName, newCard, onSuccess)
 }
 
 fun onPlayerMurdererDetermined(gameId: String, playerName: String, callback: () -> Unit) {
@@ -262,7 +246,9 @@ fun selectOtherCard(
             }
         }
 
-        getGameReference(gameId).update("otherCards", it.otherCards)
+        getGameReference(gameId).update("otherCards", it.otherCards).addOnSuccessListener {
+            onSuccess()
+        }
     }
 }
 
@@ -417,6 +403,11 @@ fun log(toLog: Any) {
     Log.i("GAME_KT", toLog.toString())
 }
 
+fun getRemainingTime(startedTimestamp: Timestamp): Long {
+    val currentTime = Timestamp.now()
+    return max(0, (startedTimestamp.toDate().time + TOTAL_GAME_TIME) - currentTime.toDate().time)
+
+}
 
 /**
  * Only ever set this once. ONCE. ONLY.
