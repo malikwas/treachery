@@ -28,7 +28,7 @@ import kotlin.math.min
 
 
 const val MIN_PLAYERS_SIZE = 3
-const val MURDER_SELECT_CARDS_TIMEOUT: Long = 3000
+const val MURDER_SELECT_CARDS_TIMEOUT: Long = 30000
 const val FORENSIC_NAME: String = "Forensic Scientist"
 const val SINGLE_CARD_TIME: Long = 30000
 const val TOTAL_GAME_TIME: Long = 400000
@@ -218,14 +218,10 @@ fun processGuess(
     players: List<PlayerSnapshot>,
     gameId: String
 ) {
-    sendForensicMessage(
-        gameId,
-        "Processing guess $murdererName ${guess.guessedPlayer} $murdererMeansCard $murdererClueCard $guess"
-    )
     if (guess.guessedPlayer == murdererName && guess.clueCard == murdererClueCard
         && guess.meansCard == murdererMeansCard
     ) {
-        sendForensicMessage(gameId, "That guess was correct")
+        sendForensicMessage(gameId, "That guess was correct! You win.")
         updateField(gameId, "correctlyGuessed", true) {
             updateField(gameId, "correctGuess", guess) {
 

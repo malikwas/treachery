@@ -14,10 +14,10 @@ data class GameInstanceSnapshot(
     val messages: List<MessageSnapshot> = mutableListOf(),
     val guesses: List<GuessSnapshot> = listOf(),
     val players: MutableList<PlayerSnapshot> = mutableListOf(
-        PlayerSnapshot(playerName = "One me na"),
-        PlayerSnapshot(playerName = "sdf"),
-        PlayerSnapshot(playerName = "dba"),
-        PlayerSnapshot(playerName = "Ofhr")
+//        PlayerSnapshot(playerName = "One me na"),
+//        PlayerSnapshot(playerName = "sdf"),
+//        PlayerSnapshot(playerName = "dba"),
+//        PlayerSnapshot(playerName = "Ofhr")
     ),
     val started: Boolean = false,
     val createdTimestamp: Timestamp = Timestamp.now(),
