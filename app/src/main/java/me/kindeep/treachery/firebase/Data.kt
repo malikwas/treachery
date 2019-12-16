@@ -44,8 +44,10 @@ fun getCardsResourcesSnapshot(onSuccess: (CardsResourcesSnapshot) -> Unit) {
 
 
 fun createGame(callback: (documentReference: DocumentReference) -> Unit) {
-    FirebaseFirestore.getInstance().collection("games").add(GameInstanceSnapshot())
-        .addOnSuccessListener { documentReference ->
+    val id = customRandomString()
+    FirebaseFirestore.getInstance().collection("games").document(id).set(GameInstanceSnapshot())
+        .addOnSuccessListener {
+            val documentReference = getGameReference(id)
             documentReference.update("gameId", documentReference.id)
             callback(documentReference)
             Log.i("FIREBASE", "DocumentSnapshot written with ID: ${documentReference.id}")
@@ -86,4 +88,14 @@ fun getGame(
         .get().addOnSuccessListener {
             onSuccess(it.toObject<GameInstanceSnapshot>()!!)
         }
+}
+
+
+fun customRandomString(): String {
+    val allowedChars = ('a'..'z') + ('1'..'9')
+    var string = ""
+    for (i in 1..10) {
+        string += allowedChars.random()
+    }
+    return string
 }

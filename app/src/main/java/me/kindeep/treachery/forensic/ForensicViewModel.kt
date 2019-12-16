@@ -11,10 +11,7 @@ import me.kindeep.treachery.firebase.*
 import me.kindeep.treachery.firebase.models.CardsResourcesSnapshot
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.firebase.models.LiveGameInstanceSnapshot
-import java.util.*
 import kotlin.collections.HashSet
-import kotlin.concurrent.schedule
-import kotlin.math.roundToInt
 
 class ForensicViewModel : ViewModel() {
     companion object {

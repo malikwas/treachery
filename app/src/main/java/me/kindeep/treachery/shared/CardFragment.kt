@@ -64,6 +64,7 @@ class CardFragment : Fragment {
 
     fun bind(cardSnapshot: CardSnapshot) {
         if (isInitialized()) {
+            log("Trying to bind $cardSnapshot to ${this.hashCode()}")
             Picasso.get()
                 .load(cardSnapshot.imgUrl)
                 .resize(170, 200)

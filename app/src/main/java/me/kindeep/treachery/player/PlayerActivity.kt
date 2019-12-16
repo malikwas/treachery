@@ -5,25 +5,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
-import kotlinx.android.synthetic.main.joined_players_list_item.*
 import me.kindeep.treachery.R
 import me.kindeep.treachery.chat.ChatFragment
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
-import me.kindeep.treachery.firebase.getGameReference
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.getGameFinishIntent
-import me.kindeep.treachery.onGameTimerExpire
+import me.kindeep.treachery.onGameFinish
 import me.kindeep.treachery.onPlayerMurdererDetermined
 import me.kindeep.treachery.shared.SingleForensicCardFragment
 import kotlin.math.max
-import kotlin.math.min
 
 /**
  * Displays every other player, their cards and a messages box for discussion.
@@ -98,7 +94,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         playerPager = findViewById(R.id.player_pager)
-        playerPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+        playerPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 viewModel.setCurrentViewedPlayer(
@@ -134,8 +130,11 @@ class PlayerActivity : AppCompatActivity() {
         }
 
 
-        onGameTimerExpire(gameId) {
-            startActivity(getGameFinishIntent(this))
+
+        onGameFinish(gameId) {
+            startActivity(getGameFinishIntent(this, gameId))
+            finish()
+            finishAndRemoveTask()
         }
     }
 
