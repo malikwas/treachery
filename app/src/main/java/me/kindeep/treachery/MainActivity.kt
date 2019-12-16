@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun newGame(v: View) {
-        v.findViewById<MaterialButton>(R.id.join_game).isEnabled = false
+        button.isEnabled = false
         createGame {
             val intent = Intent(this, StartGameActivity::class.java)
             val b = Bundle()

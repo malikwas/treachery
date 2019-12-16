@@ -36,6 +36,7 @@
             android:id="@+id/select_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             android:backgroundTint="@color/colorAccent"
             android:layout_weight="0"
             android:text="Finalize card" />
