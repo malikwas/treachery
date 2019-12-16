@@ -27,7 +27,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-const val MIN_PLAYERS_SIZE = 1
+const val MIN_PLAYERS_SIZE = 3
 const val MURDER_SELECT_CARDS_TIMEOUT: Long = 30000
 const val FORENSIC_NAME: String = "Forensic Scientist"
 const val SINGLE_CARD_TIME: Long = 30000
