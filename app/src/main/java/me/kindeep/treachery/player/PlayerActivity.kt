@@ -42,6 +42,7 @@ class PlayerActivity : AppCompatActivity() {
 
     fun handleOnGuessClick(v: View) {
         viewModel.makeGuess()
+        v.findViewById<MaterialButton>(R.id.guess_button).text = "Guess made"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
