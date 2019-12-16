@@ -26,7 +26,7 @@ fun getActiveGames(callback: (List<GameInstanceSnapshot>) -> Unit) {
 
 fun activeGamesQuery(): Query {
     val firestore = FirebaseFirestore.getInstance()
-    return firestore.collection("games").orderBy("createdTimestamp", Query.Direction.DESCENDING)
+    return firestore.collection("games").whereEqualTo("started", false).orderBy("createdTimestamp", Query.Direction.DESCENDING)
 }
 
 fun getGameReference(gameId: String): DocumentReference {

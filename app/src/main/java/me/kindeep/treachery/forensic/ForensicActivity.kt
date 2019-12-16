@@ -26,6 +26,7 @@ class ForensicActivity : AppCompatActivity() {
     lateinit var frag5: SingleForensicCardFragment
     lateinit var frag6: SingleForensicCardFragment
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forensic)

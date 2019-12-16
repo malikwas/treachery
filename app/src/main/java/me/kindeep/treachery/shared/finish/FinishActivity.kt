@@ -23,6 +23,7 @@ class FinishActivity : AppCompatActivity() {
             replace(R.id.clue_card, clueFragment, "clueCardFinish")
             commit()
         }
+        val text = findViewById<TextView>(R.id.win_text)
         getGame(gameId) {
 
             Log.e(
@@ -33,9 +34,9 @@ class FinishActivity : AppCompatActivity() {
             clueFragment.bind(it.murdererClueCard.copy())
             meansFragment.bind(it.murdererMeansCard.copy())
             if(it.correctlyGuessed) {
-                findViewById<TextView>(R.id.win_text).text = "Correctly guessed by ${it.correctGuess.guesserPlayer}, you win!"
+                 text.text = "Correctly guessed by ${it.correctGuess.guesserPlayer}, you win!"
             } else {
-                findViewById<TextView>(R.id.win_text).text = "No one could determine the murderer, murderer wins!"
+                text.text = "No one could determine the murderer, murderer wins!"
             }
         }
     }

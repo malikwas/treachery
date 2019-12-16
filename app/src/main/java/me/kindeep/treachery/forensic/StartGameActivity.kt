@@ -42,6 +42,13 @@ class StartGameActivity : AppCompatActivity() {
         chat.removeTextBox()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        fireStartGame(gameId)
+    }
+
+
+
     fun startGame(v: View) {
         val startButton = v.findViewById<MaterialButton>(R.id.start_game)
         startButton.isEnabled = false

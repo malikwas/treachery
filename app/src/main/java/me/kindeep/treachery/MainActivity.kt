@@ -6,12 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
 import me.kindeep.treachery.firebase.activeGamesQuery
@@ -24,7 +26,7 @@ import me.kindeep.treachery.player.PlayerActivity
 class MainActivity : AppCompatActivity() {
 
     lateinit var gamesRecycler: RecyclerView
-
+    lateinit var button: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             .setQuery(activeGamesQuery(), GameInstanceSnapshot::class.java)
             .setLifecycleOwner(this)
             .build()
-
+        button = findViewById(R.id.new_game)
 
         gamesRecycler.apply {
             // adapter
