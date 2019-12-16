@@ -85,7 +85,6 @@ class PlayerActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this)
             .get(PlayerViewModel::class.java)
-//        setContentView(R.layout.activity_player)
 
         val guessButton = findViewById<MaterialButton>(R.id.guess_button)
         guessButton.isEnabled = viewModel.getIsAbleToGuess()

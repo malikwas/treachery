@@ -26,12 +26,18 @@ fun getActiveGames(callback: (List<GameInstanceSnapshot>) -> Unit) {
 
 fun activeGamesQuery(): Query {
     val firestore = FirebaseFirestore.getInstance()
-    return firestore.collection("games").whereEqualTo("started", false).orderBy("createdTimestamp", Query.Direction.DESCENDING)
+    return firestore.collection("games").whereEqualTo("started", false)
+        .orderBy("createdTimestamp", Query.Direction.DESCENDING)
 }
 
 fun getGameReference(gameId: String): DocumentReference {
+    var gameIdIn = gameId
+    if(gameIdIn.isNullOrEmpty()) {
+        gameIdIn = "default"
+    }
     val firestore = FirebaseFirestore.getInstance()
-    return firestore.collection("games").document(gameId)
+    return firestore.collection("games").document(gameIdIn)
+
 }
 
 fun getCardsResourcesSnapshot(onSuccess: (CardsResourcesSnapshot) -> Unit) {

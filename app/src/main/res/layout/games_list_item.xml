@@ -9,14 +9,13 @@
     android:focusable="false"
     android:foreground="?attr/selectableItemBackground"
     android:padding="4dp"
-    android:background="@color/colorSurface"
     android:id="@+id/click_view"
     card_view:cardCornerRadius="4dp"
     card_view:layout_constraintCircleRadius="@dimen/cardRadius">
 
     <LinearLayout
         android:padding="4dp"
-        android:background="@color/colorSurface"
+        android:background="@color/grey2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">

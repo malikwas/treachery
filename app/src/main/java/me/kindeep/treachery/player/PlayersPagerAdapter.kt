@@ -8,10 +8,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import me.kindeep.treachery.firebase.models.PlayerSnapshot
+import me.kindeep.treachery.forensic.GameViewModel
 
 class PlayersPagerAdapter(
     f: FragmentActivity,
-    val viewModel: PlayerViewModel,
+    val viewModel: GameViewModel,
     lifecycleOwner: LifecycleOwner
 ) :
     FragmentStateAdapter(f) {
@@ -23,10 +24,10 @@ class PlayersPagerAdapter(
         }
 
     init {
-//        viewModel.gameInstance.value?.players ?: listOf()
-        viewModel.gameInstance.observe(lifecycleOwner, Observer {
-            notifyDataSetChanged()
-        })
+//        viewModel.gameInstance.observe(lifecycleOwner, Observer {
+//            log(it)
+//            notifyDataSetChanged()
+//        })
     }
 
     override fun getItemCount(): Int {
