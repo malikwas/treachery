@@ -440,19 +440,25 @@ fun getRemainingTime(startedTimestamp: Timestamp): Long {
 
 /**
  * Only ever set this once. ONCE. ONLY.
+ *
+ * Call reset for setting agaign
  */
 var bigBrainSingleCallback: () -> Unit = {}
 var hackBoolBigBrain = true
 fun onGameFinish(gameId: String, callback: () -> Unit) {
+    log("On game finish created")
     bigBrainSingleCallback = callback
     getGame(gameId) {
+        log("On game finish got game")
         if (hackBoolBigBrain) {
             if (it.correctlyGuessed) {
                 hackBoolBigBrain = false
+                log("trigger finish callback")
                 bigBrainSingleCallback()
                 return@getGame
             } else if (it.guessesExpired) {
                 hackBoolBigBrain = false
+                log("trigger finish callback")
                 bigBrainSingleCallback()
                 return@getGame
             }
@@ -467,6 +473,7 @@ fun onGameFinish(gameId: String, callback: () -> Unit) {
                 delay(remainingTime)
                 if (hackBoolBigBrain) {
                     hackBoolBigBrain = false
+                    log("trigger finish callback")
                     bigBrainSingleCallback()
                 }
                 return@launch
@@ -482,6 +489,7 @@ fun onGameFinish(gameId: String, callback: () -> Unit) {
                         return@gameChangeListener
                     } else if (new.guessesExpired) {
                         hackBoolBigBrain = false
+                        log("trigger finish callback")
                         bigBrainSingleCallback()
                         return@gameChangeListener
                     }
@@ -490,6 +498,10 @@ fun onGameFinish(gameId: String, callback: () -> Unit) {
         }
     }
 
+}
+
+fun resetGameFinisher() {
+    hackBoolBigBrain = true
 }
 
 fun getGameFinishIntent(from: Context, gameId: String): Intent {

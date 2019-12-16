@@ -7,13 +7,10 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.widget.ViewPager2
-import me.kindeep.treachery.FORENSIC_NAME
-import me.kindeep.treachery.R
+import me.kindeep.treachery.*
 import me.kindeep.treachery.chat.ChatFragment
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
-import me.kindeep.treachery.getGameFinishIntent
-import me.kindeep.treachery.onGameFinish
 import me.kindeep.treachery.player.PlayerViewModel
 import me.kindeep.treachery.player.PlayersPagerAdapter
 import me.kindeep.treachery.player.SinglePlayerFragment
@@ -37,6 +34,7 @@ class ForensicActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        resetGameFinisher()
         setContentView(R.layout.activity_forensic)
         gameId = intent?.extras?.getString("gameId")!!
         murdererNameText = findViewById(R.id.murderer_name)

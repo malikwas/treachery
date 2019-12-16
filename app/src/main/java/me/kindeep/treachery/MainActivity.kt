@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         gamesRecycler = findViewById(R.id.gamesRecycler)
         val options: FirestoreRecyclerOptions<GameInstanceSnapshot> = FirestoreRecyclerOptions
             .Builder<GameInstanceSnapshot>()
