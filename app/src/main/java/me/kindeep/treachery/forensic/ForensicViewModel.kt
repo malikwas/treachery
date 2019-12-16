@@ -45,7 +45,8 @@ class ForensicViewModel : ViewModel() {
             }
 
             if (numGuesses == it.players.size) {
-            } // TODO: Game over (same as timer running out)
+                setGuessesExpired(gameId,true)
+            }
         }
     }
 

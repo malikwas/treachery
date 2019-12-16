@@ -37,6 +37,9 @@ const val TOTAL_GAME_TIME: Long = 400000
 // Type 2: Game information
 // Type 1: Chat message
 // Just 1 and 2
+fun setGuessesExpired(gameId: String, state: Boolean) {
+    getGameReference(gameId).update("guessesExpired", state)
+}
 
 fun sendProcessedGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
     sendMessage(
