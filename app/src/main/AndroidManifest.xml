@@ -11,33 +11,42 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:screenOrientation="portrait"
-            android:name=".shared.finish.FinishActivity"></activity>
+            android:name=".shared.finish.FinishActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:screenOrientation="portrait"
-            android:name=".player.MurdererSelectActivity" />
+            android:name=".player.MurdererSelectActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".forensic.StartGameActivity"
-            android:label="@string/start" />
+            android:label="@string/start"
+            android:launchMode="singleTop"
+
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".player.JoinGameActivity"
-            android:label="@string/join" />
+            android:label="@string/join"
+            android:launchMode="singleTop"
+
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".player.PlayerActivity"
             android:label="@string/player"
+            android:launchMode="singleTop"
+
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".forensic.ForensicActivity"
-            android:theme="@style/AppTheme.NoTitle"
-            android:label="@string/forensic" />
-        <activity
+            android:label="@string/forensic"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+
+            android:theme="@style/AppTheme.NoTitle" />
+        <activity
             android:name=".MainActivity"
-            android:label="@string/main">
+            android:label="@string/main"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
