@@ -9,6 +9,7 @@ import me.kindeep.treachery.forensic.GameViewModel
 import me.kindeep.treachery.processGuess
 import me.kindeep.treachery.sendGuess
 import me.kindeep.treachery.sendGuessMessage
+import me.kindeep.treachery.setPlayerGuessed
 import kotlin.properties.Delegates
 
 class EnableChange(state: Boolean) {
@@ -122,6 +123,7 @@ class PlayerViewModel : ViewModel(), GameViewModel {
             players = gameInstance.value!!.players,
             gameId = gameId
         )
+        setPlayerGuessed(gameId, gameInstance.value!!, playerName!!)
 
 
         isAbleToGuess = false

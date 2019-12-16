@@ -47,6 +47,13 @@ fun setGuessesExpired(gameId: String, state: Boolean) {
     getGameReference(gameId).update("guessesExpired", state)
 }
 
+fun setPlayerGuessed(gameId: String, gameInstance: GameInstanceSnapshot, playerName: String) {
+    var players = gameInstance.players
+
+    players.find { it.playerName == playerName }!!.guessed = true
+    getGameReference(gameId).update("players", players)
+}
+
 fun sendProcessedGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
     sendMessage(
         MessageSnapshot(
