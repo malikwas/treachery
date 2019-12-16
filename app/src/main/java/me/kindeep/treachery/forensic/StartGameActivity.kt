@@ -9,11 +9,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import me.kindeep.treachery.FORENSIC_NAME
-import me.kindeep.treachery.R
-import me.kindeep.treachery.StartFailureType
+import me.kindeep.treachery.*
 import me.kindeep.treachery.chat.ChatFragment
-import me.kindeep.treachery.fireStartGame
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
 
 import me.kindeep.treachery.shared.JoinedPlayersFragment
@@ -64,7 +61,7 @@ class StartGameActivity : AppCompatActivity() {
                     startButton.isEnabled = true
                     Toast.makeText(
                         this@StartGameActivity,
-                        "Not Enough Players! Need at least 3 to start.",
+                        "Not Enough Players! Need at least $MIN_PLAYERS_SIZE to start.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
