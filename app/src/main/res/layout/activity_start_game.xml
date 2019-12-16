@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:weightSum="2"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".forensic.ForensicActivity">
@@ -34,7 +35,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_weight="1"
+        android:layout_height="0dp">
 
         <fragment
             android:id="@+id/joined_players_fragment"
@@ -54,6 +56,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <fragment
+        android:id="@+id/chat_fragment"
+        android:name="me.kindeep.treachery.chat.ChatFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:context=".player.PlayerActivity" />
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

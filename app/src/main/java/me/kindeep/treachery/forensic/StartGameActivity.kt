@@ -8,8 +8,10 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import me.kindeep.treachery.FORENSIC_NAME
 import me.kindeep.treachery.R
 import me.kindeep.treachery.StartFailureType
+import me.kindeep.treachery.chat.ChatFragment
 import me.kindeep.treachery.fireStartGame
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
 
@@ -27,6 +29,7 @@ class StartGameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start_game)
 
+
         joinedPlayersFragment =
             supportFragmentManager.findFragmentById(R.id.joined_players_fragment) as JoinedPlayersFragment
 
@@ -34,6 +37,11 @@ class StartGameActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.gameId).text = gameId
 
         joinedPlayersFragment.gameId = gameId
+
+        var chat = supportFragmentManager.findFragmentById(R.id.chat_fragment) as ChatFragment
+        chat.gameId = gameId
+        chat.playerName = FORENSIC_NAME
+        chat.removeTextBox()
     }
 
     fun startGame(v: View) {

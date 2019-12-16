@@ -2,12 +2,16 @@ package me.kindeep.treachery.player
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.android.synthetic.main.chat_view.*
 import me.kindeep.treachery.R
+import me.kindeep.treachery.firebase.models.CardSnapshot
+import me.kindeep.treachery.selectMurderCards
 import kotlin.math.max
 
 
@@ -20,6 +24,7 @@ class MurdererSelectActivity : AppCompatActivity() {
     lateinit var viewModel: PlayerViewModel
     lateinit var playerPager: ViewPager2
     lateinit var currentPlayerFragment: SinglePlayerFragment
+    val selectorId = "murdererCardSelector"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +47,7 @@ class MurdererSelectActivity : AppCompatActivity() {
         val fragment = SinglePlayerFragment()
         val bundle = Bundle()
         bundle.putString("playerName", playerName)
+        bundle.putString("uid", selectorId)
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.murderer_fragment_container, fragment, "murdererFragment")
@@ -52,7 +58,6 @@ class MurdererSelectActivity : AppCompatActivity() {
 
 
         viewModel.gameInstance.observe(this, Observer {
-            log(it)
             findViewById<TextView>(R.id.gameId).text = it.gameId
             playerPager.offscreenPageLimit = max(viewModel.gameInstance.value!!.players.size, 1)
         })
@@ -66,7 +71,37 @@ class MurdererSelectActivity : AppCompatActivity() {
     }
 
     fun log(umm: Any) {
-        Log.e("PLAYER_ACTIVITY", umm.toString())
+        Log.i("MURDER_SELECT_ACTIVITY", umm.toString())
+    }
+
+    private fun getSelectedMeansCard(): CardSnapshot? {
+        log("helo ${viewModel.getSelectedMeans(playerName + selectorId)}")
+        return viewModel.getPlayerByName(playerName)
+            .meansCards.getOrElse(viewModel.getSelectedMeans(playerName + selectorId)) { null }
+    }
+
+    private fun getSelectedCluesCard(): CardSnapshot? {
+        return viewModel.getPlayerByName(playerName)
+            .clueCards.getOrElse(viewModel.getSelectedClue(playerName + selectorId)) { null }
+    }
+
+    fun selectCards(view: View) {
+        log("Selecting cards")
+        getSelectedCluesCard()?.also { cluesCard ->
+            log("Selecting cards Clue card: ${cluesCard.name}")
+            getSelectedMeansCard()?.also { meansCard ->
+                log("Selecting cards Means card: ${meansCard.name}")
+                selectMurderCards(
+                    gameId,
+                    clueCard = cluesCard,
+                    meansCard = meansCard
+                ) {
+                    log("Success selecting murder cards, switch")
+                    finish()
+                }
+            }
+        }
+        viewModel.getSelectedClue(playerName + selectorId)
     }
 
 

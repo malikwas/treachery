@@ -18,4 +18,5 @@
     <color name="testOrange">#F87147</color>
     <color name="cardPressedColor">#4847F8C6</color>
     <color name="cardNormalColor">#00000000</color>
+    <color name="chatBackground">#E9E9E9</color>
 </resources>

@@ -125,10 +125,6 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
-    fun log(umm: Any) {
-        Log.e("PLAYER_ACTIVITY", umm.toString())
-    }
-
 
     fun startMurdererActivity() {
         val intent = Intent(this, MurdererSelectActivity::class.java)
@@ -137,5 +133,9 @@ class PlayerActivity : AppCompatActivity() {
         b.putString("playerName", playerName)
         intent.putExtras(b)
         startActivity(intent)
+    }
+
+    fun log(umm: Any) {
+        Log.i("PLAYER_ACTIVITY", umm.toString())
     }
 }

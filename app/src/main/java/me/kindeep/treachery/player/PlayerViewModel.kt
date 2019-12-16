@@ -12,7 +12,7 @@ import kotlin.properties.Delegates
 class EnableChange(state: Boolean) {
     var changeListeners = ArrayList<() -> Unit>()
 
-    var bool: Boolean by Delegates.observable(state) {_, _, newValue ->
+    var bool: Boolean by Delegates.observable(state) { _, _, newValue ->
         changeListeners.forEach {
             it()
         }
@@ -64,6 +64,8 @@ class PlayerViewModel : ViewModel() {
         return selectedMeans.getOrElse(playerName) { -1 }
     }
 
+
+
     fun setSelectedMeans(playerName: String, means: Int) {
         if (!hasGuessed && currentViewedPlayer != playerName) {
             if (selectedMeans[playerName] == means) selectedMeans.remove(playerName)
@@ -107,7 +109,7 @@ class PlayerViewModel : ViewModel() {
         val g = GuessSnapshot(
             guesserPlayer = playerName!!,
             guessedPlayer = currentViewedPlayer!!,
-            clueCard =  clueCard,
+            clueCard = clueCard,
             meansCard = meansCard
         )
 

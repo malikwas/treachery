@@ -26,7 +26,7 @@ class JoinGameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join_game)
         joinedPlayersFragment =
-        supportFragmentManager.findFragmentById(R.id.joined_players_fragment) as JoinedPlayersFragment
+            supportFragmentManager.findFragmentById(R.id.joined_players_fragment) as JoinedPlayersFragment
         gameId = intent?.extras?.getString("gameId")!!
         findViewById<TextView>(R.id.gameId).text = gameId
 

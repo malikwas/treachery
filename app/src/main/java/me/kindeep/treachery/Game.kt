@@ -10,6 +10,12 @@ import me.kindeep.treachery.firebase.models.*
 import java.util.*
 import kotlin.concurrent.schedule
 
+
+const val MIN_PLAYERS_SIZE = 1
+const val MURDER_SELECT_CARDS_TIMEOUT: Long = 10000
+const val FORENSIC_NAME: String = "Forensic Scientist"
+
+
 // Type 2: Game information
 // Type 1: Chat message
 // Just 1 and 2
@@ -17,9 +23,9 @@ import kotlin.concurrent.schedule
 fun sendProcessedGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
     sendMessage(
         MessageSnapshot(
-            playerName = "Forensic",
+            playerName = FORENSIC_NAME,
             type = 2,
-            message = "No ${guessSnapshot.guesserPlayer}, that guess was incorrect."
+            message = "No ${guessSnapshot.guesserPlayer}, that guess is incorrect."
         ), gameId
     )
 }
@@ -27,7 +33,7 @@ fun sendProcessedGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
 fun sendForensicMessage(gameId: String, message: String) {
     sendMessage(
         MessageSnapshot(
-            playerName = "Forensic",
+            playerName = FORENSIC_NAME,
             type = 2,
             message = message
         ), gameId
@@ -45,7 +51,7 @@ fun sendGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
     )
 }
 
-fun sendMessage (message: MessageSnapshot, gameId: String) {
+fun sendMessage(message: MessageSnapshot, gameId: String) {
     getGame(gameId) {
         val gameRef = getGameReference(gameId)
         gameRef.update("messages", FieldValue.arrayUnion(message))
@@ -158,6 +164,7 @@ fun onPlayerMurdererDetermined(gameId: String, playerName: String, callback: () 
         log("GAME CHANGE LISTENER TRIGGEERD FROM MURDERER DETERMINED $playerName $gameId ${new.murdererName} ${new.murdererSelected} ${prev.murdererSelected}")
         if (new.murdererSelected && !prev.murdererSelected) {
             if (new.murdererName == playerName) {
+                log("YES MURDERER OPEN ACTIVITY PLEASE $playerName $gameId ${new.murdererName} ${new.murdererSelected} ${prev.murdererSelected}")
                 callback()
                 return@gameChangeListener
             }
@@ -243,9 +250,6 @@ enum class StartFailureType {
     WTF // What the terrible Failure
 }
 
-const val MIN_PLAYERS_SIZE = 1
-const val MURDER_SELECT_CARDS_TIMEOUT: Long = 10
-
 fun fireStartGame(
     gameId: String,
     onSuccess: () -> Unit = {},
@@ -289,8 +293,8 @@ fun fireStartGame(
                                             log("TIMER FINISHED AAAAARGH")
                                             selectMurderCards(
                                                 gameId = gameId,
-                                                clueCardName = murdererPlayer.clueCards.random().name,
-                                                meansCardName = murdererPlayer.meansCards.random().name
+                                                clueCard = murdererPlayer.clueCards.random(),
+                                                meansCard = murdererPlayer.meansCards.random()
                                             ) {
                                                 sendForensicMessage(
                                                     gameId,
@@ -326,17 +330,20 @@ fun getMurderer(gameInstance: GameInstanceSnapshot, murdererName: String): Playe
 
 fun selectMurderCards(
     gameId: String,
-    clueCardName: String,
-    meansCardName: String,
+    clueCard: CardSnapshot,
+    meansCard: CardSnapshot,
     onSuccess: () -> Unit
 ) {
     getGame(gameId) {
-        it.murdererClueCard = clueCardName
-        it.murdererMeansCard = meansCardName
+        it.murdererClueCard = clueCard
+        it.murdererMeansCard = meansCard
+        log("Try selecting murder card ${it.murdererCardsDetermined}")
         if (!it.murdererCardsDetermined) {
-            updateField(gameId, "murdererClueCard", it.murdererClueCard!!) {
-                updateField(gameId, "murdererMeansCard", it.murdererMeansCard!!) {
+            log("try updating related fields.")
+            updateField(gameId, "murdererClueCard", it.murdererClueCard) {
+                updateField(gameId, "murdererMeansCard", it.murdererMeansCard) {
                     updateField(gameId, "murdererCardsDetermined", true) {
+                        log("Success updating all fields")
                         onSuccess()
                     }
                 }

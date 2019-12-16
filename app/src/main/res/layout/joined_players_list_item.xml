@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="4dp">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
+        card_view:cardElevation="@dimen/cardElevation"
         android:layout_height="wrap_content"
-        android:background="@color/colorSurface"
         android:clickable="true"
+        android:layout_margin="8dp"
         android:elevation="@dimen/cardElevation"
         android:focusable="false"
         android:foreground="?attr/selectableItemBackground"
@@ -18,6 +18,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:background="@color/colorSurface"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="4dp">
@@ -26,6 +27,7 @@
                 android:id="@+id/playerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold|italic"
                 android:text="No Name">
 
             </TextView>

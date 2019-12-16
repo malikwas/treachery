@@ -42,7 +42,7 @@ class ForensicViewModel : ViewModel() {
                     processedOrProcessingGuessIds.add(guess.id)
                     processGuess(
                         it.guesses, guess, it.murdererName!!,
-                        it.murdererClueCard!!, it.murdererMeansCard!!, it.players, it.gameId
+                        it.murdererClueCard.name, it.murdererMeansCard.name, it.players, it.gameId
                     )
                 }
             }

@@ -45,7 +45,7 @@ class SingleForensicCardFragment() : Fragment() {
         arguments?.takeIf { it.containsKey("cardIndex") }?.apply {
 
             for (i in 0..5) {
-                getChoiceViewAt(i).setOnClickListener {
+                getChoiceViewAt(i)?.setOnClickListener {
                     forensicCardSnapshot.selectedChoice = i
                     bind()
                 }
@@ -57,7 +57,7 @@ class SingleForensicCardFragment() : Fragment() {
         }
     }
 
-    fun getChoiceViewAt(at: Int): TextView {
+    private fun getChoiceViewAt(at: Int): TextView? {
         return when (at) {
             0 -> choice0TextView
             1 -> choice1TextView
@@ -65,7 +65,7 @@ class SingleForensicCardFragment() : Fragment() {
             3 -> choice3TextView
             4 -> choice4TextView
             5 -> choice5TextView
-            else -> choice0TextView
+            else -> null
         }
     }
 
@@ -74,17 +74,17 @@ class SingleForensicCardFragment() : Fragment() {
             cardNameView.text = forensicCardSnapshot.cardName
 
             for (i in 0..5) {
-                getChoiceViewAt(i).text =
+                getChoiceViewAt(i)?.text =
                     forensicCardSnapshot.choices.getOrElse(i) { it.toString() }
 
-                getChoiceViewAt(i).setBackgroundColor(
+                getChoiceViewAt(i)?.setBackgroundColor(
                     resources.getColor(
                         R.color.forensicDefaultListBg
                     )
                 )
             }
 
-            getChoiceViewAt(forensicCardSnapshot.selectedChoice).setBackgroundColor(
+            getChoiceViewAt(forensicCardSnapshot.selectedChoice)?.setBackgroundColor(
                 resources.getColor(
                     R.color.forensicListHighlight
                 )

@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import me.kindeep.treachery.FORENSIC_NAME
 import me.kindeep.treachery.R
+import me.kindeep.treachery.chat.ChatFragment
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
+import me.kindeep.treachery.shared.CardFragment
 import me.kindeep.treachery.shared.SingleForensicCardFragment
 
 class ForensicActivity : AppCompatActivity() {
@@ -33,9 +36,10 @@ class ForensicActivity : AppCompatActivity() {
         frag5 = supportFragmentManager.findFragmentById(R.id.card5) as SingleForensicCardFragment
         frag6 = supportFragmentManager.findFragmentById(R.id.card6) as SingleForensicCardFragment
 
-//        var chat = supportFragmentManager.findFragmentById(R.id.chat) as ChatFragment
-//        chat.removeTextBox()
-//        chat.gameId = gameId
+        var chat = supportFragmentManager.findFragmentById(R.id.chat_fragment) as ChatFragment
+        chat.gameId = gameId
+        chat.playerName = FORENSIC_NAME
+        chat.removeTextBox()
 
         ForensicViewModel.gameId = gameId
         viewModel = ViewModelProviders.of(this)
@@ -44,6 +48,14 @@ class ForensicActivity : AppCompatActivity() {
         viewModel.gameInstance.observe(this, Observer {
             findViewById<TextView>(R.id.gameId).text = it.gameId
         })
+
+        val clueFragment = CardFragment()
+        val meansFragment = CardFragment()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.means_card, meansFragment, "meansCardForensic")
+            replace(R.id.clue_card, clueFragment, "clueCardForensic")
+            commit()
+        }
 
 
         addOnGameUpdateListener(gameId) {
@@ -60,7 +72,10 @@ class ForensicActivity : AppCompatActivity() {
             frag2.bind()
             frag3.forensicCardSnapshot = it.locationCard
             frag3.bind()
+            clueFragment.bind(it.murdererClueCard)
+            meansFragment.bind(it.murdererMeansCard)
         }
+
 
 
     }

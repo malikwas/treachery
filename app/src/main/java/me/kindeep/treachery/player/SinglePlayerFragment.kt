@@ -20,6 +20,7 @@ class SinglePlayerFragment : Fragment() {
         listOf(CardFragment(), CardFragment(), CardFragment(), CardFragment())
     private var meansFragments: List<CardFragment> =
         listOf(CardFragment(), CardFragment(), CardFragment(), CardFragment())
+    private var uid = ""
     private val player: PlayerSnapshot
         get() {
             return viewModel.getPlayerByName(playerName)
@@ -30,18 +31,18 @@ class SinglePlayerFragment : Fragment() {
 
     private var selectedClue: Int
         get() {
-            return viewModel.getSelectedClue(playerName)
+            return viewModel.getSelectedClue(playerName + uid)
         }
         set(value) {
-            viewModel.setSelectedClue(playerName, value)
+            viewModel.setSelectedClue(playerName + uid, value)
         }
 
     private var selectedMeans: Int
         get() {
-            return viewModel.getSelectedMeans(playerName)
+            return viewModel.getSelectedMeans(playerName + uid)
         }
         set(value) {
-            viewModel.setSelectedMeans(playerName, value)
+            viewModel.setSelectedMeans(playerName + uid, value)
         }
 
     private fun update() {
@@ -62,8 +63,10 @@ class SinglePlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         playerNameText = view.findViewById(R.id.player_name)
-        viewModel = activity?.run { ViewModelProviders.of(this)
-            .get(PlayerViewModel::class.java) } ?: throw  Exception("you suck")
+        viewModel = activity?.run {
+            ViewModelProviders.of(this)
+                .get(PlayerViewModel::class.java)
+        } ?: throw  Exception("you suck")
 
         arguments?.takeIf { it.containsKey("playerName") }?.apply {
             playerName = getString("playerName")!!
@@ -73,6 +76,10 @@ class SinglePlayerFragment : Fragment() {
                 // TODO: Actually check if anything changed before update
                 update()
             })
+        }
+
+        arguments?.takeIf { it.containsKey("uid") }?.apply {
+            uid = getString("uid")!!
         }
 
         if (savedInstanceState == null) {
