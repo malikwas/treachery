@@ -13,6 +13,7 @@ import me.kindeep.treachery.PlayerAddFailureType
 import me.kindeep.treachery.R
 import me.kindeep.treachery.addPlayer
 import me.kindeep.treachery.firebase.models.PlayerSnapshot
+import me.kindeep.treachery.resetGameFinisher
 import me.kindeep.treachery.shared.JoinedPlayersFragment
 
 /**
@@ -24,6 +25,8 @@ class JoinGameActivity : AppCompatActivity() {
     lateinit var playerNameEditText: EditText
     lateinit var joinedPlayersFragment: JoinedPlayersFragment
     override fun onCreate(savedInstanceState: Bundle?) {
+        resetGameFinisher()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join_game)
         joinedPlayersFragment =

@@ -101,23 +101,32 @@ class NextForensicCardFragment : Fragment() {
 
         selectCardButton.setOnClickListener {
             if (cardAdapter.nextCards.isNotEmpty()) {
-                val selectedCard = cardAdapter.nextCards[pageNumber]
-                val state = forensicGameState(viewModel.gameInstance.value!!)
+                val selectedCard = cardAdapter.nextCards.getOrElse(pageNumber) { null }
+                selectedCard?.apply {
+                    val state = forensicGameState(viewModel.gameInstance.value!!)
 
-                when (state) {
-                    ForensicGameState.CAUSE_CARD -> {
-                        selectCauseForensicCard(viewModel.gameInstance.value!!.gameId, selectedCard)
-                    }
-                    ForensicGameState.LOCATION_CARD -> {
-                        selectLocationForensicCard(
-                            viewModel.gameInstance.value!!.gameId,
-                            selectedCard
-                        )
-                    }
-                    ForensicGameState.OTHER_CARD -> {
-                        selectOtherCard(viewModel.gameInstance.value!!.gameId, selectedCard) {
-                            val remainingTime = getRemainingTime(viewModel.gameInstance.value!!.startedTimestamp) / 1000
-                            sendForensicMessage(viewModel.gameInstance.value!!.gameId, "Added another card, time remaining: $remainingTime seconds")
+                    when (state) {
+                        ForensicGameState.CAUSE_CARD -> {
+                            selectCauseForensicCard(
+                                viewModel.gameInstance.value!!.gameId,
+                                selectedCard
+                            )
+                        }
+                        ForensicGameState.LOCATION_CARD -> {
+                            selectLocationForensicCard(
+                                viewModel.gameInstance.value!!.gameId,
+                                selectedCard
+                            )
+                        }
+                        ForensicGameState.OTHER_CARD -> {
+                            selectOtherCard(viewModel.gameInstance.value!!.gameId, selectedCard) {
+                                val remainingTime =
+                                    getRemainingTime(viewModel.gameInstance.value!!.startedTimestamp) / 1000
+                                sendForensicMessage(
+                                    viewModel.gameInstance.value!!.gameId,
+                                    "Added another card, time remaining: $remainingTime seconds"
+                                )
+                            }
                         }
                     }
                 }
