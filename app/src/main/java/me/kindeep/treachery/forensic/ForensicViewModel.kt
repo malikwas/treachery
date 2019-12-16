@@ -69,6 +69,8 @@ class ForensicViewModel : ViewModel() {
                     delay(SINGLE_CARD_TIME * i)
                     allowedCards++
                     setNextCardValue()
+                    val remainingTime = getRemainingTime(gameInstance.value!!.startedTimestamp) / 1000
+                    sendForensicMessage(gameId, "Another card now available, deciding value...\n Remaining time: $remainingTime")
                 }
             }
         }
