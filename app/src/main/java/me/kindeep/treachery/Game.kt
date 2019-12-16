@@ -2,6 +2,8 @@ package me.kindeep.treachery
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.system.Os.remove
 import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
@@ -15,6 +17,7 @@ import me.kindeep.treachery.firebase.getCardsResourcesSnapshot
 import me.kindeep.treachery.firebase.getGame
 import me.kindeep.treachery.firebase.getGameReference
 import me.kindeep.treachery.firebase.models.*
+import me.kindeep.treachery.forensic.ForensicActivity
 import me.kindeep.treachery.player.PlayerActivity
 import me.kindeep.treachery.shared.finish.FinishActivity
 import java.util.*
@@ -225,7 +228,11 @@ fun processGuess(
     if (guess.guessedPlayer == murdererName && guess.clueCard == murdererClueCard
         && guess.meansCard == murdererMeansCard
     ) {
-        // TODO: You win?
+        updateField(gameId, "correctlyGuessed", true) {
+            updateField(gameId, "correctGuess", guess) {
+
+            }
+        }
     } else {
         val player = players.find {
             it.playerName == guess.guessedPlayer
@@ -410,7 +417,14 @@ fun log(toLog: Any) {
     Log.i("GAME_KT", toLog.toString())
 }
 
-fun onGameTimerExpire(gameId: String, callback: () -> Unit) {
+
+/**
+ * Only ever set this once. ONCE. ONLY.
+ */
+var bigBrainSingleCallback: () -> Unit = {}
+var hackBoolBigBrain = true
+fun onGameFinish(gameId: String, callback: () -> Unit) {
+    bigBrainSingleCallback = callback
     getGame(gameId) {
         val currentTime = Timestamp.now()
         val remainingTime =
@@ -421,12 +435,33 @@ fun onGameTimerExpire(gameId: String, callback: () -> Unit) {
 
         val job = GlobalScope.launch(Dispatchers.Main) {
             delay(remainingTime)
-            callback()
+            if (hackBoolBigBrain) {
+                hackBoolBigBrain = false
+                bigBrainSingleCallback()
+            }
             return@launch
+        }
+    }
+
+    gameChangeListener(gameId) { prev, new ->
+        if (hackBoolBigBrain) {
+            if (new.correctlyGuessed) {
+                hackBoolBigBrain = false
+                bigBrainSingleCallback()
+                return@gameChangeListener
+            } else if (new.guessesExpired) {
+                hackBoolBigBrain = false
+                bigBrainSingleCallback()
+                return@gameChangeListener
+            }
         }
     }
 }
 
-fun getGameFinishIntent(from: Context): Intent {
-    return Intent(from, FinishActivity::class.java)
+fun getGameFinishIntent(from: Context, gameId: String): Intent {
+    val intent = Intent(from, FinishActivity::class.java)
+    val b = Bundle()
+    b.putString("gameId", gameId)
+    intent.putExtras(b)
+    return intent
 }

@@ -11,7 +11,7 @@ import me.kindeep.treachery.chat.ChatFragment
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.getGameFinishIntent
-import me.kindeep.treachery.onGameTimerExpire
+import me.kindeep.treachery.onGameFinish
 import me.kindeep.treachery.shared.CardFragment
 import me.kindeep.treachery.shared.SingleForensicCardFragment
 
@@ -79,8 +79,10 @@ class ForensicActivity : AppCompatActivity() {
         }
 
 
-        onGameTimerExpire(gameId) {
-            startActivity(getGameFinishIntent(this))
+        onGameFinish(gameId) {
+            startActivity(getGameFinishIntent(this, gameId))
+            finish()
+            finishAndRemoveTask()
         }
 
     }
