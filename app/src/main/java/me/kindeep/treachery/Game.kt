@@ -301,7 +301,7 @@ fun fireStartGame(
                             .addOnSuccessListener {
                                 updateField(gameId, "murdererName", murdererPlayer.playerName) {
                                     updateField(gameId, "murdererSelected", true) {
-                                        sendForensicMessage(gameId, "Murderer, select your cards.")
+                                        sendForensicMessage(gameId, "Murderer, select your clue card and means card.")
                                         Timer("Murderer Card Select Delay", false).schedule(
                                             MURDER_SELECT_CARDS_TIMEOUT
                                         ) {
@@ -320,7 +320,7 @@ fun fireStartGame(
                                         onMurdererCardsDetermined(gameId) {
                                             sendForensicMessage(
                                                 gameId,
-                                                "Murderer selected their cards."
+                                                "The murderer has selected their cards."
                                             )
                                             onSuccess()
                                             return@onMurdererCardsDetermined
