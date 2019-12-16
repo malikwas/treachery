@@ -10,7 +10,7 @@
     <TextView
         android:padding="8dp"
         android:layout_width="match_parent"
-        android:text="Welcome to Treachery! A fun game to play with your friends. You need at least 4 people to play this game. You can either create a game or join one from the list below. When you create a game, you act as the forensic scientist, and your 3 friends can join the game as investigators. When ou start the game, a player from the investigators will be randomly chosen to be the murderer, and your objective as a forensic scientist is to provide clues to the players as to who the murderer is. As an investigator, each one of you gets one guess to figure out who the murdere is. If you're chosen as the murderer, you get to choose a means and a clue card. Use the chat bot to discuss amongst yourselves, and find the murderer! or deceive investigators if you are the murderer."
+        android:text="Welcome to Treachery! A fun game to play with your friends. You need at least 4 people to play this game. You can either create a game or join one from the list below. When you create a game, you act as the forensic scientist, and your 3 friends can join the game as investigators. When ou start the game, a player from the investigators will be randomly chosen to be the murderer, and your objective as a forensic scientist is to provide clues to the players as to who the murderer is. As an investigator, each one of you gets one guess to figure out who the murdere is. If you're chosen as the murderer, you get to choose a means and a clue card. Use the chat to discuss amongst yourselves, and find the murderer! Or deceive investigators if you are the murderer."
         android:layout_height="wrap_content"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout

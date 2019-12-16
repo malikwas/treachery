@@ -59,7 +59,7 @@ class PlayerViewModel : ViewModel(), GameViewModel {
             isAbleToGuess = !hasGuessed && currentViewedPlayer != playerName && selectedClues.containsKey(cluePlayer)
                     && selectedMeans.containsKey(cluePlayer) && currentViewedPlayer.equals(
                 cluePlayer
-            )
+            ) && gameInstance.value!!.murdererCardsDetermined
         }
     }
 
@@ -75,7 +75,7 @@ class PlayerViewModel : ViewModel(), GameViewModel {
             isAbleToGuess = !hasGuessed && currentViewedPlayer != playerName && selectedClues.containsKey(meansPlayer)
                     && selectedMeans.containsKey(meansPlayer) && currentViewedPlayer.equals(
                 meansPlayer
-            )
+            ) && gameInstance.value!!.murdererCardsDetermined
         }
     }
 
@@ -86,7 +86,7 @@ class PlayerViewModel : ViewModel(), GameViewModel {
     fun setCurrentViewedPlayer(currentPlayer: String) {
         currentViewedPlayer = currentPlayer
         isAbleToGuess = !hasGuessed && currentViewedPlayer != playerName && selectedClues.containsKey(playerName)
-                && selectedMeans.containsKey(playerName) && currentViewedPlayer.equals(playerName)
+                && selectedMeans.containsKey(playerName) && currentViewedPlayer.equals(playerName) && gameInstance.value!!.murdererCardsDetermined
     }
 
     fun getIsAbleToGuess(): Boolean {
