@@ -37,22 +37,33 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:padding="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <FrameLayout
-        android:id="@+id/clue_card"
-        android:layout_width="100dp"
-        android:layout_height="200dp" />
+        <FrameLayout
+            android:id="@+id/clue_card"
+            android:layout_margin="8dp"
+            android:layout_width="100dp"
+            android:layout_height="200dp" />
 
-    <FrameLayout
-        android:id="@+id/means_card"
-        android:layout_width="100dp"
-        android:layout_height="200dp" />
+        <FrameLayout
+            android:id="@+id/means_card"
+            android:layout_margin="8dp"
+            android:layout_width="100dp"
+            android:layout_height="200dp" />
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/win_text"
-        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="text"
         android:padding="16dp"
-        android:textSize="@dimen/h3" />
+        android:text="text"
+        android:textSize="@dimen/h4" />
 </LinearLayout>

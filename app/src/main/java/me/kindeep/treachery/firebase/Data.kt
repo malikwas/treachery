@@ -29,13 +29,14 @@ fun activeGamesQuery(): Query {
     val firestore = FirebaseFirestore.getInstance()
     return firestore.collection("games")
         .whereEqualTo("started", false)
+        .orderBy("expiredTimestamp", Query.Direction.DESCENDING)
         .whereLessThan("expiredTimestamp", Timestamp.now())
         .orderBy("createdTimestamp", Query.Direction.DESCENDING)
 }
 
 fun getGameReference(gameId: String): DocumentReference {
     var gameIdIn = gameId
-    if(gameIdIn.isNullOrEmpty()) {
+    if (gameIdIn.isNullOrEmpty()) {
         gameIdIn = "default"
     }
     val firestore = FirebaseFirestore.getInstance()
@@ -55,7 +56,10 @@ fun getCardsResourcesSnapshot(onSuccess: (CardsResourcesSnapshot) -> Unit) {
 fun createGame(callback: (documentReference: DocumentReference) -> Unit) {
     val id = customRandomString()
     val gameInstance = GameInstanceSnapshot(
-        expiredTimestamp = Timestamp(Timestamp.now().seconds + (10 * 60), Timestamp.now().nanoseconds)
+        expiredTimestamp = Timestamp(
+            Timestamp.now().seconds + (10 * 60),
+            Timestamp.now().nanoseconds
+        )
     )
 
     FirebaseFirestore.getInstance().collection("games").document(id).set(gameInstance)

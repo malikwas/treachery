@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 import me.kindeep.treachery.firebase.models.GameInstanceSnapshot
@@ -26,7 +27,7 @@ import me.kindeep.treachery.player.PlayerActivity
 class MainActivity : AppCompatActivity() {
 
     lateinit var gamesRecycler: RecyclerView
-    lateinit var button: FloatingActionButton
+    lateinit var button: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun newGame(v: View) {
+        v.findViewById<MaterialButton>(R.id.join_game).isEnabled = false
         createGame {
             val intent = Intent(this, StartGameActivity::class.java)
             val b = Bundle()

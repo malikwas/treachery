@@ -31,7 +31,7 @@ class ForensicActivity : AppCompatActivity() {
     lateinit var frag4: SingleForensicCardFragment
     lateinit var frag5: SingleForensicCardFragment
     lateinit var frag6: SingleForensicCardFragment
-
+    lateinit var murdererNameText: TextView
     lateinit var playerPager: ViewPager2
 
 
@@ -39,7 +39,7 @@ class ForensicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forensic)
         gameId = intent?.extras?.getString("gameId")!!
-
+        murdererNameText = findViewById(R.id.murderer_name)
         frag1 = supportFragmentManager.findFragmentById(R.id.card1) as SingleForensicCardFragment
         frag2 = supportFragmentManager.findFragmentById(R.id.card2) as SingleForensicCardFragment
         frag3 = supportFragmentManager.findFragmentById(R.id.card3) as SingleForensicCardFragment
@@ -93,6 +93,7 @@ class ForensicActivity : AppCompatActivity() {
             frag3.bind()
             clueFragment.bind(it.murdererClueCard)
             meansFragment.bind(it.murdererMeansCard)
+            murdererNameText.text = it.murdererName
         }
 
 

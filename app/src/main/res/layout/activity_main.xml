@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/new_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:onClick="newGame"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add_white_24dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/gamesRecycler"
+    <TextView
+        android:padding="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="391dp" />
+        android:text="Welcome to Treachery! A fun game to play with your friends. You need at least 4 people to play this game. You can either create a game or join one from the list below. When you create a game, you act as the forensic scientist, and your 3 friends can join the game as investigators. When ou start the game, a player from the investigators will be randomly chosen to be the murderer, and your objective as a forensic scientist is to provide clues to the players as to who the murderer is. As an investigator, each one of you gets one guess to figure out who the murdere is. If you're chosen as the murderer, you get to choose a means and a clue card. Use the chat bot to discuss amongst yourselves, and find the murderer! or deceive investigators if you are the murderer."
+        android:layout_height="wrap_content"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/new_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="create game"
+            android:layout_margin="@dimen/fab_margin"
+            android:onClick="newGame"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_add_white_24dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/gamesRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="391dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
