@@ -198,11 +198,11 @@ fun onMurdererCardsDetermined(
     }
 }
 
-var prevGameInstanceSnapshot = GameInstanceSnapshot()
 fun gameChangeListener(
     gameId: String,
     onChange: (prev: GameInstanceSnapshot, new: GameInstanceSnapshot) -> Unit
 ) {
+    var prevGameInstanceSnapshot = GameInstanceSnapshot()
     getGameReference(gameId).addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
         val new = documentSnapshot?.toObject<GameInstanceSnapshot>()
         if (new != null) {
@@ -411,7 +411,7 @@ fun log(toLog: Any) {
 }
 
 fun onGameTimerExpire(gameId: String, callback: () -> Unit) {
-    addOnGameUpdateListener(gameId) {
+    getGame(gameId) {
         val currentTime = Timestamp.now()
         val remainingTime =
             max(
@@ -422,6 +422,7 @@ fun onGameTimerExpire(gameId: String, callback: () -> Unit) {
         val job = GlobalScope.launch(Dispatchers.Main) {
             delay(remainingTime)
             callback()
+            return@launch
         }
     }
 }
