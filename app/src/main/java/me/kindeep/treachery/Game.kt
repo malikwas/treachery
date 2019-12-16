@@ -42,7 +42,8 @@ fun sendProcessedGuessMessage(gameId: String, guessSnapshot: GuessSnapshot) {
         MessageSnapshot(
             playerName = FORENSIC_NAME,
             type = 2,
-            message = "No ${guessSnapshot.guesserPlayer}, that guess is incorrect."
+            message = "No ${guessSnapshot.guesserPlayer}, that guess is incorrect.",
+            timestamp = Timestamp(Timestamp.now().seconds + 1, Timestamp.now().nanoseconds)
         ), gameId
     )
 }
@@ -217,7 +218,6 @@ fun gameChangeListener(
 
 
 fun processGuess(
-    guessSnapshots: List<GuessSnapshot>,
     guess: GuessSnapshot,
     murdererName: String,
     murdererClueCard: String,
@@ -245,7 +245,7 @@ fun processGuess(
         sendProcessedGuessMessage(gameId, guess)
 
         getGameReference(gameId).update("players", players)
-        getGameReference(gameId).update("guesses", guessSnapshots)
+        getGameReference(gameId).update("guesses", FieldValue.arrayUnion(guess))
     }
 }
 
@@ -307,7 +307,7 @@ fun fireStartGame(
                             .addOnSuccessListener {
                                 updateField(gameId, "murdererName", murdererPlayer.playerName) {
                                     updateField(gameId, "murdererSelected", true) {
-                                        sendForensicMessage(gameId, "Murderer select your cards")
+                                        sendForensicMessage(gameId, "Murderer, select your cards.")
                                         Timer("Murderer Card Select Delay", false).schedule(
                                             MURDER_SELECT_CARDS_TIMEOUT
                                         ) {
@@ -326,7 +326,7 @@ fun fireStartGame(
                                         onMurdererCardsDetermined(gameId) {
                                             sendForensicMessage(
                                                 gameId,
-                                                "Murderer Selected their cards"
+                                                "Murderer selected their cards."
                                             )
                                             onSuccess()
                                             return@onMurdererCardsDetermined
