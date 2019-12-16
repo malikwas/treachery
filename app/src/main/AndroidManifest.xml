@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".player.MurdererSelectActivity"></activity>
+        <activity android:name=".shared.finish.FinishActivity"></activity>
+        <activity android:name=".player.MurdererSelectActivity" />
         <activity
             android:name=".forensic.StartGameActivity"
             android:label="@string/start" />

@@ -18,6 +18,8 @@ import me.kindeep.treachery.chat.ChatFragment
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.getGameReference
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
+import me.kindeep.treachery.getGameFinishIntent
+import me.kindeep.treachery.onGameTimerExpire
 import me.kindeep.treachery.onPlayerMurdererDetermined
 import me.kindeep.treachery.shared.SingleForensicCardFragment
 import kotlin.math.max
@@ -117,6 +119,10 @@ class PlayerActivity : AppCompatActivity() {
             startMurdererActivity()
         }
 
+
+        onGameTimerExpire(gameId) {
+            startActivity(getGameFinishIntent(this))
+        }
     }
 
     fun doAdapterStuff() {

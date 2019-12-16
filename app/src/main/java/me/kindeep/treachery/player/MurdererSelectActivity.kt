@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.chat_view.*
 import me.kindeep.treachery.R
 import me.kindeep.treachery.firebase.models.CardSnapshot
+import me.kindeep.treachery.onMurdererCardsDetermined
 import me.kindeep.treachery.selectMurderCards
 import kotlin.math.max
 
@@ -62,6 +63,10 @@ class MurdererSelectActivity : AppCompatActivity() {
             playerPager.offscreenPageLimit = max(viewModel.gameInstance.value!!.players.size, 1)
         })
 
+        onMurdererCardsDetermined(gameId) {
+            finish()
+        }
+
     }
 
     fun doAdapterStuff() {
@@ -97,11 +102,11 @@ class MurdererSelectActivity : AppCompatActivity() {
                     meansCard = meansCard
                 ) {
                     log("Success selecting murder cards, switch")
-                    finish()
                 }
             }
         }
         viewModel.getSelectedClue(playerName + selectorId)
+        finish()
     }
 
 

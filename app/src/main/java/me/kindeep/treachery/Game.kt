@@ -1,19 +1,33 @@
 package me.kindeep.treachery
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.toObject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.getCardsResourcesSnapshot
 import me.kindeep.treachery.firebase.getGame
 import me.kindeep.treachery.firebase.getGameReference
 import me.kindeep.treachery.firebase.models.*
+import me.kindeep.treachery.player.PlayerActivity
+import me.kindeep.treachery.shared.finish.FinishActivity
 import java.util.*
 import kotlin.concurrent.schedule
+import kotlin.math.max
+import kotlin.math.min
 
 
 const val MIN_PLAYERS_SIZE = 1
 const val MURDER_SELECT_CARDS_TIMEOUT: Long = 10000
 const val FORENSIC_NAME: String = "Forensic Scientist"
+const val SINGLE_CARD_TIME: Long = 10000
+const val TOTAL_GAME_TIME: Long = 100000
 
 
 // Type 2: Game information
@@ -394,4 +408,24 @@ fun updateField(
 
 fun log(toLog: Any) {
     Log.i("GAME_KT", toLog.toString())
+}
+
+fun onGameTimerExpire(gameId: String, callback: () -> Unit) {
+    addOnGameUpdateListener(gameId) {
+        val currentTime = Timestamp.now()
+        val remainingTime =
+            max(
+                0,
+                (it.startedTimestamp.toDate().time + TOTAL_GAME_TIME) - currentTime.toDate().time
+            )
+
+        val job = GlobalScope.launch(Dispatchers.Main) {
+            delay(remainingTime)
+            callback()
+        }
+    }
+}
+
+fun getGameFinishIntent(from: Context): Intent {
+    return Intent(from, FinishActivity::class.java)
 }
