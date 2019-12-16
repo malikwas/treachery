@@ -13,14 +13,18 @@ import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.firebase.models.LiveGameInstanceSnapshot
 import kotlin.collections.HashSet
 
-class ForensicViewModel : ViewModel() {
+interface GameViewModel {
+    val gameInstance: LiveGameInstanceSnapshot
+}
+
+class ForensicViewModel : ViewModel(), GameViewModel{
     companion object {
         var gameId: String = "default"
     }
 
     val processedOrProcessingGuessIds = HashSet<String>()
 
-    val gameInstance: LiveGameInstanceSnapshot =
+   override val gameInstance: LiveGameInstanceSnapshot =
         LiveGameInstanceSnapshot(gameId)
 
     var cardsResourcesSnapshot: CardsResourcesSnapshot =
@@ -70,7 +74,7 @@ class ForensicViewModel : ViewModel() {
                     allowedCards++
                     setNextCardValue()
                     val remainingTime = getRemainingTime(gameInstance.value!!.startedTimestamp) / 1000
-                    sendForensicMessage(gameId, "Another card now available, deciding value...\n Remaining time: $remainingTime")
+//                    sendForensicMessage(gameId, "Another card now available, deciding value...\n Remaining time: $remainingTime")
                 }
             }
         }

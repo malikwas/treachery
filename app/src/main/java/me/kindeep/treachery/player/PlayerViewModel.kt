@@ -5,6 +5,7 @@ import android.widget.Button
 import androidx.lifecycle.ViewModel
 import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.models.*
+import me.kindeep.treachery.forensic.GameViewModel
 import me.kindeep.treachery.processGuess
 import me.kindeep.treachery.sendGuess
 import me.kindeep.treachery.sendGuessMessage
@@ -20,7 +21,7 @@ class EnableChange(state: Boolean) {
     }
 }
 
-class PlayerViewModel : ViewModel() {
+class PlayerViewModel : ViewModel(), GameViewModel {
     companion object {
         var gameId: String = ""
         var playerName: String? = null
@@ -91,7 +92,7 @@ class PlayerViewModel : ViewModel() {
         return isAbleToGuess
     }
 
-    val gameInstance: LiveGameInstanceSnapshot =
+    override val gameInstance: LiveGameInstanceSnapshot =
         LiveGameInstanceSnapshot(gameId)
 
     fun makeGuess() {

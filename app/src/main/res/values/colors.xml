@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#37966f</color>
-    <color name="colorPrimaryDark">#356859</color>
-    <color name="colorPrimaryLight">#b9e4c9</color>
-    <color name="colorAccent">#29302E</color>
+    <color name="colorPrimary">#891212</color>
+    <color name="colorPrimaryDark">#560000</color>
+    <color name="colorPrimaryLight">#bf4739</color>
+    <color name="colorSecondary">#7e56c1</color>
+    <color name="colorSecondaryDark">#4d2b90</color>
+    <color name="colorSecondaryLight">#b084f4</color>
+    <color name="colorAccent">#7e56c1</color>
     <color name="headingProminent">#fd5523</color>
     <color name="forensicListHighlight">#4DB6AC</color>
-    <color name="forensicDefaultListBg">#FFFBE6</color>
-    <color name="colorSurface">#FFFBE6</color>
-    <color name="colorOnSurface">#29302E</color>
+    <color name="forensicDefaultListBg">#303030</color>
+    <color name="colorSurface">#212121</color>
+    <color name="colorBackground">#212121</color>
+    <color name="colorOnSurface">#ffffff</color>
+    <color name="grey1">#212121</color>
+    <color name="grey2">#303030</color>
+    <color name="grey3">#424242</color>
     <color name="colorError">#C51162</color>
     <color name="colorOnError">#FFFFFF</color>
     <color name="cardText">#FFFFFF</color>
@@ -18,5 +25,6 @@
     <color name="testOrange">#F87147</color>
     <color name="cardPressedColor">#4847F8C6</color>
     <color name="cardNormalColor">#00000000</color>
-    <color name="chatBackground">#E9E9E9</color>
+    <color name="chatBackground">#000000</color>
+    <color name="textColor">#E9E9E9</color>
 </resources>

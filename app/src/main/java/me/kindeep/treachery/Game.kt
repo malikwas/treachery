@@ -28,10 +28,16 @@ import kotlin.math.min
 
 
 const val MIN_PLAYERS_SIZE = 3
-const val MURDER_SELECT_CARDS_TIMEOUT: Long = 30000
+const val MURDER_SELECT_CARDS_TIMEOUT: Long = 3000
 const val FORENSIC_NAME: String = "Forensic Scientist"
 const val SINGLE_CARD_TIME: Long = 30000
 const val TOTAL_GAME_TIME: Long = 400000
+
+//const val MIN_PLAYERS_SIZE = 3
+//const val MURDER_SELECT_CARDS_TIMEOUT: Long = 30000
+//const val FORENSIC_NAME: String = "Forensic Scientist"
+//const val SINGLE_CARD_TIME: Long = 30000
+//const val TOTAL_GAME_TIME: Long = 400000
 
 
 // Type 2: Game information
@@ -209,9 +215,11 @@ fun processGuess(
     players: List<PlayerSnapshot>,
     gameId: String
 ) {
+    sendForensicMessage(gameId, "Processing guess $murdererName ${guess.guessedPlayer} $murdererMeansCard $murdererClueCard $guess")
     if (guess.guessedPlayer == murdererName && guess.clueCard == murdererClueCard
         && guess.meansCard == murdererMeansCard
     ) {
+        sendForensicMessage(gameId, "That guess was correct")
         updateField(gameId, "correctlyGuessed", true) {
             updateField(gameId, "correctGuess", guess) {
 
@@ -220,10 +228,10 @@ fun processGuess(
     } else {
         val player = players.find {
             it.playerName == guess.guessedPlayer
-        }
+        }!!
 
-        player!!.meansCards.find { it.name == guess.meansCard }!!.guessedBy.add(guess.guesserPlayer)
-        player!!.clueCards.find { it.name == guess.clueCard }!!.guessedBy.add(guess.guesserPlayer)
+        player.meansCards.find { it.name == guess.meansCard }!!.guessedBy.add(guess.guesserPlayer)
+        player.clueCards.find { it.name == guess.clueCard }!!.guessedBy.add(guess.guesserPlayer)
         guess.processed = true
 
         sendProcessedGuessMessage(gameId, guess)

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="3"
+    android:weightSum="3.5"
     tools:context=".forensic.ForensicActivity">
 
     <LinearLayout
@@ -30,7 +30,7 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="0.5">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -103,8 +103,21 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/player_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
         <LinearLayout
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:weightSum="2">

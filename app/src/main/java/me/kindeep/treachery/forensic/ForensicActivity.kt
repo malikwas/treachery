@@ -2,9 +2,11 @@ package me.kindeep.treachery.forensic
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager2.widget.ViewPager2
 import me.kindeep.treachery.FORENSIC_NAME
 import me.kindeep.treachery.R
 import me.kindeep.treachery.chat.ChatFragment
@@ -12,8 +14,12 @@ import me.kindeep.treachery.firebase.addOnGameUpdateListener
 import me.kindeep.treachery.firebase.models.ForensicCardSnapshot
 import me.kindeep.treachery.getGameFinishIntent
 import me.kindeep.treachery.onGameFinish
+import me.kindeep.treachery.player.PlayerViewModel
+import me.kindeep.treachery.player.PlayersPagerAdapter
+import me.kindeep.treachery.player.SinglePlayerFragment
 import me.kindeep.treachery.shared.CardFragment
 import me.kindeep.treachery.shared.SingleForensicCardFragment
+import kotlin.math.max
 
 class ForensicActivity : AppCompatActivity() {
 
@@ -25,6 +31,8 @@ class ForensicActivity : AppCompatActivity() {
     lateinit var frag4: SingleForensicCardFragment
     lateinit var frag5: SingleForensicCardFragment
     lateinit var frag6: SingleForensicCardFragment
+
+    lateinit var playerPager: ViewPager2
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,9 +56,17 @@ class ForensicActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this)
             .get(ForensicViewModel::class.java)
 
-        viewModel.gameInstance.observe(this, Observer {
-            findViewById<TextView>(R.id.gameId).text = it.gameId
-        })
+
+        PlayerViewModel.gameId = gameId
+        PlayerViewModel.playerName = viewModel.gameInstance.value!!.players[0].playerName
+
+        val playerViewModel = ViewModelProviders.of(this)
+            .get(PlayerViewModel::class.java)
+
+        log(viewModel.gameInstance.value ?: "null")
+        playerPager = findViewById(R.id.player_pager)
+        val adapter = PlayersPagerAdapter(this, playerViewModel, this)
+        playerPager.adapter = adapter
 
         val clueFragment = CardFragment()
         val meansFragment = CardFragment()
@@ -86,5 +102,19 @@ class ForensicActivity : AppCompatActivity() {
             finishAndRemoveTask()
         }
 
+        // All players view pager
+
+        viewModel.gameInstance.observe(this, Observer {
+            findViewById<TextView>(R.id.gameId).text = it.gameId
+            playerPager.offscreenPageLimit = max(viewModel.gameInstance.value!!.players.size, 1)
+            playerPager.adapter?.notifyDataSetChanged()
+        })
+
     }
+
+    fun log(umm: Any) {
+
+        Log.d("FORENSIC_ACTIVITY", umm.toString())
+    }
+
 }
