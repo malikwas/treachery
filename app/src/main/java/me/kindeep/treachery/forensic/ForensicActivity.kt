@@ -2,6 +2,7 @@ package me.kindeep.treachery.forensic
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -108,6 +109,9 @@ class ForensicActivity : AppCompatActivity() {
             playerPager.adapter?.notifyDataSetChanged()
         })
 
+        Handler().postDelayed({
+            triggerArtificialUpdate(gameId)
+        }, 100)
     }
 
     fun remindTime(v: View) {
