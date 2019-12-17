@@ -3,6 +3,7 @@ package me.kindeep.treachery.forensic
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -109,8 +110,11 @@ class ForensicActivity : AppCompatActivity() {
 
     }
 
-    fun log(umm: Any) {
+    fun remindTime(v: View) {
+        sendForensicMessage(gameId, "Time remaining: ${viewModel.getRemainingTime()}")
+    }
 
+    fun log(umm: Any) {
         Log.d("FORENSIC_ACTIVITY", umm.toString())
     }
 

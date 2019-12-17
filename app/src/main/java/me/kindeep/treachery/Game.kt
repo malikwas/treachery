@@ -12,10 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.kindeep.treachery.firebase.addOnGameUpdateListener
-import me.kindeep.treachery.firebase.getCardsResourcesSnapshot
-import me.kindeep.treachery.firebase.getGame
-import me.kindeep.treachery.firebase.getGameReference
+import me.kindeep.treachery.firebase.*
 import me.kindeep.treachery.firebase.models.*
 import me.kindeep.treachery.forensic.ForensicActivity
 import me.kindeep.treachery.player.PlayerActivity
@@ -500,6 +497,7 @@ fun onGameFinish(gameId: String, callback: () -> Unit) {
 
 }
 
+
 fun resetGameFinisher() {
     hackBoolBigBrain = true
 }
@@ -510,4 +508,8 @@ fun getGameFinishIntent(from: Context, gameId: String): Intent {
     b.putString("gameId", gameId)
     intent.putExtras(b)
     return intent
+}
+
+fun triggerArtificialUpdate(gameId: String) {
+    updateField(gameId, "nothing", customRandomString())
 }

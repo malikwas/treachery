@@ -1,6 +1,7 @@
 package me.kindeep.treachery.player
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -14,6 +15,7 @@ import me.kindeep.treachery.R
 import me.kindeep.treachery.firebase.models.CardSnapshot
 import me.kindeep.treachery.onMurdererCardsDetermined
 import me.kindeep.treachery.selectMurderCards
+import me.kindeep.treachery.triggerArtificialUpdate
 import kotlin.math.max
 
 
@@ -42,8 +44,6 @@ class MurdererSelectActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this)
             .get(PlayerViewModel::class.java)
 
-        playerPager = findViewById(R.id.player_pager)
-        doAdapterStuff()
 
 //        currentPlayerFragment = supportFragmentManager.findFragmentById(R.id.mur) as SinglePlayerFragment
         val fragment = SinglePlayerFragment()
@@ -58,6 +58,9 @@ class MurdererSelectActivity : AppCompatActivity() {
 
 
 
+        playerPager = findViewById(R.id.player_pager)
+        doAdapterStuff()
+        playerPager.offscreenPageLimit = max(viewModel.gameInstance.value!!.players.size, 1)
 
         viewModel.gameInstance.observe(this, Observer {
             findViewById<TextView>(R.id.gameId).text = it.gameId
@@ -67,6 +70,10 @@ class MurdererSelectActivity : AppCompatActivity() {
         onMurdererCardsDetermined(gameId) {
             finish()
         }
+
+        Handler().postDelayed({
+            triggerArtificialUpdate(gameId)
+        }, 100)
 
     }
 

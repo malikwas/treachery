@@ -40,7 +40,8 @@ data class GameInstanceSnapshot(
     ),
     val correctlyGuessed: Boolean = false,
     val correctGuess: GuessSnapshot = GuessSnapshot(),
-    val guessesExpired: Boolean = false
+    val guessesExpired: Boolean = false,
+    val nothing: String = ""
 )
 
 class LiveGameInstanceSnapshot(gameId: String) : LiveData<GameInstanceSnapshot>() {

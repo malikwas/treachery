@@ -89,10 +89,12 @@ class SinglePlayerFragment : Fragment() {
         }
     }
 
+
+
     private fun createFragments() {
         for ((i, fragment) in meansFragments.withIndex()) {
             childFragmentManager.beginTransaction().apply {
-                add(R.id.means_layout, fragment, "means$i${playerName}")
+                add(R.id.means_layout, fragment, "means$i${playerName}$uid")
                 commit()
             }
             log("FRAGMENT TAG ${fragment.tag}")
@@ -103,7 +105,7 @@ class SinglePlayerFragment : Fragment() {
 
         for ((i, fragment) in cluesFragments.withIndex()) {
             childFragmentManager.beginTransaction().apply {
-                add(R.id.clues_layout, fragment, "clues$i${playerName}")
+                add(R.id.clues_layout, fragment, "clues$i${playerName}$uid")
                 commit()
             }
             log("FRAGMENT TAG ${fragment.tag}")
@@ -117,11 +119,11 @@ class SinglePlayerFragment : Fragment() {
         // A Big brain hack to make fragments work when device is rotated, replace all with first,
         // add the rest.
         childFragmentManager.beginTransaction().apply {
-            replace(R.id.clues_layout, cluesFragments[0])
+            replace(R.id.clues_layout, cluesFragments[0], "clues0${playerName}$uid")
             cluesFragments[0].setParentClickListener {
                 clueClick(0)
             }
-            replace(R.id.means_layout, meansFragments[0])
+            replace(R.id.means_layout, meansFragments[0], "means0${playerName}$uid")
             meansFragments[0].setParentClickListener {
                 meansClick(0)
             }
@@ -131,7 +133,7 @@ class SinglePlayerFragment : Fragment() {
         for (i in 1 until meansFragments.size) {
             val fragment = meansFragments[i]
             childFragmentManager.beginTransaction().apply {
-                add(R.id.means_layout, fragment, "means$i${playerName}")
+                add(R.id.means_layout, fragment, "means$i${playerName}$uid")
                 commit()
             }
             log("FRAGMENT TAG ${fragment.tag}")
@@ -143,7 +145,7 @@ class SinglePlayerFragment : Fragment() {
         for (i in 1 until cluesFragments.size) {
             val fragment = cluesFragments[i]
             childFragmentManager.beginTransaction().apply {
-                add(R.id.clues_layout, fragment, "clues$i${playerName}")
+                add(R.id.clues_layout, fragment, "clues$i${playerName}$uid")
                 commit()
             }
             log("FRAGMENT TAG ${fragment.tag}")

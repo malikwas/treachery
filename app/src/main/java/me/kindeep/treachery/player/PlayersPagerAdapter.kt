@@ -24,10 +24,10 @@ class PlayersPagerAdapter(
         }
 
     init {
-//        viewModel.gameInstance.observe(lifecycleOwner, Observer {
-//            log(it)
-//            notifyDataSetChanged()
-//        })
+        notifyDataSetChanged()
+        viewModel.gameInstance.observe(lifecycleOwner, Observer {
+            notifyDataSetChanged()
+        })
     }
 
     override fun getItemCount(): Int {
