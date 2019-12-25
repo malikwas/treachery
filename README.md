@@ -3,7 +3,7 @@
 
 Min SDK: API Level 23
 
-API:
+Built using:
 - Firebase API to play a complex real-time card game with as many people as possible (minimum of 3 players, 1 forensic).
 - Firebase API to chat with all players in real-time and to communicate essential game information.
 - Microsoft Azure to get 300 images for card names.
@@ -21,3 +21,28 @@ Game rules:
   As an investigator, each one of you gets one guess to figure out who the murderer is. If you're chosen as the murderer,
   you get to choose a means and a clue card. Use the chat to discuss amongst yourselves, and find the murderer!
   Or deceive investigators if you are the murderer.
+
+Demo images:
+<p align="center">
+  <img src="https://i.imgur.com/jGfnm02.png" alt="Treachery forensic start" width="250px" />
+  <img src="https://i.imgur.com/Zng98AZ.png" alt="Treachery forensic game" width="250px" />
+  <p align="center">
+    Forensic create screen and game screen
+  </p>
+</p>
+<br />
+<p align="center">
+  <img src="https://i.imgur.com/E4gDlua.jpg" alt="Treachery murder selection" width="250px" />
+  <p align="center">
+    Murderer player selection screen
+  </p>
+</p>
+<br />
+<p align="center">
+  <img src="https://i.imgur.com/5SajwPX.png" alt="Treachery player game" width="250px" />
+  <img src="https://i.imgur.com/gyhSRDG.png" alt="Treachery player win" width="250px" />
+  <p align="center">
+    Player game and win screen
+  </p>
+</p>
+
