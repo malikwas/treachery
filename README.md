@@ -34,7 +34,7 @@ Demo images:
 <p align="center">
   <img src="https://i.imgur.com/E4gDlua.jpg" alt="Treachery murder selection" width="250px" />
   <p align="center">
-    Murderer player selection screen
+    Murderer player card selection screen
   </p>
 </p>
 <br />
