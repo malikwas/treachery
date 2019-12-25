@@ -25,14 +25,14 @@ Demo images:
   <img src="https://i.imgur.com/jGfnm02.png" alt="Treachery forensic start" width="250px" />
   <img src="https://i.imgur.com/Zng98AZ.png" alt="Treachery forensic game" width="250px" />
   <p align="center">
-    Forensic create screen and game screen
+    StartGameActivity and ForensicActivity
   </p>
 </p>
 <br />
 <p align="center">
   <img src="https://i.imgur.com/E4gDlua.jpg" alt="Treachery murder selection" width="250px" />
   <p align="center">
-    Murderer player card selection screen
+    MurdererSelectActivity
   </p>
 </p>
 <br />
@@ -40,7 +40,7 @@ Demo images:
   <img src="https://i.imgur.com/5SajwPX.png" alt="Treachery player game" width="250px" />
   <img src="https://i.imgur.com/gyhSRDG.png" alt="Treachery player win" width="250px" />
   <p align="center">
-    Player game and win screen
+    PlayerActivity and FinishActivity
   </p>
 </p>
 
