@@ -1,6 +1,4 @@
 # treachery
-## App name: Treachery
-
 Min SDK: API Level 23
 
 Built using:
